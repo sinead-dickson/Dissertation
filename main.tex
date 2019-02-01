@@ -28,12 +28,12 @@
 %% Comment out the next line if you don't want a department to appear
 %\newcommand{\department}{\href{http://researchgroup.university.com}{Department Name}} % Your research group's name and URL, this is used in the title page
 
-\AtBeginDocument{
-\hypersetup{Twitter as an Alternative Review Site=\thesistitle} % Set the PDF's title to your title
-\hypersetup{Sinéad Dickson\authorname} % Set the PDF's author to your name
-\hypersetup{pdfkeywords=\keywords} % Set the PDF's keywords to your keywords
-\hypersetup{pdfsubject=\degree} % Set the PDF's keywords to your keywords
-}
+%\AtBeginDocument{
+%\hypersetup{Twitter as an Alternative Review Site=\thesistitle} % Set the PDF's title to your title
+%\hypersetup{Sin\'ead Dickson\authorname} % Set the PDF's author to your name
+%\hypersetup{pdfkeywords=\keywords} % Set the PDF's keywords to your keywords
+%\hypersetup{pdfsubject=\degree} % Set the PDF's keywords to your keywords
+%}
 
 %% Language and font encodings
 \usepackage[T1]{fontenc} 
@@ -155,12 +155,11 @@ Note that Roman mathematical symbols are typically in a serif font in italics.
 \mainmatter
 \input{introduction/introduction.tex}
 \input{literature_review/literature_review.tex}
-\input{background/background.tex}
 \input{project/project.tex}
 \input{evaluation/evaluation.tex}
 \input{conclusion/conclusion.tex}
 \bibliographystyle{unsrtnat}
-\bibliography{bibs/sample}
+\bibliography{bibs/dissertation_bibliography}
 \appendix
 \renewcommand{\thechapter}{A\arabic{chapter}}
 \input{appendix/appendix.tex}

@@ -1,5 +1,38 @@
 \chapter{Literature Review}
+This section will discuss the background literature relating to this project.
 
 \section{Machine Learning}
+There are two approaches to text classification using machine learning; supervised and unsupervised learning.
+
+Supervised learning involves labelled data. There are input variables (x) and output variables (y) and an algorithm is used to learn the mapping function from the input to the output (y = f(x)). This mapping function that has been learned is then applied to new unseen data.
+
+Unsupervised learning only has input variables (x) with no output variables. An algorithm is used to find patterns directly from the data. It is generally not used for classification but to discover unknown patterns in data. It uses unlabelled data.
+
+A supervised machine learning approach will be taken in this research.
+
+Classification is the process of mapping observations into predefined classes, based on a set of training data. Some classification algorithms include decision trees, support vector machines, naïve bayes, random forests, k-means, logistic regression and nearest neighbour.
+
+A Support Vector Machine (SVM) is a discriminative classifier, first introduced by Cortes and Vapnik \cite{Vapnik1995,Vapnik21995}. It finds the optimum hyperplane that separates the data into classes. The aim of a SVM is to maximise the distance (margin) between the hyperplane and the support vectors (data points closest to the hyperplane). SVMs have been used successfully for text classification paper paper.
+
+Naïve Bayes (NB) is a popular supervised learning method for text classification. It is a probabilistic classifier, calculating the probability that an observation belongs to a particular class. NB is based on applying Bayes Rule along with the ‘naïve’ assumption that the features are conditionally independent. In the case of text classification this would be assuming all words are independent, which is most likely not true. 
+Bayes Rule is as follows:  \[P(A\mid B)=(P(B \mid A)P(A))/(P(B))\]
+
+A. Bermingham and A. F. Smeaton \cite{Berm2010} investigate the performance of Support Vector Machines (SVM) and Multinomial Naïve Bayes (MNB) in classifying the sentiment of short versus long form documents. SVM achieves better accuracy than MNB on long form documents, and the other way around for short form documents. The short form documents used in their experiments were microblogs from Twitter and micro-reviews from Blippr. This study suggests that a SVM may be useful in this project for the classification of tweets as reviews.
+
+Logistic Regression (LR) is a linear classifier. LR uses the logistic function also known as the sigmoid function or logit function to model the data. This is an S-shaped curve, taking real valued inputs and mapping them to the range 0 – 1. The logistic function: \[g(z)=1/(1+e^{-z})\]
+LR models the probability that an observation belongs to a particular class. The coefficients of the LR algorithm are estimated from the training data, using maximum likelihood estimation or gradient descent.
+
+An Ensemble Classifier aggregates various individual base classifiers. It has been demonstrated that an ensemble classifier generally performs better than individual classifiers \cite{Opitz1999}. Ankit and N. Saleena \cite{Ankit2018} propose an ensemble classifier for the sentiment analysis of tweets. The base classifiers include Naive Bayes, Random Forest, Support Vector Machine and Logistic Regression. The ensemble classifier outperforms each of the individual base classifiers.
+Two possible ensemble techniques are boosting and bagging.
+
+A. Go, R. Bhayani, and L. Huang \cite{Go2009} proposed the  idea of creating a training set of tweets, labelled as positive or negative based on the emoticons they contain. The dataset produced (Stanford Sentiment 140) was used to train Naive Bayes, Maximum Entropy, and Support Vector Machine classifiers. They report the best accuracy (83\%) with the Maximum Entropy Classifier. Their work helped address the problem of creating large labelled datasets to train classifiers. This can be a very time-consuming, costly and labour-intensive process. The dataset produced has been used in many other studies, including the above mentioned Ensemble Classifier study \cite{Ankit2018}.
+
+A. Rane and A. Kumar \cite{Rane2018} compare seven different classifiers (Decision Tree, Random Forest, SVM, K-Nearest Neighbours, Logistic Regression, Gaussian Naïve Bayes and AdaBoost) for the sentiment analysis of Twitter Data about US Airline Services. The Random Forest Classifier performed the best, with reported precision of 85.6\%. The research makes use of doc2vec.
+
+M. Rathi, A. Malik, D. Varshney, R. Sharma, and S. Mendiratta \cite{Raithi2018} tested SVM, Adaboosted Decision Tree and Decision Tree Classifiers, for the sentiment analysis of tweets. TFIDF (term frequency inverse document frequency) Vectorization is applied during pre-processing. Using TFIDF gives a measure of how important a word is within the dataset. A word that is frequent in an individual document but infrequent in the dataset is considered important. The weights from TFIDF are applied to the dataset emphasising the contribution of some words and reducing the contribution of others. They found the Decision Tree Classifier performed best  (accuracy: 84\%) followed by the SVM (accuracy: 82\%) and then the Adaboosted Decision TType equation here.ree (accuracy: 67\%). 
+
+The majority of work focuses on sentiment analysis rather than detecting reviews which is the focus of this research.
+
 \section{Sentiment Analysis}
 \section{Recommender Systems}
+\section{Tweet Classification}
