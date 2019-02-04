@@ -3,7 +3,7 @@ Online reviews have become an important source of information for consumers. The
 
 Twitter currently has 326 million active users, with over 500 million tweets posted per day. Tweets often take the form of a 'review'. A Twitter user may for example tweet about, a city they visited, a hotel they stayed in, a restaurant they ate at or a film they watched. These review-like tweets can give us insight into consumers’s opinions on the entities that they interact with. With millions of tweets being posted every day, Twitter can be looked at as a huge source of underutilized reviews.
 
-Traditional sources of online reviews include sites like Tripadvisor, Foursquare or Yelp. Often these sites prompt users to review a hotel or restaurant after their stay. This can result in more manufactured reviews. In general, people tend to be more spontaneous in what they post to Twitter. As a result, the reviews on Twitter tend to contain more honest unfiltered opinions. 
+Traditional sources of online reviews include sites like Tripadvisor, Foursquare or Yelp. Often these sites encourage users to leave reviews of hotels, restaurants or products. This can result in more manufactured reviews. In general, people tend to be more spontaneous in what they post to Twitter. As a result, the reviews on Twitter tend to contain more honest unfiltered opinions. 
 
 \section{Research Question}
 This research project will investigate whether Twitter can be used as an alternative or additional source of reviews for use in a recommender system. We will explore methods of classifying review-like tweets, identifying the review's sentiment and applying this information in a recommender system.
@@ -17,9 +17,9 @@ The following research question will be addressed:
 \section{Research Objectives}
 The main objectives of this research project are:
 \begin{enumerate}
-    \item To identify review-like tweets.
-    \item To perform sentiment analysis on these reviews, generating a sentiment score.
-    \item To apply this sentiment score to a recommender system and analyse it's affect.
+    \item To identify review-like tweets. This will involve building a labelled dataset of tweets classified as review-like tweets, tweets that contain some content or irrelevant tweets.These will be used to train a classifier.
+    \item To perform sentiment analysis on these reviews, generating a sentiment score. The Stanford NLP Sentiment Analyzer will be used for sentiment analysis. 
+    \item To apply the sentiment score produced to a pre-existing recommender system. The affect of adding this score will be analysed.
 \end{enumerate}
 The project will focus on tweets about hotels in the Dublin area. A collection of 2.5 million tweets posted from Dublin, collected between October 2017 and September 2018, will be used as the dataset. This dataset will be filtered so that it only includes tweets about hotels posted from Dublin. It will then be manually annotated as a review-like tweet, a tweet that contains some content about a hotel or an irrelevant tweet.
 
