@@ -1,7 +1,9 @@
 \chapter{Literature Review}
+
 This section will discuss the background literature relating to this project.
 
 \section{Machine Learning}
+
 Classification is the process of mapping observations into predefined classes, based on a set of training data. Some classification algorithms include Decision Tree, Support Vector Machine (SVM), Naïve Bayes, Random Forest, K-means, Logistic Regression and Nearest Neighbour.
 
 There are two main approaches to text classification using machine learning; supervised and unsupervised learning. Supervised learning involves labelled data. There are input variables (x) and output variables (y) and an algorithm is used to train the mapping function from the input to the output (y = f(x)). This mapping function that has been trained is then applied to new unseen data. Unsupervised learning, uses unlabelled data and only has input variables (x) with no output variables. An algorithm is used to find patterns directly from the data. It is generally not used for classification but to discover unknown patterns in data. A supervised machine learning approach will be taken in this research.
@@ -44,18 +46,24 @@ M. Rathi, A. Malik, D. Varshney, R. Sharma, and S. Mendiratta \cite{Raithi2018} 
 
 \section{Sentiment Analysis}
 
-The Sentiment Analyzer from the Stanford NLP (Natural Language Processing) Group \cite{stanfordSentiment2013} introduces a Recursive Neural Tensor Network (RNTN). The RNTN is trained on a Sentiment Treebank. A corpus of movie reviews originally collected by Pang and Lee was used \cite{panglee2004} is used as the basis of the Sentiment Treebank. The sentences in the corpus are parsed into phrases, producing a parse-tree for each. Every phrase is given a sentiment label. The treebank produced has much more finely grained sentiment labels than the original corpus.
+The Stanford NLP (Natural Language Processing) Group's Sentiment Analyser \cite{stanfordSentiment2013} introduced a Recursive Neural Tensor Network (RNTN) along with a Sentiment Treebank. The Sentiment Treebank extended the corpus of movie reviews originally collected by Pang and Lee \cite{panglee2004}. The sentences in the movie review corpus were relabeled at a phrase level, producing a sentiment labelled parse-tree for each review. The Sentiment Treebank produced had more finely grained sentiment labels than the original corpus. It improved how the compositional effects of sentiment in language were captured.
 
 \begin{wrapfigure}{l}{0.6\textwidth}
     \centering
-    \includegraphics[width=0.6\textwidth]{literature_review/sample_treebank.PNG}
-    \caption{Sample of a labelled sentence in the Stanford NLP Sentiment Treebank \cite{stanfordSentiment2013}}
+    \setlength{\fboxsep}{0pt}
+    \setlength{\fboxrule}{0.01pt}
+    \setlength{\belowcaptionskip}{-20pt}
+    \fbox{\includegraphics[width=0.6\textwidth]
+    {literature_review/sample_treebank.PNG}}
+    \caption{A labelled movie review in the Stanford NLP Sentiment Treebank \cite{stanfordSentiment2013}}
 \end{wrapfigure}
 
-The Sentiment Analyser has reported accuracy of 85.4\% in single sentence positive/negative classification.
-The Stanford NLP Sentiment Analyzer was used for basic sentiment analysis of the tweets. It provides the following sentiment judgements: very positive, positive, neutral, negative and very negative.
-
-Classifying a neutral judgment as a non-review and a positive/negative judgment as review was considered. This is too big an assumption as reviews can of course be neutral. The Stanford NLP Sentiment Analyzer may be used at a later stage, when the tweets have already been identified as reviews, for classifying the reviews as positive, negative or neutral.
+All classification models trained with the new dataset saw a significant increase in accuracy. These included Naive Bayes, Support Vector Machines, and other recursive neural networks. The RNTN achieved the highest accuracy of 85.4\% in single sentence positive/negative classification.
 
 \section{Recommender Systems}
-\section{Tweet Classification}
+
+Takehara, T. and Miki, S. and Nitta, N. and Babaguchi, N. propose a recommender system \cite{takeharaContext2012}, that recommends restaurants to users along with contextual information taken from Twitter. They use a rule based system. Relevant keywords are extracted from reviews from Tabelog (a japanese review site) and used to search Twitter for the contextual information. Nouns are extracted from Tabelog using POS tagging. Those characteristically used for assessing restaurants in each area are selected as keywords, categorized as area related or restaurant related. Finally tweets containing more than two nouns from each set of keywords (area and restaurant) are selected as contextual information.
+
+\section{Twitter Analysis}
+
+In this section, research that has been carried out on Twitter data will be discussed.
