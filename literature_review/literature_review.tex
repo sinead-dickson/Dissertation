@@ -64,6 +64,18 @@ The Stanford NLP (Natural Language Processing) Group's Sentiment Analyser \cite{
 
 All classification models trained with the new dataset saw a significant increase in accuracy. These included Naive Bayes, Support Vector Machines, and other recursive neural networks. The RNTN achieved the highest accuracy of 85.4\% in single sentence positive/negative classification.
 
+S. Bhuta, A. Doshi, U. Doshi, and M. Narvekar reviewed different methods for the sentiment analysis for text, with a focus on Twitter. A lexicon based approach works by classifying a sentence based on the number of opinion words (positive or negative words) in the sentence. A sentiment score is calculated based on the ratio of positive to negative words. Unlike supervised machine learning methods no training data is required. However, a lexicon is required and these are not available for every language. The lexicon approach has limitations, it does not allow for a term to be positive in one context but negative in another. It also cannot deal with an opinion being expressed towards multiple entities in a single sentence.
+
+Three supervised learning methods were investigated, Naive Bayes, Maximum Entropy and Support Vector Machines. Supervised learning methods generally outperform the lexicon based approach. They are however very dependent on the size and quality of the set of training data. The accuracy of a classifier depends on the features selected and the domain in question. A method that performs well on a set of reviews from Tripadvisor will not perform as well on a set of Tweets. Each method needs to be adapted to the specific domain it will be used on.
+
+Naive Bayes is a simple probabilistic classifier that uses Bayes theorem. There are two first order probabilistic models for Naive Bayes, Bernoulli(shorter vocab sizes) and Multinomial (longer vocab sizes). Bernoulli performs better on smaller vocabularies and Multinomial performs better on larger vocabularies. The bigram NB outperformed the unigram. ${X}^2$ feature selection improved the accuracy.
+
+Maximum Entropy is a probability distribution estimation technique. The principle of Maximum Entropy is that if not much is known about the data the distribution should be as uniform as possible, i.e. have the maximum entropy. The improved iterative scaling algorithm is used to find the solution.An advantage over Naive Bayes is it does not suffer from the independence assumption.ME does suffer from over-fitting, which can be improved using  a maximum a posteriori.
+
+Support Vector Machines find the hyper plane with the maximum margin between the classes. It is useful for Twitter data as it can handle large feature spaces. A disadvantage of SVM is that it is a black box method. It is hard to know what is having an effect on the algorithm and how to improve it.
+
+The system proposed consists of four stages, extraction, pre-processing, analysis and knowledge discovery. Extraction involves capturing real time data from Twitter. In the pre-processing stage non-english tweets are filtered out, features are selected, any Twitter handles are removed, any re-tweet symbols (RT) are removed, and exaggeration is removed (goooood -> good). The analysis stage is where the sentiment analysis is performed using a classifier or lexicon approach. Finally in knowledge discovery the sentiment analysis is related to geographical locations and events, to gauge the opinion of the population on that event.
+
 \section{Recommender Systems}
 
 Takehara, T. and Miki, S. and Nitta, N. and Babaguchi, N. propose a recommender system \cite{takeharaContext2012}, that recommends restaurants to users along with contextual information taken from Twitter. They use a rule based system. Relevant keywords are extracted from reviews from Tabelog (a japanese review site) and used to search Twitter for the contextual information. Nouns are extracted from Tabelog using POS tagging. Those characteristically used for assessing restaurants in each area are selected as keywords, categorized as area related or restaurant related. Finally tweets containing more than two nouns from each set of keywords (area and restaurant) are selected as contextual information.
@@ -71,3 +83,13 @@ Takehara, T. and Miki, S. and Nitta, N. and Babaguchi, N. propose a recommender 
 \section{Twitter Analysis}
 
 In this section, research that has been carried out on Twitter data will be discussed.
+
+Twitter Data
+- informal, terse
+- treat differently to longer form text
+- hashtags, emojis etc
+- adapt standard ML algorithms
+- slang and causual language
+- exageration e.g. goooooood
+
+\section{Preprocessing}
