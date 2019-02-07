@@ -5,20 +5,24 @@ This section will discuss the background literature relating to this project.
 \section{Machine Learning}
 
 \begin{justify}
-Classification is the process of mapping observations into predefined classes, based on a set of training data. Some classification algorithms include Decision Tree, Support Vector Machine (SVM), Naïve Bayes, Random Forest, K-means, Logistic Regression and Nearest Neighbour.
+Classification, in the context of machine learning is the process of mapping observations into classes, based on some set of training data. Some classification algorithms include Support Vector Machines (SVM), Naïve Bayes, Random Forest, Decision Tree, K-means, Logistic Regression and Nearest Neighbour.
 
-There are two main approaches to text classification using machine learning; supervised and unsupervised learning. Supervised learning involves labelled data. There are input variables (x) and output variables (y) and an algorithm is used to train the mapping function from the input to the output (y = f(x)). This mapping function that has been trained is then applied to new unseen data. Unsupervised learning, uses unlabelled data and only has input variables (x) with no output variables. An algorithm is used to find patterns directly from the data. It is generally not used for classification but to discover unknown patterns in data. A supervised machine learning approach will be taken in this research.
+There are two main approaches to classification, supervised and unsupervised learning. Supervised learning involves labelled data. There are input variables (x) and output variables (y) and an algorithm is used to train the mapping function from the input to the output (y = f(x)). The mapping function that has been trained is then applied to new unseen data to decide it's class. Unsupervised learning, uses unlabelled data and has only input variables (x) with no output variables. An algorithm is used to find patterns directly from the data. Unsupervised learning is generally not used for classification but to discover unknown patterns in data. A supervised machine learning approach will be taken in this research.
 \end{justify}
 
 \section{Sentiment Analysis}
 
-Lexicon based..
+Sentiment analysis is the process of identifying the opinion expressed about a particular subject in some text. The aim is to determine whether the opinion is positive, negative or neutral, and to what extent. Sentiment analysis makes use of natural language processing (NLP) and machine learning. The two main approaches to sentiment analysis are lexicon based approaches and supervised machine learning based approaches. 
 
-Machine Learning..
+A lexicon based approach works by classifying a sentence based on the number of opinion words (positive or negative words) in the sentence. A sentiment score is calculated based on the ratio of positive to negative words. Unlike supervised machine learning methods no training data is required. However, a lexicon is required and these are not available for every language. The lexicon approach has limitations, it does not allow for a term to be positive in one context but negative in another. It also cannot deal with an opinion being expressed towards multiple entities in a single sentence.
+
+Supervised machine learning approaches require labelled training data. Their performance is very dependent on the size and quality of the set of training data. The accuracy of a classifier depends on the features selected for training and the domain the classifier is applied to. A method that performs well on a set of reviews from Tripadvisor will not perform on a set of Tweets. Each method needs to be adapted to the specific domain it will be used on.
+
+S. Bhuta, A. Doshi, U. Doshi, and M. Narvekar \cite{Bhuta2014} reviewed different methods for the sentiment analysis for text, with a focus on Twitter. These included a lexicon approach and three supervised learning methods, Naive Bayes, Maximum Entropy and Support Vector Machines. The three supervised learning methods generally outperform the lexicon based approach. There are two first order probabilistic models for Naive Bayes, Bernoulli and Multinomial. Bernoulli performs better on smaller vocabularies and Multinomial performs better on larger vocabularies. The bigram Naive Bayes outperformed the unigram and ${X}^2$ feature selection improved it's accuracy. Maximum Entropy, a probability distribution estimation technique, has an advantage over Naive Bayes as it does not suffer from the independence assumption. Maximum Entropy does suffer from over-fitting, which can be improved using maximum a posteriori estimation. Support Vector Machines can handle large feature spaces which is useful for Twitter data. A disadvantage of Support Vector Machines is that they are a black box method. It is hard to know exactly what is having an effect on the algorithm and how to improve it.
 
 \section{Recommender Systems}
 
-A recommender system is...
+A recommender system recommends products or services to consumers. It's aim is to recommend the product or service best suited to their individual preferences.
 
 \section{Twitter Analysis}
 
