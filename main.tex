@@ -44,6 +44,9 @@
 \usepackage{wrapfig} % figure layout
 \usepackage{ragged2e} % justification
 \usepackage{titlesec} % chapter headings
+\usepackage{placeins} % Prevents text from being split up
+\usepackage{flafter}  % Prevents text from being split up
+\usepackage{microtype} %spacing I think??
 
 \pagestyle{plain} % Embrace simplicity!
 
@@ -75,7 +78,7 @@
 
 \frontmatter
 \pagenumbering{roman}
-\onehalfspacing\raggedright %\raggedright turns off justification and hypenation
+\onehalfspacing%\raggedright %\raggedright turns off justification and hypenation
 
 \begin{document}
 \input{title/title.tex} % cover page
