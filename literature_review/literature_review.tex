@@ -1,6 +1,6 @@
 \chapter{Literature Review}
 
-This section will discuss the background literature relating to this project.
+This section will discuss the background literature relating to this research project.
 
 \section{Machine Learning}
 
@@ -14,7 +14,7 @@ A supervised machine learning approach will be taken in this research. An annota
 
 \section{Text Classification}
 
-Text classification is a common use of supervised machine learning. Text classification is the process of automatically assigning a set of predefined classes to raw text documents. Applications include, sentiment analysis, spam detection and topic classification. Some typical text classification algorithms are Support Vector Machines, Naive Bayes, Maximum Entropy, Logistic Regression as well as Ensemble Classifiers.
+Text classification is an application of supervised machine learning. Text classification is the process of automatically assigning a set of predefined classes to raw text documents. Applications include, sentiment analysis, spam detection and topic classification. Some typical text classification algorithms are Support Vector Machines, Naive Bayes, Maximum Entropy, Logistic Regression as well as Ensemble Classifiers.
 
 A Support Vector Machine (SVM) is a discriminative classifier, first introduced by Cortes and Vapnik \cite{Vapnik1995,Vapnik21995}. The algorithm functions by finding the optimum hyperplane that separates the data into the defined classes. The aim of a SVM is to maximise the margin (distance) between the hyperplane and the support vectors (the data points closest to the hyperplane). SVMs have been successfully used in text classification \cite{Joachims1998}.
 
@@ -23,9 +23,17 @@ Naive Bayes (NB) is a popular supervised learning method often used for text cla
 The Maximum Entropy classifier is a probabilistic classifier. It is based on the principle of maximum entropy. The Maximum Entropy classifier has been explored as a sucessful method of text classification \cite{MaxEnt1999}. The principle of maximum entropy is that the probability distribution that best represents the current state of knowledge is the one with the maximum entropy. Entropy is a measure of the disorder or randomness of a system, or a measure of lack of knowledge. The maximum entropy corresponds to the least amount of knowledge, which is when the data is as uniformly distributed as possible. The Maximum Entropy classifier seeks to find the distribution that maximises the entropy. Maximum Entropy is similar to Naive Bayes but has the advantage in that it does not suffer from the independence assumption.
 
 Logistic Regression (LR) is a linear classifier. LR uses the logistic function, known also as the sigmoid function or logit function to model the data. This is an S-shaped curve, taking real valued inputs and mapping them to the range 0 – 1. The logistic function is as follows: \[g(z)=1/(1+e^{-z})\]
-LR models the probability that an observation belongs to a particular class. The coefficients of the LR algorithm are estimated from the training data, using maximum likelihood estimation or gradient descent.
+Logistic Regression models the probability that an observation belongs to a particular class. The coefficients of the LR algorithm are estimated from the training data, using maximum likelihood estimation or gradient descent.
+
+Decision Tree Classifier...
 
 Ensemble Classifiers, combine the effect of multiple learning algorithms to achieve better performance than the individual learning algorithms. They aggregates various individual base classifiers. There are two major ensemble methods, averaging ensemble methods and boosting ensemble methods. Averaging methods include Bagging and Forests of Randomised Trees. These methods output an average of the base estimators. Boosting methods include Ada Boost and Gradient Tree Boosting. They give an ensemble output which is the sequential effect of the base classifiers. Ensemble classifiers generally perform better than individual base classifiers \cite{Opitz1999}. 
+
+A Random Forest Classifier is an ensemble learning method based on Decision Tree Classifiers. The original algorithm proposed by Breinam \cite{Breiman2001}, combines several tree-structured classifiers using bagging \cite{breiman1996bagging}. A number of Decision Tree Classifiers are fitted, using a random selection of training data, and their results are merged to get a prediction. Random Forest Classifiers improve on Decision Tree overfitting and give a more accurate and stable prediction. It has sucessfully used in many text classification applications:
+Classification of Phishing Email Using Random Forest Machine
+Learning Technique
+ForesTexter: An efficient random forest algorithm for imbalanced text categorization
+Sentiment Analysis
 
 \section{Tweet Classification}
 
@@ -83,3 +91,7 @@ All classification models trained with the new dataset saw a significant increas
 A recommender system recommends products or services to consumers. It's aim is to recommend the product or service best suited to their individual preferences.
 
 Takehara, T. and Miki, S. and Nitta, N. and Babaguchi, N. propose a recommender system \cite{takeharaContext2012}, that recommends restaurants to users along with contextual information taken from Twitter. They use a rule based system. Relevant keywords are extracted from reviews from Tabelog (a japanese review site) and used to search Twitter for the contextual information. Nouns are extracted from Tabelog using part-of-speech tagging. Those characteristically used for assessing restaurants in each area are selected as keywords, and categorised as area related keywords or restaurant related keywords. Finally tweets containing more than two nouns from each set of keywords (area and restaurant) are selected as contextual information.
+
+A. Levi et al. proposed a cold start hotel recommender system, which uses the text of online reviews from Tripadvisor and Venere as its main data \cite{levi2012}. The cold start problem is how you recommend to a new user that you have no previous information on. 
+
+In this research we will make use of reviews extracted from Twitter as an alternative.

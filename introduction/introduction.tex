@@ -1,21 +1,29 @@
 \chapter{Introduction}
 
-The rapid development and expansion of the internet has introduced a new way for individuals to express their opinions. Online reviews have become a hugely important source of information for consumers. They play an important role in determining whether a person is satisfied with a product or service. Online reviews provide a huge amount of data on consumer preferences. These days it is extremely unlikely that someone will purchase a product, reserve a table at a restaurant or book a room in a hotel without first taking a look at some online reviews. These reviews inform and influence consumer decisions, and have a direct relationship with online sales. Several studies explore the relationship between online reviews and sales. Q. Ye, R. Law, B. Gu, and W. Chen found that a 10\% increase in a hotel's user rating can boost online bookings by over 5\% \cite{HotelSales2011}, suggesting that online reviews have a significant impact on online bookings. I. E. Vermeulen and D. J. T. m. Seegers' \cite{Vermeulen2009} research concluded that online reviews improve the average probability for consumers to consider booking a room in the reviewed hotel. 
+\section{Twitter as a Review Site}
+The rapid development and expansion of the internet has introduced a new way for individuals to express their opinions. Online reviews have become a hugely important source of information for consumers. They play an important role in determining whether a person is satisfied with a product or service. Online reviews provide a huge amount of data on consumer preferences. It is unlikely that someone will purchase a product, reserve a table at a restaurant or book a room in a hotel without first checking some online reviews. These reviews inform and influence consumer decisions, and have a direct relationship with online sales. 
 
-This project will focus on Twitter, a microblogging social media site, where users can post short blocks of text of no more that 280 characters. Twitter currently has 126 million monetizable daily active users, with over 500 million tweets posted per day \cite{Twitter2019}. Tweets can often take the form of a 'review'. Twitter users post tweets regularly, expressing their ideas and opinions on a wide array of topics. An individual may for example tweet about, a city they visited, a hotel they stayed in, a restaurant they ate at or a film they watched. These review-like tweets can give us insight into consumers’s opinions on the entities that they interact with. With millions of tweets being posted every day, Twitter can be viewed as a huge source of underutilised reviews.
+This project will focus on Twitter, a microblogging social media site, where users can post short blocks of text of no more that 280 characters. Twitter currently has 126 million monetizable daily active users, with over 500 million tweets posted per day \cite{Twitter2019}. These tweets can often take the form of a 'review'. Twitter users post tweets regularly, expressing their ideas and opinions on a wide array of topics. An individual may for example tweet about, a city they visited, a hotel they stayed in, a restaurant they ate at or a film they watched. These review-like tweets can give us insight into consumers’s opinions on the entities that they interact with. With millions of tweets being posted every day, Twitter is a huge source of underutilised reviews.
 
-Traditional online review sites include websites like Tripadvisor, Foursquare and Yelp. Often these sites encourage users to leave reviews of hotels, restaurants or products. This method of obtaining reviews can result in more forced, manufactured reviews. In general, people tend to post more spontaneously and frequently to Twitter. As a result, the reviews on Twitter tend to contain more honest and unfiltered opinions. 
+Traditional online review sites include websites like Tripadvisor, Foursquare and Yelp. Often these sites encourage users to leave reviews of hotels, restaurants or products. This method of obtaining reviews can result in forced, manufactured reviews. In general, people tend to post more spontaneously and frequently to Twitter. As a result, the reviews on Twitter tend to contain more honest and unfiltered opinions. The language used in tweets is different to a lot of longer form text and needs to be treated differently. Tweets are usually very informal, using casual language and slang. They contain things like hashtags, emoticons, twitter handles, URLs, images, videos and gifs.
 
-The language used in tweets is very different to a lot of longer form text and needs to be treated differently and needs to be treated differently. Tweets can be very informal, using casual language and slang. They contain things like hashtags, emoticons, twitter handles, URLs, images, videos and gifs.
+\section{Recommender Systems}
+Recommender systems provide suggestions for items that are most likely to be of interest to a particular user \cite{Ricci2015}. They recommend based on users behaviours and preferences, such as explicit user ratings and reviews of products, and implicit user clicks and view times. Some popular recommender systems include Netflix which recommends films and television programmes, Facebook which recommends new friends and TripAdvisor which recommends hotels. There are two main methods that recommender systems use to generate recommendations, Collaborative Filtering methods and Content-Based recommender methods. 
+
+Collaborative Filtering methods analyse the behaviour of a collection of users and use this information to make recommendations about what other, similar users might like. The basic idea is that if we know two users have the same opinion on one item, then they are more likely to have the same opinion on another. The correlation between users is used to make predictions.
+
+Content-Based (CB) recommender methods use the descriptive features of items, and the preferences of individual users. Information about each user and the content information about each item is combined to make recommendations. CB methods recommend items similar to items the user liked or purchased in the past.
+
+Context-aware recommender systems use contextual information to improve their recommendations. This contextual information could be time, location, company etc. The concept is that the same user could prefer different items under different conditions.
+
+CoRE \cite{core2019} is a Cold Start Resistant and Extensible Recommender. It is a hotel recommender that makes use of collaborative filtering, content-based recommendation and contextual suggestion. The algorithm is designed to work in cold start situations and to be easily extensible. A cold start situation is when you need to recommend to a new user that you have no previous information on. CoRE is made up of three models, a user model, a segment model and a context model. Each model is generated as a weighted feature vector. A centroid vector is then calculated, and a weighting is applied to determine the effect of each model. The cosine similarity between the vector of each hotel and the centroid vector is calculated. The hotels are ranked based on this score. CoRE is easily extensible. This research aims to improve the performance of this recommender by adding a fourth model. The model will use a sentiment score for each hotel, generated through the analysis of tweets. 
 
 \section{Research Question}
-This research project will investigate whether Twitter can be used as an alternative or additional source of reviews for use in a recommender system. We will explore methods of classifying review-like tweets, identifying the review's sentiment and the effect of applying this information in a recommender system.
-
-Recommender systems provide suggestions for products or services that are most likely to be of interest to a particular user \cite{Ricci2015}. They recommend based on users behaviours and preferences, such as explicit user ratings and reviews of products, and implicit user clicks and view times.
+This research project will investigate whether Twitter can be used as an alternative or additional source of reviews for use in a recommender system. We will explore methods of classifying review-like tweets, identifying the sentiment of the reviews and the effect of using this data in a recommender system.
 
 The following research question will be addressed:
 \begin{center}
-\textbf{Can twitter provide a suitable alternative to traditional online review sites?}
+\textbf{Can twitter provide a suitable alternative or additional source of online reviews that can be used as a source of data for a recommender system?}
 \end{center}
 
 \section{Research Objectives}
@@ -23,17 +31,21 @@ The project will focus on tweets about hotels in the Dublin area. A collection o
 
 The objectives of this research project are:
 \begin{enumerate}
-    \item \textbf{Data Processing.}\newline
+    \item \textbf{Data Processing}\newline
     The raw dataset will be filtered first so that it only contains tweets posted from Dublin, and secondly so that it only contains tweets about hotels.
     \item \textbf{Dataset Annotation} \newline
     This part of the project will involve building a annotated dataset of tweets. The tweets from the processed dataset will be manually labelled as either review-like tweets, tweets that contain some content or irrelevant tweets.
     \item \textbf{Tweet Classification.}\newline
     The annotated set of tweets will be used to build a classifier. Various supervised machine learning techniques will be explored.
-    \item \textbf{Sentiment Analysis.}\newline
-    The Stanford NLP Sentiment Analyzer \cite{stanfordSentiment2013} will be used for sentiment analysis. A sentiment score will be generated for each tweet.
+    \item \textbf{Sentiment Analysis}\newline
+    The Stanford NLP Sentiment Analyzer \cite{stanfordSentiment2013} will be used for sentiment analysis of the classified tweets. A sentiment score will be generated for each hotel.
     \item \textbf{Recommender System}\newline
-    The sentiment score produced will be applied to a pre-existing recommender system. The affect of adding the sentiment score will be analysed.
+    The sentiment score produced will be applied to the CoRE recommender. The effect of adding the sentiment score will be analysed.
 \end{enumerate}
 
 \section{Report Structure}
-The dissertation will be structured as follows; Chapter 2 presents a review of relevant literature. Chapter 3 describes... Chapter 4 ... Finally Chapter 7 presents our conclusions.
+The dissertation will be structured as follows; 
+Chapter 2 presents a review of relevant literature. 
+Chapter 3 describes... 
+Chapter 4 ... 
+Finally Chapter 5 presents our conclusions.
