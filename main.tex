@@ -1,7 +1,7 @@
 \documentclass[a4paper,oneside,12pt]{book}
 
 %	THESIS INFORMATION
-\newcommand{\thesistitle}{Twitter as an alternative review site} % dissertation title
+\newcommand{\thesistitle}{Twitter as an Alternative Review Site} % dissertation title
 \newcommand{\degree}{MAI (Computer and Electronic Engineering)} % degree name
 \newcommand{\typeofthesis}{Dissertation} % type of report
 \newcommand{\authorname}{Sin\'ead Dickson} % name
@@ -79,6 +79,20 @@
 \frontmatter
 \pagenumbering{roman}
 \onehalfspacing%\raggedright %\raggedright turns off justification and hypenation
+
+% DISPLAYING JSON 
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{background}{HTML}{EEEEEE}
+\lstdefinelanguage{json}{
+    basicstyle=\normalfont\ttfamily\footnotesize,
+    showstringspaces=false,
+    breaklines=true,
+    backgroundcolor=\color{background}
+}
+
+% CAPTIONS
+\captionsetup[table]{singlelinecheck=off}
 
 \begin{document}
 \input{title/title.tex} % cover page

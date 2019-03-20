@@ -1,22 +1,22 @@
-
 %ANI: The title of the report - Twitter as an alternative review site -> Twitter as an Alternative Review Site
+%ANI: recommender -> recommender system. Also fix previous mentions.
 
 \chapter{Introduction}
 
 \section{Twitter as a Review Site}
 The rapid development and expansion of the internet has introduced a new way for individuals to express their opinions. Online reviews have become a hugely important source of information for consumers. They play an important role in determining whether a person is satisfied with a product or service. Online reviews provide a huge amount of data on consumer preferences. It is unlikely that someone will purchase a product, reserve a table at a restaurant or book a room in a hotel without first checking some online reviews. These reviews inform and influence consumer decisions, and have a direct relationship with online sales. 
 
-This project will focus on Twitter, a microblogging social media site, where users can post short blocks of text of no more than 280 characters. Twitter currently has ~126 million people who use the site daily, which the company terms "monetizable Daily Active Users (mDAU)",
+This project will focus on Twitter, a microblogging social media site, where users can post short blocks of text of no more than 280 characters. Twitter currently has ~126 million people who use the site daily, which the company terms 'monetizable Daily Active Users' (mDAU),
 %ANI: "monetizable Daily Active Users (mDAU)" -> `monetizable Daily Active Users' (mDAU)
 with over 500 million tweets posted per day \cite{Twitter2019}. These tweets can often take the form of a 'review'.
-%ANI: 'review' -> `review'
+%ANI: 'review' -> `review' 
 Twitter users post tweets regularly, expressing their ideas and opinions on a wide array of topics. An individual may, for example, tweet about a city they visited, a hotel they stayed in, a restaurant they ate at or a film they watched. These review-like tweets can give insight into consumers’s opinions on the entities that they interact with. With millions of tweets being posted every day, Twitter is a huge source of underutilised reviews.
 
-Traditional online review sites include websites like Tripadvisor, Foursquare and Yelp. Often these sites encourage users to leave reviews of hotels, restaurants or products. This method of obtaining reviews can result in forced, manufactured reviews. In general, people tend to post more spontaneously and frequently to Twitter. As a result, the reviews on Twitter tend to contain more honest and unfiltered opinions. %SL: also because they probably don't consider their posts to be a 'review' in the formal sense of the word
+Traditional online review sites include websites like Tripadvisor, Foursquare and Yelp. Often these sites have a dedicated area for feedback and encourage users to leave reviews of hotels, restaurants or products. In our opinion this method of obtaining reviews can sometimes result in more forced, manufactured, less reliable reviews. We believe users tend to post their genuine feelings more spontaneously and frequently to Twitter. Users probably don't consider their posts to be a 'review' in the formal sense of the word.
+
+%SL: also because they probably don't consider their posts to be a 'review' in the formal sense of the word
 %SL: One note of caution here, unless you can find research papers which back up the assertions here - more spontaneous posting, forced reviews on reviews on review sites, more honest reviews on twitter - then we need to make clear that this is our contention/opinion/assumptions. If you can find papers to back it up, you should reference them here. Ani may have suitable references from his PhD work  
 %ANI: Yes, we need to be careful here. I think terms such as spontaneous and unfiltered are fine to use. These reviews are different. We do not want to claim that these review-like tweets are better (source of information) than other on-line reviews available from sites such as Foursquare, Yelp until we can show by experiments.
-
-%Twitter is a much more reliable source of data as the users tweet their genuine feelings and feedbacks thus making it more suitable for investigation [6]. (from Arane paper)
 
 The language used in tweets is different to a lot of longer form text and needs to be treated differently. Tweets are usually very informal, using casual language and slang. They contain things like hashtags, emoticons, twitter handles, URLs, images, videos and gifs.
 
@@ -29,11 +29,9 @@ Content-Based (CB) recommender methods use the descriptive features of items, an
 
 Context-aware recommender systems use contextual information to improve their recommendations. This contextual information could be time, location, company etc. The concept is that the same user could prefer different items under different conditions.
 
-CoRE \cite{core2019} is a Cold Start Resistant and Extensible Recommender. It is a hotel recommender that makes use of collaborative filtering, content-based recommendation and contextual suggestion. The algorithm is designed to work in cold start situations and to be easily extensible. A cold start situation is when you need to make recommendations for a new user that you have no previous information on. CoRE is made up of three models, a user model, a segment model and a context model. Each model is generated as a weighted feature vector. A centroid vector is then calculated, and a weighting is applied to determine the effect of each model. The cosine similarity between the vector of each hotel and the centroid vector of the user is then calculated, and the hotels are ranked based on this score.
+CoRE \cite{core2019} is a Cold Start Resistant and Extensible Recommender system. It is a hotel recommender system that makes use of collaborative filtering, content-based recommendation and contextual suggestion. The algorithm is designed to work in cold start situations and to be easily extensible. A cold start situation is when you need to make recommendations for a new user that you have no previous information on. CoRE is made up of three models, a user model, a segment model and a context model. Each model is generated as a weighted feature vector. A centroid vector is then calculated, and a weighting is applied to determine the effect of each model. The cosine similarity between the vector of each hotel and the centroid vector of the user is then calculated, and the hotels are ranked based on this score.
 %ANI: Do you mean a centroid vector (i.e. centroid of a user model, a segment model and a context model) is calculated to get the final representation of a user vector/model for a specific user, which is then compared (by cosine similarity) with each hotel vector? If it is so then (user specific) personalization is already there in CoRE and you are not introducing an extra personalization by adding a fourth model to CoRE because this sentiment analysis is hotel specific and not user specific. Probably you do not want to add a fourth model to CoRE user model. You may want to update the vector representation of each hotel in Dublin by adding an extra feature (sentiment score) of that hotel. Because adding a hotel specific score to a user model will act as a constant and it won't change the performance.
-CoRE is easily extensible by the addition of more models. This research aims to improve the performance of this recommender by adding a fourth model, which will use a sentiment score for each hotel, generated through the analysis of "review"
-%ANI: "review" -> review-like
-tweets. 
+CoRE is easily extensible by the addition of more models. This research aims to improve the performance of this recommender system by adding a fourth model, which will use a sentiment score for each hotel, generated through the analysis of review-like tweets. 
 
 \section{Research Question}
 This research project will investigate how useful Twitter can be when used as an alternative or additional source of reviews for use in a recommender system. We will explore methods of classifying review-like tweets, identifying the sentiment of the reviews and the effect of using this data in a recommender system.
@@ -52,12 +50,12 @@ The project will focus on tweets about hotels in the Dublin area. A collection o
 The objectives of this research project are:
 \begin{enumerate}
 %ANI: You may want to add "Data Collection" as the first step where you can describe how you collected the data. Which Twitter API (Search/Streaming) has been used? Describe that you set a geographic bounding box over Dublin to collect all the tweets that are coming from within that bounding box. etc.
+    \item \textbf{Data Collection}\newline
+    The Twitter API was used to collect a set of 2.5 million tweets.
     \item \textbf{Data Processing}\newline
     The raw dataset will be cleaned and filtered, so that it only contains English language tweets posted from Dublin, and secondly so that it only contains tweets about hotels.
     \item \textbf{Dataset Annotation} \newline
-    This part of the project will involve building a
-    %ANI: a -> an
-    annotated dataset of tweets. The tweets from the processed dataset will be manually labelled as either: review-like tweets; tweets that contain some contextual information related to hotels; or irrelevant tweets
+    This part of the project will involve building an annotated dataset of tweets. The tweets from the processed dataset will be manually labelled as either: review-like tweets; tweets that contain some contextual information related to hotels; or irrelevant tweets.
     %ANI: FYI - This part should also detail the user study that you conducted.
     \item \textbf{Tweet Classification.}\newline
     The annotated set of tweets will be used to build a classifier. Various supervised machine learning techniques will be explored.
@@ -65,8 +63,7 @@ The objectives of this research project are:
     The Stanford NLP Sentiment Analyzer \cite{stanfordSentiment2013} will be used for sentiment analysis of the classified tweets. A sentiment score will be generated for each hotel.
     %SL: There are many things we can experiment with here - including temporal elements, i.e. more recent tweets contributing a higher weight to the sentiment score 
     \item \textbf{Recommender System}\newline
-    The sentiment score produced will be applied to the CoRE recommender.
-    %ANI: recommender -> recommender system. Also fix previous mentions.
+    The sentiment score produced will be applied to the CoRE recommender system.
     The effect of adding the sentiment score will be analysed and evaluated.
 \end{enumerate}
 
