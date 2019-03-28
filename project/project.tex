@@ -114,7 +114,57 @@ The following instructions accompanied the webpage:
 
 For this research we decided to focus entirely on the text of the tweets. For this reason all images, videos and URLs were removed from the tweets.
 
-The webpage was circulated and annotations were gathered.
+The text of each tweet was displayed with three buttons underneath; review, some content and irrelevant. The annotator can click on the option they think best describes the tweet. The next tweet will then be displayed. 
+
+Each time the page is loaded or refreshed a random tweet is displayed and the annotator can annotate the tweets incrementally from that point on. This means each annotator will label a different section of the tweets, ensuring all tweets eventually get annotated.
+
+The tweets were stored in an SQL database managed with mySQL. Each time a user labelled 
+
+The web page was circulated to friends, family and members of the adapt research centre to gather annotations. 
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+    \multicolumn{1}{|c|}{\textbf{row\_no}} & 
+    \multicolumn{1}{c|}{\textbf{tweet\_id}} & 
+    \multicolumn{1}{c|}{\textbf{tweet}} & 
+    \multicolumn{1}{c|}{\textbf{review}} & 
+    \multicolumn{1}{c|}{\textbf{content}} & 
+    \multicolumn{1}{c|}{\textbf{irrelevant}} \\ 
+\hline
+    1 & 101...1 & 
+    \begin{tabular}[c]{@{}l@{}}
+        Creating A Rewarding Experience\\ 
+        or CARE, essence of any\\ DoubleTree by Hilton hotels, \\ 
+        is in the heart of everything in the\\ 
+        Morrison Hotel! \#CARE \\
+        \#DoubleTree \#dublincity \\ 
+        \#brandculture
+    \end{tabular} & 0 & 0 & 0 \\ 
+\hline
+    2 & 101...1 & 
+    \begin{tabular}[c]{@{}l@{}}
+        @bfitzsimons @doubletree \\
+        @DTHydePark Oohh. \\
+        Impressed!
+    \end{tabular} & 0 & 0 & 0 \\ 
+\hline
+    3 & 101...1 & 
+    \begin{tabular}[c]{@{}l@{}}
+        SlowMo Training \\ 
+        \#EliteFest2018 @ The \\ 
+        Morrison, a DoubleTree \\ 
+        by Hilton Hotel
+    \end{tabular} & 0 & 0 & 0 \\ 
+\hline
+    4 & 101...1 & 
+    \begin{tabular}[c]{@{}l@{}}
+        Drinking a Heineken by \\ 
+        @heineken at @doubletree —
+    \end{tabular} & 0 & 0 & 0 \\ 
+\hline
+\end{tabular}
+\end{table}
 
 \section{Tweet Classification}
 
