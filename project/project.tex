@@ -200,31 +200,78 @@ The annotation webpage was circulated to friends, family and members of the Adap
 
 \section{Tweet Classification}
 
-The annotated set of tweets was used to train a series of twelve classifiers. Six different feature representations were used. These classifiers were implemented using Python's scikit learn. An 80:20, train test split was used for the data.
+The annotated set of tweets was used to train a series of twelve different classifiers. These included Decision Tree, Random Forest, Multi Layer Perceptron, Support Vector Machine, Logistic Regression, K Nearest Neighbours, Gaussian Process, Adaboost, Gaussian Naive Bayes, Bernoulli Naive Bayes, Quadratic Discriminant Analysis, and Linear Discriminant Analysis. These classifiers were implemented using Python's Scikit Learn library. The data was split into a training set and a testing set. The data was split 80:20 where 80\% was used for training and 20\% was used for testing.
 
-\subsection*{Decision Tree}
+\subsection*{Data Preprocessing}
 
-\subsection*{Random Forest}
+The following steps were taken to preprocess the tweets, before they were used to train the classifiers:
+\begin{itemize}
+    \item Emojis were removed and replaced with text using Python's Emoji library. For example a thumbs up emoji would be converted to the text ':thumbs\_up:'
+    \item Special characters were removed. This included everything except the digits 0 - 9 and the letters a - z.
+    \item All single characters were removed.
+    \item Words were split on case changes. For example 'MerrionHotel' --> 'Merrion Hotel'.
+    \item Words were split on word-digit boundaries. For example 'HouseDublin2' --> 'House Dublin 2'.
+    \item All text was converted to lower case.
+    \item Stemming was performed using the Word Net Lemmatizer. Stemming is the process of reducing words down to their base or root. For example 'organise', 'organised' and 'organisation' would all be reduced to 'organis'. Stemming reduces the number of words that will be fed to the classifier.
+    \item Stop words were removed. All text contain words that are irrelevant and do not add any additional meaning. These are called stop words. Some examples of stop words are 'and', 'I', 'of' and 'the' etc.
+\end{itemize}
 
-\subsection*{Multi Layer Perceptron}
+\subsection*{Feature Extraction}
 
-\subsection*{Support Vector Machine}
+The classifiers require numerical feature vector of fixed length rather than variable length raw text. Our processed tweets had to be converted into numerical feature vectors. This process of converting the raw text to a numerical feature vector is called vectorization.
 
-\subsection*{Logistic Regression}
+Six different feature representation methods were used.
 
-\subsection*{K Nearest Neighbours}
+\subsubsection{Bag-of-Words}
+One method of vectorization is Bag-of-Words (BOW). The Count Vectorizer from Python's Scikit Learn was used to implement this. In BOW documents are described by word occurrences.
 
-\subsection*{Gaussian Process}
+A vocabulary is created of all unique terms in the dataset, ranked in terms of frequency of occurrence. The maximum size of the vocabulary can be specified, so only the top however many terms are kept. Each tweet is then represented as a series of ones and zeroes. Ones representing term occurrences and zeroes representing a lack of occurrence.
 
-\subsection*{Adaboost}
+A major drawback of Bag-of-Words is that it does not take word ordering into account. This is why it is called 'bag' of words. You can imagine all the words have been thrown into a bag together.
 
-\subsection*{Gaussian Naive Bayes}
+\subsubsection{TF-IDF}
 
-\subsection*{Bernoulli Naive Bayes}
+BOW can be extended with TF-IDF (Term Frequency Inverse Document Frequency). It is used to re weight the count features. Term frequency is the frequency of the word in the current document. Inverse Document Frequency takes into account how often the word occurs in the whole dataset. The idea is to balance how important a term is in a document versus how important it is in the entire collection. We are less interested in a very frequently occurring term like for example 'the' than some less frequently occurring words.
 
-\subsection*{Quadratic Discriminant Analysis}
+%Also, very short texts are likely to have noisy tf–idf values while the binary occurrence info is more stable.
 
-\subsection*{Linear Discriminant Analysis}
+\subsubsection*{N-Grams}
+
+An N-gram is a sequence of n consecutive terms. For example the bigrams of 'Twitter as an Alternative Review Site' are: 'Twitter as', 'as an', 'an Alternative', 'Alternative Review' and 'Review Site'.
+
+If bi-grams are combined with BOW, occurrences of pairs of consecutive words are counted instead of individual terms. This helps to address the problem BOW has with discarding word ordering.
+
+BOW was implemented with unigrams, bigrams and trigrams.
+
+\subsubsection{Word2Vec}
+Gensim's deep learning library for word embeddings.
+\subsubsection*{Doc2Vec}
+
+\subsection*{Classifiers}
+
+\subsubsection*{Decision Tree}
+
+\subsubsection*{Random Forest}
+
+\subsubsection*{Multi Layer Perceptron}
+
+\subsubsection*{Support Vector Machine}
+
+\subsubsection*{Logistic Regression}
+
+\subsubsection*{K Nearest Neighbours}
+
+\subsubsection*{Gaussian Process}
+
+\subsubsection*{Adaboost}
+
+\subsubsection*{Gaussian Naive Bayes}
+
+\subsubsection*{Bernoulli Naive Bayes}
+
+\subsubsection*{Quadratic Discriminant Analysis}
+
+\subsubsection*{Linear Discriminant Analysis}
 
 
 \section{Sentiment Analysis}
@@ -236,3 +283,9 @@ The annotated set of tweets was used to train a series of twelve classifiers. Si
 \section{CoRE Recommender System}
 
 The sentiment scores produced by the Stanford Sentiment Analyser were used to re rank the list of hotel recommendations produced by the CoRE recommender system.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\textwidth]{project/accuracy_graph.png}
+\caption{\label{fig:accuracy} Accuracy Graph}
+\end{figure}
