@@ -269,37 +269,200 @@ Combing bi-grams with BOW means that occurrences of pairs of consecutive words a
 
 \subsubsection{Word2Vec}
 
-Gensim's implementation of word2vec was used.
+Word2Vec is another method for converting text into numerical feature vectors. It takes a large dataset as it's input and produces a vector space. Each word in the dataset is represented by a corresponding vector. It groups the vector of similar words together in the vector space. Cosine similarity, the cosine of the angle between two vectors, measures the similarity of vectors. 
 
-Gensim's deep learning library for word embeddings.
+Gensim's implementation of Word2Vec and Google's pre-trained model was used. Google's model includes word vectors for three million words and phrases. It was trained with about 100 billion words from a Google News dataset. The word vectors of each word in a document are averaged to produce a feature vector for each document.
+% makes it kind of similar to BOW? doesn't perform any better really, also has no relationship between words.
 
 \subsubsection*{Doc2Vec}
 
+Doc2Vec takes the same idea as Word2Vec, but instead of words being represented by vectors, full documents are represented as vectors. This captures the relationship between words, which Word2Vec does not.
+
+Gensim's implementation of Doc2Vec was again used. Unlike Word2Vec, we built our own Doc2Vec vocabulary based on the training data.
+
 \subsection*{Classifiers}
+
+Twelve different classifiers were implemented, each with their implementation from Python's Scikit Learn library \cite{scikit-learn}.
+
+The twelve classifiers implemented were:
+\begin{itemize}
+    \item Decision Tree.
+    \item Random Forest.
+    \item Multi Layer Perceptron.
+    \item Support Vector Machine.
+    \item Logistic Regression.
+    \item K Nearest Neighbours.
+    \item Gaussian Process.
+    \item Adaboost.
+    \item Gaussian Naive Bayes.
+    \item Bernoulli Naive Bayes.
+    \item Quadratic Discriminant Analysis.
+    \item Linear Discriminant Analysis.
+\end{itemize}
 
 \subsubsection*{Decision Tree}
 
+The Decision Tree Classifiers is a simple classification algorithm that can be used for binary or multi-class classification. They learn simple decision rules based on the attributes of the training data. These decision rules form a tree structure which is used to predict the value of a target variable. The leaf nodes represent the class labels. When an unclassified document is received questions are asked until a leaf node is reached and the document is assigned that class.
+
+\begin{figure}[h!]
+\centering
+\fbox{\includegraphics[width=0.75\textwidth]{design_and_methodology/decisiontree.png}}
+\caption{\label{fig:mlp} Decision Tree Example}
+\end{figure}
+
+The DT Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	DecisionTreeClassifier (criterion='entropy', max\_depth=32, max\_features=None, min\_samples\_leaf=2, min\_samples\_split=0.1)
+\end{center}
+\end{tcolorbox}
+
 \subsubsection*{Random Forest}
+
+%[B2001]	Breiman, “Random Forests”, Machine Learning, 45(1), 5-32, 2001.
+
+The Random Forest Classifier (RF) is an ensemble classification algorithm, meaning it combines multiple base classification algorithms. It consists of multiple decision trees. The final class prediction is calculated by getting the average of the decision of the individual decision trees.
+
+The RF Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	RandomForestClassifier (n\_estimators=500, max\_features='log2',criterion='entropy')
+\end{center}
+\end{tcolorbox}
 
 \subsubsection*{Multi Layer Perceptron}
 
+\begin{figure}[h!]
+\centering
+\fbox{\includegraphics[width=0.5\textwidth]{design_and_methodology/multilayerperceptron_network.png}}
+\caption{\label{fig:mlp} MLP with one hidden layer \cite{scikit-learn}}
+\end{figure}
+
+The Multi Layer Perceptron (MLP) Classifier is a deep, feedforward, artificial neural network. It conists of a minimum of three layers (Figure ~\ref{fig:mlp}); an input layer, a hidden layer and an output layer. The input layer receives the data, the output layer makes a decision and the hidden layers approximate the function.
+
+The MLP learns a function by based on the training set. Given a set of features X = x1,x2,x3,...,xn and a target y, it learns a non-linear approximation function. Backpropagation is used to train the MLP.
+
+The MLP Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	MLPClassifier (alpha=1,activation='identity', hidden\_layer\_sizes=(100,), learning\_rate='constant', solver='adam')
+\end{center}
+\end{tcolorbox}
+
 \subsubsection*{Support Vector Machine}
+
+The Support Vector Machine (SVM) Classifier is a discriminative classifier. It finds the optimum hyperplane that separates the data into the labelled classes. It aims to maximise the distance between the hyperplane and the support vectors (the points closest to the hyper plane).
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{design_and_methodology/svm.png}
+\caption{\label{fig:svm} SVM.}
+\end{figure}
+
+The SVM Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	SVC (C=10.1,decision\_function\_shape='ovo',degree=1,gamma=1,kernel='rbf')
+\end{center}
+\end{tcolorbox}
 
 \subsubsection*{Logistic Regression}
 
+The Linear Regression (LR) Classifier is a linear classification algorithm that uses the logistic function to model the training data. The logistic function is as follows:
+\begin{center}
+  \(g(z)=1/(1+e^{-z})\)  
+\end{center}
+
+The LR Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	LogisticRegression (C=1,multi\_class='multinomial',penalty='l2',solver='saga')
+\end{center}
+\end{tcolorbox}
+
 \subsubsection*{K Nearest Neighbours}
+
+The K Nearest Neighbours (KNN) Classifier doesn't build a model like other classification algorithms. It uses a majority vote of the "nearest neighbours" to a document. A label is assigned to a document based on the class that has the majority of the nearest neighbours to the document. For example, point one would be assigned the label blue. Taking it's four nearest neighbours it has three blue neighbours and one red neighbour. The point is assigned to the class with the majority of the nearest neighbour, blue.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{design_and_methodology/knn.png}
+\caption{\label{fig:knn} K Nearest Neighbours.}
+\end{figure}
+
+The KNN Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	KNeighborsClassifier(n\_neighbors=17,algorithm='ball\_tree',weights='distance',
+	leaf\_size=10,p=2)
+\end{center}
+\end{tcolorbox}
 
 \subsubsection*{Gaussian Process}
 
+The GP Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	GaussianProcessClassifier(1.0 * RBF(1.0))
+\end{center}
+\end{tcolorbox}
+
 \subsubsection*{Adaboost}
+
+The AdaBoost Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	AdaBoostClassifier()
+\end{center}
+\end{tcolorbox}
 
 \subsubsection*{Gaussian Naive Bayes}
 
+The Gaussian NB Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	GaussianNB()
+\end{center}
+\end{tcolorbox}
+
 \subsubsection*{Bernoulli Naive Bayes}
+
+The Bernoulli NB Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	BernoulliNB()
+\end{center}
+\end{tcolorbox}
 
 \subsubsection*{Quadratic Discriminant Analysis}
 
+The QDA Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	QuadraticDiscriminantAnalysis()
+\end{center}
+\end{tcolorbox}
+
 \subsubsection*{Linear Discriminant Analysis}
+
+The LDA Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	LinearDiscriminantAnalysis()
+\end{center}
+\end{tcolorbox}
 
 
 \section{Sentiment Analysis}
