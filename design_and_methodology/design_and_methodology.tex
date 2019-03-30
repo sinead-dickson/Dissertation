@@ -13,7 +13,7 @@ In this section the design and methodology choices involved in this project will
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=1\textwidth]{project/pipeline.png}
+\includegraphics[width=1\textwidth]{design_and_methodology/pipeline.png}
 \caption{\label{fig:pipeline} Overview of Project.}
 \end{figure}
 
@@ -129,7 +129,7 @@ A simple webpage was created in order to annotate the tweets (Figure ~\ref{fig:w
 
 \begin{figure}[h!]
 \centering
-\fbox{\includegraphics[width=1\textwidth]{project/webpage.PNG}}
+\fbox{\includegraphics[width=1\textwidth]{design_and_methodology/webpage.PNG}}
 \caption{\label{fig:webpage} Webpage for gathering Tweet Annotations.}
 \end{figure}
 
@@ -218,33 +218,61 @@ The following steps were taken to preprocess the tweets, before they were used t
 
 \subsection*{Feature Extraction}
 
-The classifiers require numerical feature vector of fixed length rather than variable length raw text. Our processed tweets had to be converted into numerical feature vectors. This process of converting the raw text to a numerical feature vector is called vectorization.
+The classifiers require numerical feature vectors of fixed length rather than variable length raw text. To comply with this our processed tweets had to be converted into numerical feature vectors. This process of converting raw text to a numerical feature vector is called vectorization.
 
-Six different feature representation methods were used.
+We experimented with six different feature extraction methods to see which performed best on the Twitter data. Twitter data is quite different to standard text so standard feature extraction methods that perform well on text will not necessarily work for the Twitter data.
+
+The six feature extraction methods implemented were:
+\begin{itemize}
+    \item Unigram Bag-of-Words with TF-IDF.
+    \item Bigram Bag-of-Words with TF-IDF.
+    \item Trigram Bag-of-Words with TF-IDF.
+    \item Unigram Bag-of-Words with TF-IDF (with stop words removed).
+    \item Word2Vec.
+    \item Doc2Vec.
+\end{itemize}
 
 \subsubsection{Bag-of-Words}
-One method of vectorization is Bag-of-Words (BOW). The Count Vectorizer from Python's Scikit Learn was used to implement this. In BOW documents are described by word occurrences.
 
-A vocabulary is created of all unique terms in the dataset, ranked in terms of frequency of occurrence. The maximum size of the vocabulary can be specified, so only the top however many terms are kept. Each tweet is then represented as a series of ones and zeroes. Ones representing term occurrences and zeroes representing a lack of occurrence.
+In Bag-of-Words (BOW) documents are described by word occurrences. A vocabulary is created of all unique terms in the dataset. The vocabulary is ranked by frequency of occurrence. The maximum size of the vocabulary can be specified, so only the top however many terms are kept. Each tweet is then represented as a series of ones and zeroes. One representing a term occurrence and zero representing a terms lack of occurrence. A major drawback of BOW is that it does not take word ordering into account. This is why it is called 'bag' of words. You can imagine all the words have been thrown into a bag together.
 
-A major drawback of Bag-of-Words is that it does not take word ordering into account. This is why it is called 'bag' of words. You can imagine all the words have been thrown into a bag together.
+The Count Vectorizer from Python's Scikit Learn was used to implement BOW. 
 
 \subsubsection{TF-IDF}
 
-BOW can be extended with TF-IDF (Term Frequency Inverse Document Frequency). It is used to re weight the count features. Term frequency is the frequency of the word in the current document. Inverse Document Frequency takes into account how often the word occurs in the whole dataset. The idea is to balance how important a term is in a document versus how important it is in the entire collection. We are less interested in a very frequently occurring term like for example 'the' than some less frequently occurring words.
+BOW can be extended with TF-IDF (Term Frequency Inverse Document Frequency). Term frequency is the frequency of the word in the current document. Inverse Document Frequency takes into account how often the word occurs in the whole dataset. The idea is to balance how important a term is in a document versus how important it is in the entire collection. We are less interested in a very frequently occurring term like for example 'the' than some less frequently occurring words. The TF-IDF score is used to re weight the count features produced by the Count Vectorizer.
 
-%Also, very short texts are likely to have noisy tf–idf values while the binary occurrence info is more stable.
+\begin{tcolorbox}
+\begin{center}
+$TF-IDF = term\ frequency \times inverse\ document\ frequency$ 
+
+$TF = \frac{Number\ of\ Term\ Occurrences\ in\ Document}{Number\ of\ Terms\ in\ Document}$
+
+$IDF = \log \frac{1\ +\ n}{1\ +\ df(t)} + 1$
+
+$n = Total\ number\ of\ documents\ in\ the\ dataset.$
+
+$df(t) = Number\ of\ documents\ in\ the\ dataset\ containing\ term\ t.$
+\end{center}
+\end{tcolorbox}
+The TF-IDF transformer from Python's Scikit Learn was used to implement TF-IDF.
+
+% SCIKIT: very short texts are likely to have noisy tf–idf values while the binary occurrence info is more stable.
 
 \subsubsection*{N-Grams}
 
-An N-gram is a sequence of n consecutive terms. For example the bigrams of 'Twitter as an Alternative Review Site' are: 'Twitter as', 'as an', 'an Alternative', 'Alternative Review' and 'Review Site'.
+Another extension of BOW is the use of n-grams. N-grams help to address the problem BOW has with discarding word ordering.
 
-If bi-grams are combined with BOW, occurrences of pairs of consecutive words are counted instead of individual terms. This helps to address the problem BOW has with discarding word ordering.
+An N-gram is a sequence of N consecutive terms. For example the bi-grams of \emph{'Twitter as an Alternative Review Site'} are; \emph{'Twitter as'}, \emph{'as an'}, \emph{'an Alternative'}, \emph{'Alternative Review'} and \emph{'Review Site'}.
 
-BOW was implemented with unigrams, bigrams and trigrams.
+Combing bi-grams with BOW means that occurrences of pairs of consecutive words are counted instead of individual terms. Uni-grams, bi-grams and tri-grams were implemented.
 
 \subsubsection{Word2Vec}
+
+Gensim's implementation of word2vec was used.
+
 Gensim's deep learning library for word embeddings.
+
 \subsubsection*{Doc2Vec}
 
 \subsection*{Classifiers}
@@ -284,8 +312,3 @@ Gensim's deep learning library for word embeddings.
 
 The sentiment scores produced by the Stanford Sentiment Analyser were used to re rank the list of hotel recommendations produced by the CoRE recommender system.
 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=1\textwidth]{project/accuracy_graph.png}
-\caption{\label{fig:accuracy} Accuracy Graph}
-\end{figure}
