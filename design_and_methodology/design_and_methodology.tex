@@ -498,9 +498,72 @@ Both QDA AND LDA were implemented with Scikit Learn with the folllowing paramete
 
 \section{Sentiment Analysis}
 
+Once the tweets had been classified as reviews, sentiment analysis was performed on them. Sentiment analysis is the process of identifying the opinion expressed about a particular subject in some text. The goal is to determine whether the opinion is positive, negative or neutral, and to what extent. The Stanford NLP Sentiment Analyser \cite{stanfordSentiment2013} was used to classify the sentiment of the tweets.
+
 \subsection*{The Stanford Sentiment Analyser}
-%Limitations - data it was trained on etc.
-\subsection*{Normalising the Sentiment Scores}
+
+The Stanford Sentiment Analyser is based on a Recursive Neural Network. It was trained on a sentiment treebank of movie reviews from the movie review site RottenTomatoes. The treebank consists of sentences which are annotated on a phrase level. The Sentiment Analyser has reported accuracy of 85.4\% in single sentence positive/negative classification. 
+
+The Stanford NLP Sentiment Analyser has it's limitations. Due to the fact that it was trained on movie reviews and is being applied to tweets, optimum performance is not achieved. Ideally the Sentiment Analyser would be re-trained with a set of tweets. This would involve manually annotating a collection of tweets at a phrase level to produce a treebank.
+
+% we don't have pos/neg labels on the tweets so can't evaluate it's performance except for by eye?
+
+The Stanford NLP Sentiment Analyser classifies the text into one of the following five sentiment judgements: 
+\begin{enumerate}
+    \item Very Negative
+    \item Negative
+    \item Neutral
+    \item Positive
+    \item Very Positive
+\end{enumerate}
+
+The output from the Sentiment Analyser for a tweet looks like this:
+
+\begin{lstlisting}[caption={Output from Stanford NLP Sentiment Analyser},
+captionpos=b,label=lst:stanfordoutput,language=json,firstnumber=1]
+"sentimentValue": "3",
+"sentiment": "Positive",
+"sentimentDistribution": [
+    0.03910365552553,
+    0.18375415309071,
+    0.26346977003905,
+    0.42548434014862,
+    0.0881880811961
+]
+\end{lstlisting}
+
+The sentiment value and sentiment define the class the tweet has been assigned. In this case the tweet is positive. The sentiment distribution shows how strongly the tweet aligns with each class, from very negative to very positive. This tweet has a maximum value of 0.42548434014862 so it is assigned the positive label.
+
+\subsection*{Normalisation}
+
+The sentiment scores produced by the Stanford NLP Sentiment Analyser were produced per tweet. They needed to be normalised so that they were per hotel and lay between zero and one.
+
+A majority voting technique was used to normalise the scores. For each hotel we have a selection of tweets. These tweets are divided into five clusters; very negative, negative, neutral (ignored), positive and very positive. A mean value was calculated for each cluster. This was calculated bu summing the corresponding score in the sentiment distribution for each tweet and dividing by the number of tweets in the cluster. The class with the highest mean value was assigned to the hotel.
+
+This mean score was then normalised between zero and one, with the following weighting.
+\begin{itemize}
+    \item Very Negative: 0 --> 0.25
+    \item Negative: 0.25 --> 0.5
+    \item Positive: 0.5 --> 0.75
+    \item Very Positive: 0.75 --> 1
+\end{itemize}
+
+The following normalisation formulae were used:
+
+\begin{tcolorbox}
+\begin{center}
+	$Normalised\ Score\ (Negative) = max\ score\ -\ (actual\ score\ \times\ (max\ score\ -\ min\ score))$
+
+    $Normalised\ score\ (Positive) = (actual\ score\ \times\ (max\ score\ -\ min\ score)) + min\ score$
+\end{center}
+\end{tcolorbox}
+
+Taking the tweet above with a positive score of 0.42548434014862 as an example:
+\begin{tcolorbox}
+$Normalised\ score\ (Positive) = (0.42548434014862\ \times\ (0.75\ -\ 0.5)) + 0.5.$
+
+$Normalised\ score\ (Positive) = 0.606$
+\end{tcolorbox}
 
 \section{CoRE Recommender System}
 
