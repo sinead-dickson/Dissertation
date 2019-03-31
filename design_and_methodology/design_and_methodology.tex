@@ -285,20 +285,20 @@ Gensim's implementation of Doc2Vec was again used. Unlike Word2Vec, we built our
 Twelve different classifiers were implemented, each with their implementation from Python's Scikit Learn library \cite{scikit-learn}.
 
 The twelve classifiers implemented were:
-\begin{itemize}
-    \item Decision Tree.
-    \item Random Forest.
-    \item Multi Layer Perceptron.
-    \item Support Vector Machine.
-    \item Logistic Regression.
-    \item K Nearest Neighbours.
-    \item Gaussian Process.
-    \item Adaboost.
-    \item Gaussian Naive Bayes.
-    \item Bernoulli Naive Bayes.
-    \item Quadratic Discriminant Analysis.
-    \item Linear Discriminant Analysis.
-\end{itemize}
+\begin{enumerate}
+    \item Decision Tree Classifier.
+    \item Random Forest Classifier.
+    \item Multi Layer Perceptron Classifier.
+    \item Support Vector Machine Classifier.
+    \item Logistic Regression Classifier.
+    \item K Nearest Neighbours Classifier.
+    \item Gaussian Process Classifier.
+    \item Adaboost Classifier.
+    \item Gaussian Naive Bayes Classifier.
+    \item Bernoulli Naive Bayes Classifier.
+    \item Quadratic Discriminant Analysis Classifier.
+    \item Linear Discriminant Analysis Classifier.
+\end{enumerate}
 
 \subsubsection*{Decision Tree}
 
@@ -307,7 +307,7 @@ The Decision Tree Classifiers is a simple classification algorithm that can be u
 \begin{figure}[h!]
 \centering
 \fbox{\includegraphics[width=0.75\textwidth]{design_and_methodology/decisiontree.png}}
-\caption{\label{fig:mlp} Decision Tree Example}
+\caption{\label{fig:decisiontree} Decision Tree Example}
 \end{figure}
 
 The DT Classifier was implemented with Scikit Learn with the following parameters:
@@ -406,61 +406,92 @@ The KNN Classifier was implemented with Scikit Learn with the following paramete
 
 \subsubsection*{Gaussian Process}
 
+The Gaussian Process (GP) Classifier implements Gaussian Processes for classification. Gaussian processes are probability distributions over possible functions.
+
+\textbf{The definition of a Gaussian process is:} $P(f)$ is a Gaussian process if for any finite subset $\{x_1,x_2,...,x_n\} \subset X$, the marginal distribution over that finite subset $P(f)$ has a multivariate Gaussian distribution.
+
+The GP Classifier puts a Gaussian process on a latent function, which is then squashed through a link function to get the probabilistic classification. For classification, the posterior of the latent function is not Gaussian, instead the logit function is used. A Gaussian likelihood function is inappropriate for discrete class labels \cite{gaussianProcesses2006}.
+
 The GP Classifier was implemented with Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
-	GaussianProcessClassifier(1.0 * RBF(1.0))
+	GaussianProcessClassifier(kernel=1.0 * RBF(1.0), optimizer='fmin\_l\_bfgs\_b')
 \end{center}
 \end{tcolorbox}
 
 \subsubsection*{Adaboost}
 
+The AdaBoost Classifier is another ensemble classification algorithm, introduced by Freund and Schapire \cite{adaboost1997}.
+
+AdaBoost works by fitting a series of weak base classifiers on incrementally re-weighted versions of the training data. The predictions from the base classifiers are combined with a majority vote or sum, to get an overall classification. The 'boosting' component of the algorithm involves re-weighting the data on each iteration.Samples that were predicted correctly have their weight increased and samples that were predicted incorrectly have their weight decreased.
+
 The AdaBoost Classifier was implemented with Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
-	AdaBoostClassifier()
+	AdaBoostClassifier(base\_estimator=None, n\_estimators=50,learning\_rate=1, algorithm=’SAMME.R’)
 \end{center}
 \end{tcolorbox}
 
+Scikit Learn's version of AdaBoost implements the SAMME algorithm \cite{multiclassada2009}.
+
 \subsubsection*{Gaussian Naive Bayes}
 
-The Gaussian NB Classifier was implemented with Scikit Learn with the following parameters:
+The Gaussian Naive Bayes (GNB) Classifier is one of a set of Naive Bayes Classification algorithms. All of the Naive Bayes classifiers are based applying Bayes Rule along with the ‘naive’ assumption that features are conditionally independent. Bayes Rule: 
+\begin{center}
+\(P(A\mid B)=\frac{P(B\mid A)\:P(A)}{P(B)}\). 
+\end{center}
+In GNB the likelihood of the features is assumed to be Gaussian:
+\begin{center}
+$P(x_i|y) = \frac{1}{\sqrt{2\pi\sigma_y^2}} exp (- \frac{(x_i - \mu_y)^2}{2\sigma_y^2})$
+\end{center}
+The GNB Classifier was implemented with Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
-	GaussianNB()
+	GaussianNB (priors=None, var\_smoothing=1e-09)
 \end{center}
 \end{tcolorbox}
 
 \subsubsection*{Bernoulli Naive Bayes}
 
-The Bernoulli NB Classifier was implemented with Scikit Learn with the following parameters:
+The Bernoulli Naive Bayes (BNB) Classifier is another of the Naive Bayes Classification algorithms. BNB implements the Naive Bayes algorithm for data that is distributed according to multivariate Bernoulli distributions. It has been seen to work better than GNB on shorter texts.
+
+The decision rule for BNB is:
+\begin{center}
+$P(x_i|y) = P(i|y)x_i + (1 - P(i|y))(1 - x_i)$
+\end{center}
+
+The BNB Classifier was implemented with Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
-	BernoulliNB()
+	BernoulliNB (alpha=1.0, binarize=0.0, class\_prior=None, fit\_prior=True)
 \end{center}
 \end{tcolorbox}
 
-\subsubsection*{Quadratic Discriminant Analysis}
+\subsubsection*{Quadratic Discriminant Analysis and Linear Discriminant Analysis}
 
-The QDA Classifier was implemented with Scikit Learn with the following parameters:
+The Quadratic Discriminant Analysis Classifier and the Linear Discriminant Analysis Classifier, have a quadratic and linear decision surface, respectively. QDA is more flexible as it can learn quadratic boundaries, LDA can only learn linear boundaries (Figure ~\ref{fig:qdalda}). 
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\textwidth]{design_and_methodology/qda_and_lda.png}
+\caption{\label{fig:qdalda} Quadratic Discriminant Analysis and Linear Discriminant Analysis.}
+\end{figure}
+
+Both QDA AND LDA were implemented with Scikit Learn with the folllowing parameters:
 
 \begin{tcolorbox}
 \begin{center}
-	QuadraticDiscriminantAnalysis()
+	QuadraticDiscriminantAnalysis(priors=None, reg\_param=0.0, store\_covariance=False, store\_covariances=None, tol=0.0001)
 \end{center}
 \end{tcolorbox}
 
-\subsubsection*{Linear Discriminant Analysis}
-
-The LDA Classifier was implemented with Scikit Learn with the following parameters:
-
 \begin{tcolorbox}
 \begin{center}
-	LinearDiscriminantAnalysis()
+	LinearDiscriminantAnalysis(n\_components=None, priors=None, shrinkage=None, solver='svd', store\_covariance=False, tol=0.0001)
 \end{center}
 \end{tcolorbox}
 
