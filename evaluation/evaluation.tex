@@ -127,3 +127,19 @@
 \caption{Recall of Classifiers for different Feature Representations}
 \label{Table:recall}
 \end{table}
+
+
+
+
+
+% from intro
+\section{Recommender Systems}
+Recommender systems provide suggestions for items that are most likely to be of interest to a particular user \cite{Ricci2015}. They recommend based on user behaviours and preferences, such as explicit user ratings and reviews of products, and implicit user clicks and view times. Some popular recommender systems include Netflix which recommends films and television programmes, Facebook which recommends new friends and content via your news feed, and TripAdvisor which recommends hotels. There are two main methods that recommender systems use to generate recommendations, Collaborative Filtering methods and Content-Based recommender methods. 
+
+Collaborative Filtering methods analyse the behaviour of a collection of users and use this information to make recommendations based upon what users similar to the current user have liked. The basic idea is that if we know two users have the same opinion on one item, then they are more likely to have the same opinion on another item. The correlation between users is used to make predictions.
+
+Content-Based (CB) recommender methods use the descriptive features of items, and the preferences of individual users. Information about each user and the content information about each item is combined to make recommendations. CB methods recommend items similar to items the user liked or purchased in the past.
+
+Context-aware recommender systems use contextual information to improve their recommendations. This contextual information could be time, location, company etc. The concept is that the same user could prefer different items under different conditions.
+
+CoRE \cite{core2019} is a Cold Start Resistant and Extensible Recommender system. It is a hotel recommender system that makes use of collaborative filtering, content-based recommendation and contextual suggestion. The algorithm is designed to work in cold start situations and to be easily extensible. A cold start situation is when you need to make recommendations for a new user that you have no previous information on. CoRE is made up of three models, a user model, a segment model and a context model. Each model is generated as a weighted feature vector. A centroid vector is then calculated, and a weighting is applied to determine the effect of each model. The cosine similarity between the vector of each hotel and the centroid vector of the user is then calculated, and the hotels are ranked based on this score.
