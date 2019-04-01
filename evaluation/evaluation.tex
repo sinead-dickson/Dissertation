@@ -1,5 +1,55 @@
 \chapter{Evaluation}
 
+\section{Introduction}
+This chapter will...
+
+\section{Evaluation Metrics for Classification}
+The following four metrics were used to evaluate the classifiers:
+\begin{enumerate}
+    \item Precision
+    \item Recall
+    \item Accuracy
+    \item F1-Score
+\end{enumerate}
+
+\subsection*{Precision}
+Precision is a measure of the classifiers 'exactness'. It is the percentage of everything classified as a 'review', 'some content', or 'irrelevant' that was classified correctly. Precision is the total number of true positives divided by the total number of positives (true positives and false positives).
+\begin{center}
+    $Precision\ =\ \cfrac{True\ Positives}{True\ Positives\ +\ False\ Positives}$
+\end{center}
+A low precision value can indicate a large number of false positives i.e. a large number of tweets incorrectly classified as as a 'review', 'some content', or 'irrelevant'. A high precision value indicates that the majority of what was classified, was classified correctly. You could however, have a very high precision in the case where only a small potion of samples were actually classified but of these the majority were classified correctly.
+
+\subsection*{Recall}
+Recall is a measure of the classifiers 'completeness'. It is the percentage of everything that should have been classified as a 'review', 'some content', or 'irrelevant' that was classified correctly. Recall is the total number of true positives divided by the total number of true positives and false negatives.
+\begin{center}
+    $Recall\ =\ \cfrac{True\ Positives}{True\ Positives\ +\ False\ Negatives}$
+\end{center}
+A low recall value can indicate there are a large number of false negatives, predictions that should hve been classified but were not. A high recall value indicates that the majority of tweets that should have been classified as a 'review', 'some content', or 'irrelevant' that was classified correctly.
+
+\subsection*{Accuracy}
+Accuracy is the total number of samples predicted correctly. It is the percentage of the tweets that were classified correctly. Accuracy is the total number of correct predictions (true positives and true negatives) over the total number of predictions. 
+\begin{center}
+    $Accuracy\ =\ \cfrac{True\ Positives\ +\ True Negatives}{Total Predictions}$
+\end{center}
+The higher the accuracy score the better, but a high accuracy does not always give an accurate representation of the situation. It will not identify a class imbalance.
+
+\subsection*{F1-Score}
+F1-Score is the harmonic mean of precision and recall. It is also called the F-Score or F-Measure. The F1-Score shows the balance between precision and recall. 
+\begin{center}
+    $F1-Score\ =\ \cfrac{2 \times\ Precision\ \times\ Recall}{Precision\ +\ Recall}$
+\end{center}
+The higher the F1-Score the better.
+
+\section{Evaluation Metrics for Recommender Systems}
+
+\section{Results and Analysis}
+
+\section{Discussion of Results}
+
+\section{Summary}
+
+\subsection*{Limitations}
+
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1\textwidth]{evaluation/accuracy_graph.png}
@@ -133,17 +183,3 @@
 \end{table}
 
 
-
-
-
-% from intro
-\section{Recommender Systems}
-Recommender systems provide suggestions for items that are most likely to be of interest to a particular user \cite{Ricci2015}. They recommend based on user behaviours and preferences, such as explicit user ratings and reviews of products, and implicit user clicks and view times. Some popular recommender systems include Netflix which recommends films and television programmes, Facebook which recommends new friends and content via your news feed, and TripAdvisor which recommends hotels. There are two main methods that recommender systems use to generate recommendations, Collaborative Filtering methods and Content-Based recommender methods. 
-
-Collaborative Filtering methods analyse the behaviour of a collection of users and use this information to make recommendations based upon what users similar to the current user have liked. The basic idea is that if we know two users have the same opinion on one item, then they are more likely to have the same opinion on another item. The correlation between users is used to make predictions.
-
-Content-Based (CB) recommender methods use the descriptive features of items, and the preferences of individual users. Information about each user and the content information about each item is combined to make recommendations. CB methods recommend items similar to items the user liked or purchased in the past.
-
-Context-aware recommender systems use contextual information to improve their recommendations. This contextual information could be time, location, company etc. The concept is that the same user could prefer different items under different conditions.
-
-CoRE \cite{core2019} is a Cold Start Resistant and Extensible Recommender system. It is a hotel recommender system that makes use of collaborative filtering, content-based recommendation and contextual suggestion. The algorithm is designed to work in cold start situations and to be easily extensible. A cold start situation is when you need to make recommendations for a new user that you have no previous information on. CoRE is made up of three models, a user model, a segment model and a context model. Each model is generated as a weighted feature vector. A centroid vector is then calculated, and a weighting is applied to determine the effect of each model. The cosine similarity between the vector of each hotel and the centroid vector of the user is then calculated, and the hotels are ranked based on this score.

@@ -19,7 +19,7 @@ A supervised machine learning approach will be taken in this research. A collect
 
 \section{Text Classification}
 
-Text classification \cite{khan2010} is an application of both supervised and unsupervised machine learning. Text classification involves automatically assigning a set of classes to raw text documents. Applications include sentiment analysis, spam detection, language detection and topic classification. In this research the aim is to classify the text found in tweets as reviews. This section will discuss some common text classification algorithms.
+Text classification is one application of both supervised and unsupervised machine learning \cite{khan2010}. Classification algorithms can be applied to a wide range of different areas, which include text, speech, images and video. In this research we are attempting to classify the text found in tweets. Certain classification algorithms are more suited to classifying text. Text classification involves automatically assigning a set of classes to raw text documents. Applications include sentiment analysis, spam detection, language detection and topic classification. This section will discuss the functionality of some classification algorithms that are suited to text classification. 
 
 %Some popular text classification algorithms are Support Vector Machines, Naive Bayes Classifiers, Logistic Regression Classifiers, Maximum Entropy Classifiers, Decision Tree Classifiers and Ensemble Classifiers. In this section, the functionality of these text classification algorithms will be discussed.
 
@@ -28,11 +28,9 @@ Text classification \cite{khan2010} is an application of both supervised and uns
 A Support Vector Machine (SVM) is a discriminative classifier, first introduced by Cortes and Vapnik \cite{Vapnik1995,  Vapnik21995}. SVMs have been successfully used for text classification \cite{Joachims1998, tong2001support}. The algorithm functions by finding the optimum hyperplane that separates the data into the defined classes. The aim of a SVM is to maximise the distance between the hyperplane and the support vectors (the data points closest to the hyperplane). 
 
 Another popular supervised learning method often used for text classification is the Naive Bayes (NB) Classifier  \cite{NaiveBayes1998}. NB is a generative classifier, learning a model of the joint probability P(A,B), and making predictions by using Bayes Rule. It calculates the probability that an observation belongs to a particular class. NB is based on applying Bayes Rule along with the ‘naive’ assumption that features are conditionally independent. Bayes Rule is as follows:
-
 \begin{center}
     \(P(A\mid B)=\frac{P(B\mid A)\:P(A)}{P(B)}\). 
 \end{center}
-
 In the case of text classification, this means we assume all words are independent, which is of course not the case. This assumption is a major pitfall of the algorithm. 
 
 Logistic Regression (LR) is the discriminative counterpart to Naive Bayes \cite{ng2002discriminative}. It is a linear classifier. LR uses the logistic function, also known as the sigmoid function or logit function to model the data. This is an S-shaped curve, taking real-valued inputs and mapping them to the range 0 – 1. The logistic function is as follows:
@@ -66,16 +64,15 @@ A. Go, R. Bhayani, and L. Huang \cite{Go2009} address the problem of obtaining a
 
 B. Sriram, D. Fuhry, E. Demir, H. Ferhatosmanoglu, and M. Demirbas classified tweets into a set of generic classes; News, Opinions, Events, Deals and Private Messages \cite{sriram2010}. They proposed an 8-feature technique. The following eight features were extracted from the tweets, one nominal, the author, and seven binary, contains shortened words or slang, contains time-event phrases, contains opinion words, contains an emphasis on words, contains currency or percentage signs, the username is at the start of the tweet and the username is mid-tweet. A Naive Bayes Classifier was used with 5-fold cross validation. They compared the 8-feature technique to bag-of-words and found it performed significantly better. It seems BOW cannot be directly applied to short texts because BOW ignores the order and semantic relations between words.
 
-M. Rathi, A. Malik, D. Varshney, R. Sharma, and S. Mendiratta \cite{Raithi2018} tested SVM, Adaboosted Decision Tree and Decision Tree Classifiers, for classifying the sentiment of tweets. TFIDF (term frequency inverse document frequency) Vectorization is applied during pre-processing. Using TFIDF gives a measure of how important a word is within the dataset. A word that is frequent in an individual document but infrequent in the dataset is considered important. The weights from TFIDF are applied to the dataset emphasising the contribution of some words and reducing the contribution of others. They found the Decision Tree Classifier (84\%) achieved the highest accuracy followed by the SVM (82\%) and then the Adaboosted Classifier (67\%). 
+M. Rathi, A. Malik, D. Varshney, R. Sharma, and S. Mendiratta \cite{Raithi2018} tested SVM, Adaboosted Decision Tree and Decision Tree Classifiers, for classifying the sentiment of tweets. TFIDF (term frequency inverse document frequency) Vectorization is applied during pre-processing. Using TFIDF gives a measure of how important a word is within the dataset. A word that is frequent in an individual document but infrequent in the dataset is considered important. The weights from TFIDF are applied to the dataset emphasising the contribution of some words and reducing the contribution of others. They found the Decision Tree Classifier (84\%) achieved the highest accuracy followed by the SVM (82\%) and then the Adaboosted Classifier (67\%).
 
-A. Rane and A. Kumar compare seven different classifiers for the sentiment analysis of Twitter reviews about US Airline Services \cite{Rane2018}. The classifiers were Decision Tree, Random Forest, SVM, K-Nearest Neighbours, Logistic Regression, Gaussian Naive Bayes and AdaBoost. Doc2Vec feature representation was used, which involves mapping each document to a vector in space. In this study each paragraph was mapped to a vector. The Random Forest Classifier performed the best, with reported precision of 85.6\%, recall of 86.5\% and accuracy of 86.5\% (Table ~\ref{Table:arane}). 
-%SL: is doc2vec only used at sentence level in this study?
 %SL: Bold the best performing result for each metric 
 \begin{table}[h!]
 \centering
 \caption{Accuracy of Classifier Results from the study by A. Rane and A. Kumar \cite{Rane2018}.}
 \label{Table:arane}
 \setlength\extrarowheight{5pt}
+\resizebox{\textwidth}{!}{
 \begin{tabular}{|c|c|c|c|}
 \hline
 \textbf{Classifier} & \textbf{Precision} & \textbf{Recall} & \textbf{Accuracy} \\ \hline
@@ -86,8 +83,11 @@ A. Rane and A. Kumar compare seven different classifiers for the sentiment analy
 \textbf{AdaBoost}               & 84.5\%             & 83.5\%          & 83.5\%            \\ \hline
 \textbf{Logistic Regression}    & 81\%               & 81.6\%          & 81.9\%            \\ \hline
 \textbf{K Nearest Neighbour}    & 59\%               & 59.2\%          & 59.3\%            \\ \hline
-\end{tabular}
+\end{tabular}}
 \end{table}
+
+A. Rane and A. Kumar compare seven different classifiers for the sentiment analysis of Twitter reviews about US Airline Services \cite{Rane2018}. The classifiers were Decision Tree, Random Forest, SVM, K-Nearest Neighbours, Logistic Regression, Gaussian Naive Bayes and AdaBoost. Doc2Vec feature representation was used, which involves mapping each document to a vector in space. In this study each paragraph was mapped to a vector. The Random Forest Classifier performed the best, with reported precision of 85.6\%, recall of 86.5\% and accuracy of 86.5\% (Table ~\ref{Table:arane}). 
+%SL: is doc2vec only used at sentence level in this study?
 
 \section{Sentiment Analysis}
 
@@ -101,7 +101,7 @@ S. Bhuta, A. Doshi, U. Doshi, and M. Narvekar \cite{Bhuta2014} reviewed differen
 
 \begin{figure}[h!]
 \centering
-\fbox{\includegraphics[width=0.9\textwidth]{literature_review/sample_treebank.PNG}}
+\fbox{\includegraphics[width=1\textwidth]{literature_review/sample_treebank.PNG}}
 \caption{\label{fig:treebank} A labelled movie review in the Stanford NLP Sentiment Treebank \cite{stanfordSentiment2013}.}
 \end{figure}
 
@@ -119,7 +119,7 @@ Content-Based (CB) recommender methods use the descriptive features of items, an
 
 Context-aware recommender systems use contextual information to improve their recommendations. This contextual information could be time, location, company etc. The concept is that the same user could prefer different items under different conditions.
 
-A number of recommender systems that focus on hotels have been proposed in the literature. A. Levi, O. Mokryn, C. Diot, and N. Taft proposed a recommender system that specifically focuses on hotel recommendations. This is a cold start, context-based hotel recommender system, which uses the text of online reviews from Tripadvisor and Venere as its main data \cite{levi2012}. The system asks the user to identify their trip intent (e.g. business, family etc), nationality and preferences for certain hotel aspects (location, service, food etc). Hotels are recommended based on the sentiment reviews of users who have similar context information.
+A number of recommender systems that focus on hotels have been proposed in the literature. A. Levi, O. Mokryn, C. Diot, and N. Taft proposed a recommender system that specifically focuses on hotel recommendations. This is a cold start, context-based hotel recommender system, which uses the text of online reviews from Tripadvisor and Venere as its main data \cite{levi2012}. The system asks the user to identify their trip intent (business, family etc), nationality and preferences for certain hotel features (location, service, food etc). Hotels are recommended based on the sentiment of reviews of users who have similar context information. The sentiment score is calculated with a lexicon based approach. Adjectives that reviewers use to express opinions are considered 'opinion words'. Opinion words are extracted for each feature from every sentence of a review. A sentiment score is calculated for each feature using the lexicon. An overall feature sentiment score is then calculated based on information about the user. The feature sentiment score is combined with the scores based on the user's trip intent and nationality to produce a hotel score. A. Levi, O. Mokryn, C. Diot, and N. Taft reported that users were 20\% more satisfied with their recommendations. This is a promising result for this research. The hope is that incorporating review-like tweets into the CoRE recommender will also increase user satisfaction. 
 %SL: How is sentiment incorporated? This will be useful to reflect on or compare to for our approach
 
 Another recommender system that targets hotels was proposed by K. Lin, C. Lai, P. Chen, and S. Hwang \cite{lin2015}. It also uses hotel reviews collected from TripAdvisor. The system tracks the user's gestures on a mobile device to identify what part of the review the user has focused on or 'seriously read'. Feature extraction is used to extract the aspects of hotels (e.g room, food, price etc) the user considers important, and build a user interest profile. Hotels are recommended based on the user profile. The score is calculated based on the sentiment of the reviews about the aspects of the hotels the user prefers.
@@ -139,11 +139,16 @@ CoRE \cite{core2019} is a Cold Start Resistant and Extensible Recommender system
 
 %SL: You would normally have a section at the end of this chapter which summarises the "influences from the state of the art" - that means what are the key things you took from the state of the art that influenced you research, e.g. a particular algorithm to use, a particular approach to recommendation that was demonstrated to be best, avoiding something because it has previously been shown not to work etc. 
 
-In this chapter the background literature relating to this project has been discussed. A series of text classification techniques were discussed. For classifying tweets there was no clear winner in terms of performance. \cite{Berm2010} found that the Multinomial Naive Bayes Classifier outperformed the Support Vector Machine Classifier. \cite{Ankit2018,Kanakaraj2015} both found ensemble methods outperformed base classifiers in classifying tweets. The study most similar to ours which deals with airline reviews \cite{Rane2018}, found that Random Forest Classifier followed closely by Support Vector Machine achieved the best performance. It will be interesting to see whether these results are confirmed by our research.
+In this chapter the background literature relating to this project has been discussed. A series of text classification techniques were researched. For classifying tweets there was no obvious winner in terms of performance. A. Bermingham and A. F. Smeaton found that the Multinomial Naive Bayes Classifier outperformed the Support Vector Machine Classifier in classifying tweets and short-form reviews \cite{Berm2010}. Ankit and N. Saleena, and M. Kanakaraj and R. M. R. Guddeti both found Ensemble Classification Methods outperformed base classifiers in classifying tweets \cite{Ankit2018,Kanakaraj2015}. The study most similar to ours, deals with airline reviews \cite{Rane2018}. A. Rane and A. Kumar found that the Random Forest Classifier followed closely by the Support Vector Machine achieved the best performance. It will be interesting to see which if any of these results will be confirmed by our research.
 
 The majority of the tweet classification studies focus on classifying the sentiment of tweets. It was hard to find any studies about classifying tweets as reviews. That is the area that this project will focus on. 
 
-\cite{levi2012} introduced a hotel recommender system that incorporated sentiment from TripAdvisor reviews. 
+This chapter also outlined some techniques used in hotel recommender systems. The most promising result came from A. Levi, O. Mokryn, C. Diot, and N. Taft who demonstrated that incorporating TripAdvisor reviews into their hotel recommender system increased the average user satisfaction.
+
+% Found the Stanford NLP
+% Feature Representations
+
+
 
 
 
