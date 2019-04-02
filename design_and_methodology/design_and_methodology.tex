@@ -230,10 +230,11 @@ The following steps were taken to preprocess the tweets, before they were used t
 
 The classifiers require numerical feature vectors of fixed length rather than variable length raw text as their input. To comply with this our processed tweets had to be converted into numerical feature vectors. This process of converting raw text to a numerical feature vector is called vectorization.
 
-We experimented with six different feature extraction methods to see which performed best on the Twitter data. Twitter data is quite different to standard text so standard feature extraction methods that perform well on text will not necessarily perform well for the Twitter data.
+We experimented with seven different feature extraction methods to see which performed best on the Twitter data. Twitter data is quite different to standard text so standard feature extraction methods that perform well on text will not necessarily perform well for the Twitter data.
 
-The six feature extraction methods implemented were:
+The seven feature extraction methods implemented were:
 \begin{enumerate}
+    \item Unigram Bag-of-Words.
     \item Unigram Bag-of-Words with TF-IDF.
     \item Bigram Bag-of-Words with TF-IDF.
     \item Trigram Bag-of-Words with TF-IDF.
@@ -300,7 +301,7 @@ Gensim's implementation of Doc2Vec was again used. Unlike Word2Vec, we built our
 
 \subsection*{Classifiers}
 
-Twelve different classifiers were implemented, each with their implementation from Python's Scikit Learn library \cite{scikit-learn}.
+Thirteen different classifiers were implemented, each with their implementation from Python's Scikit Learn library \cite{scikit-learn}.
 
 The twelve classifiers implemented were:
 \begin{enumerate}
@@ -314,6 +315,7 @@ The twelve classifiers implemented were:
     \item Adaboost Classifier.
     \item Gaussian Naive Bayes Classifier.
     \item Bernoulli Naive Bayes Classifier.
+    \item Multinomial Naive Bayes
     \item Quadratic Discriminant Analysis Classifier.
     \item Linear Discriminant Analysis Classifier.
 \end{enumerate}
@@ -486,6 +488,18 @@ The BNB Classifier was implemented with Scikit Learn with the following paramete
 \begin{tcolorbox}
 \begin{center}
 	BernoulliNB (alpha=1.0, binarize=0.0, class\_prior=None, fit\_prior=True)
+\end{center}
+\end{tcolorbox}
+
+\subsubsection*{Multinomial Naive Bayes}
+
+The Multinomial Naive Bayes (MNB) Classifier is another of the Naive Bayes Classification algorithms. MNB implements the Naive Bayes algorithm for multinomial distributed data.
+
+The MNB Classifier was implemented with Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	MultinomialNB(alpha=1.0, class\_prior=None, fit\_prior=True)
 \end{center}
 \end{tcolorbox}
 

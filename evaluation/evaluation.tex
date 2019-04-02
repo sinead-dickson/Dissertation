@@ -52,6 +52,8 @@ There are three ways that precision, recall, f1-score and accuracy can be calcul
     Weighted Average calculates the metrics independently for each class and then calculates their weighted average. This differs from Macro Average in that it takes label imbalance into account. 
 \end{enumerate}
 
+The metrics listed in the tables below (Tables ~\ref{Table:precision},~\ref{Table:recall},~\ref{Table:accuracy},~\ref{Table:f1score}) display the weighted average.
+
 \section{Classification Results}
 
 In this section, the performance of the classifiers will be presented. The following thirteen classifiers were evaluated:
@@ -73,11 +75,11 @@ In this section, the performance of the classifiers will be presented. The follo
 
 The classifiers were evaluated with seven different feature representations:
 \begin{enumerate}
-    \item Uni-gram Bag-of-Words (BOW): A uni-gram implementation of BOW using Scikit Learn's Count Vectorizer.
-    \item Uni-gram TF-IDF: A uni-gram implementation of TF-IDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
-    \item Bi-gram TF-IDF: A bi-gram implementation of TF-IDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
-    \item Tri-gram TF-IDF: A tri-gram implementation of TF-IDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
-    \item Uni-gram TF-IDF with stop words removed: A uni-gram implementation of TF-IDF with stop words removed using Scikit Learn's Count Vectorizer, TFIDF transformer and English stop word list.
+    \item Unigram Bag-of-Words (BOW): A unigram implementation of BOW using Scikit Learn's Count Vectorizer.
+    \item Unigram TF-IDF: A unigram implementation of TFIDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
+    \item Bigram TF-IDF: A bigram implementation of TFIDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
+    \item Trigram TF-IDF: A trigram implementation of TFIDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
+    \item Unigram TF-IDF with stop words removed: A unigram implementation of TFIDF with stop words removed using Scikit Learn's Count Vectorizer, TFIDF transformer and English stop word list.
     \item Doc2Vec: Gensim's implementation of doc2vec, each tweet being considered a document.
     \item Word2Vec: Gensim's implementation of word2vec with Google's pretrained model.
 \end{enumerate}
@@ -90,31 +92,34 @@ Each classifier and feature representation was evaluated in terms of precision, 
 \caption{Precision of Classifiers for different Feature Representations.}
 \label{Table:precision}
 \resizebox{\textwidth}{!}{
-\begin{tabular}{ccccccc}
+\begin{tabular}{cccccccc}
 \specialrule{1.5pt}{1pt}{1pt}
- & \textbf{Uni-gram} & \textbf{Bi-gram} & \textbf{Tri-gram} & \textbf{\begin{tabular}[c]{@{}c@{}}Uni-gram \\ (No Stop Words)\end{tabular}} & \textbf{Doc2Vec} & \textbf{Word2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
-\textbf{RF} & 0.74 & 0.7 & 0.69 & 0.73 & 0.59 & 0.71 \\ \hline
+ & \textbf{BOW} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Unigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Bigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Trigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Unigram,\\ No Stop Words)\end{tabular}} & \textbf{Doc2Vec} & \textbf{Word2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
+\textbf{RF} & 0.72 & 0.74 & 0.7 & 0.69 & 0.73 & 0.59 & 0.71 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{DT} & 0.58 & 0.58 & 0.59 & 0.63 & 0.56 & 0.54 \\ \hline
-\textbf{MLP} & 0.71 & 0.7 & 0.7 & 0.7 & 0.59 & 0.71 \\ \hline
+\textbf{DT} & 0.57 & 0.58 & 0.58 & 0.59 & 0.63 & 0.56 & 0.54 \\ \hline
+\textbf{MLP} & 0.71 & 0.71 & 0.7 & 0.7 & 0.7 & 0.59 & 0.71 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{SVM} & 0.74 & 0.73 & 0.71 & 0.71 & 0.62 & 0.71 \\ \hline
-\textbf{LR} & 0.72 & 0.7 & 0.68 & 0.7 & 0.61 & 0.71 \\ \hline
+\textbf{SVM} & 0.56 & 0.74 & 0.73 & 0.71 & 0.71 & 0.62 & 0.71 \\ \hline
+\textbf{LR} & 0.72 & 0.72 & 0.7 & 0.68 & 0.7 & 0.61 & 0.71 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{KNN} & 0.62 & 0.62 & 0.62 & 0.61 & 0.54 & 0.67 \\ \hline
-\textbf{GP} & 0.72 & 0.71 & 0.69 & 0.7 & 0.61 & 0.72 \\ \hline
+\textbf{KNN} & 0.53 & 0.62 & 0.62 & 0.62 & 0.61 & 0.54 & 0.67 \\ \hline
+\textbf{GP} & 0.72 & 0.72 & 0.71 & 0.69 & 0.7 & 0.61 & 0.72 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{AB} & 0.62 & 0.63 & 0.62 & 0.64 & 0.57 & 0.63 \\ \hline
-\textbf{GNB} & 0.6 & 0.63 & 0.63 & 0.59 & 0.59 & 0.64 \\ \hline
+\textbf{AB} & 0.63 & 0.62 & 0.63 & 0.62 & 0.64 & 0.57 & 0.63 \\ \hline
+\textbf{GNB} & 0.6 & 0.6 & 0.63 & 0.63 & 0.59 & 0.59 & 0.64 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{BNB} & 0.73 & 0.71 & 0.71 & 0.72 & 0.58 & 0.65 \\ \hline
-\textbf{QDA} & 0.76 & 0.73 & 0.67 & 0.79 & 0.57 & 0.59 \\ \hline
+\textbf{MNB} & \multicolumn{1}{c}{\cellcolor[HTML]{EFEFEF}0.71} & 0.67 & 0.68 & 0.66 & 0.67 &  &  \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{BNB} & 0.73 & 0.73 & 0.71 & 0.71 & 0.72 & 0.58 & 0.65 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{LDA} & 0.64 & 0.65 & 0.63 & 0.62 & 0.66 & 0.69 \\ \hline
+\textbf{QDA} & 0.72 & 0.76 & 0.73 & 0.67 & \textcolor{red}{0.79} & 0.57 & 0.59 \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{LDA} & 0.63 & 0.64 & 0.65 & 0.63 & 0.62 & 0.66 & 0.69 \\ \hline
 \end{tabular}}
 \end{table}
 
-In terms of precision, the best performing classifier was the 
+In terms of precision, QDA with Unigram TFIDF with no stop words removed was the best performing classifier with 0.79.
 
 % *** RECALL ***
 \begin{table}[h!]
@@ -122,31 +127,69 @@ In terms of precision, the best performing classifier was the
 \caption{Recall of Classifiers for different Feature Representations.}
 \label{Table:recall}
 \resizebox{\textwidth}{!}{
-\begin{tabular}{ccccccc}
+\begin{tabular}{cccccccc}
 \specialrule{1.5pt}{1pt}{1pt}
- & \textbf{Uni-gram} & \textbf{Bi-gram} & \textbf{Tri-gram} & \textbf{\begin{tabular}[c]{@{}c@{}}Uni-gram \\ (No Stop Words)\end{tabular}} & \textbf{Doc2Vec} & \textbf{Word2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
-\textbf{RF} & 0.71 & 0.7 & 0.69 & 0.72 & 0.64 & 0.69 \\ \hline
+ & \textbf{BOW} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Unigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Bigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Trigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Unigram,\\ No Stop Words)\end{tabular}} & \textbf{Doc2Vec} & \textbf{Word2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
+\textbf{RF} & 0.7 & 0.71 & 0.7 & 0.69 & 0.72 & 0.64 & 0.69 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{DT} & 0.6 & 0.61 & 0.62 & 0.65 & 0.59 & 0.56 \\ \hline
-\textbf{MLP} & 0.72 & 0.71 & 0.71 & 0.71 & 0.62 & 0.72 \\ \hline
+\textbf{DT} & 0.61 & 0.6 & 0.61 & 0.62 & 0.65 & 0.59 & 0.56 \\ \hline
+\textbf{MLP} & 0.72 & 0.72 & 0.71 & 0.71 & 0.71 & 0.62 & 0.72 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{SVM} & 0.74 & 0.74 & 0.72 & 0.72 & 0.64 & 0.72 \\ \hline
-\textbf{LR} & 0.72 & 0.71 & 0.7 & 0.71 & 0.64 & 0.72 \\ \hline
+\textbf{SVM} & 0.59 & \textcolor{red}{0.74} & \textcolor{red}{0.74} & 0.72 & 0.72 & 0.64 & 0.72 \\ \hline
+\textbf{LR} & 0.72 & 0.72 & 0.71 & 0.7 & 0.71 & 0.64 & 0.72 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{KNN} & 0.66 & 0.66 & 0.65 & 0.65 & 0.61 & 0.68 \\ \hline
-\textbf{GP} & 0.73 & 0.72 & 0.71 & 0.71 & 0.64 & 0.73 \\ \hline
+\textbf{KNN} & 0.61 & 0.66 & 0.66 & 0.65 & 0.65 & 0.61 & 0.68 \\ \hline
+\textbf{GP} & 0.73 & 0.73 & 0.72 & 0.71 & 0.71 & 0.64 & 0.73 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{AB} & 0.64 & 0.65 & 0.65 & 0.66 & 0.61 & 0.64 \\ \hline
-\textbf{GNB} & 0.48 & 0.47 & 0.45 & 0.48 & 0.49 & 0.56 \\ \hline
+\textbf{AB} & 0.65 & 0.64 & 0.65 & 0.65 & 0.66 & 0.61 & 0.64 \\ \hline
+\textbf{GNB} & 0.48 & 0.48 & 0.47 & 0.45 & 0.48 & 0.49 & 0.56 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{BNB} & 0.71 & 0.66 & 0.62 & 0.71 & 0.54 & 0.56 \\ \hline
-\textbf{QDA} & 0.23 & 0.24 & 0.56 & 0.26 & 0.68 & 0.61 \\ \hline
+\textbf{MNB} & \multicolumn{1}{c}{\cellcolor[HTML]{EFEFEF}0.66} & 0.68 & 0.69 & 0.67 & 0.68 &  &  \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{BNB} & 0.71 & 0.71 & 0.66 & 0.62 & 0.71 & 0.54 & 0.56 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{LDA} & 0.61 & 0.61 & 0.59 & 0.59 & 0.67 & 0.69 \\ \hline
+\textbf{QDA} & 0.26 & 0.23 & 0.24 & 0.56 & 0.26 & 0.68 & 0.61 \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{LDA} & 0.61 & 0.61 & 0.61 & 0.59 & 0.59 & 0.67 & 0.69 \\ \hline
 \end{tabular}}
 \end{table}
 
-The blah classifier was the best performing in terms of recall..
+The SVM classifier was the best performing in terms of recall with 0.74. TFIDF unigram and bigram performed equally well. Notice that QDA which performed the best in terms of precision does pretty poorly. 
+
+% *** F1 SCORE ***
+\begin{table}[]
+\setlength\extrarowheight{5pt}
+\caption{F1-Score of Classifiers for different Feature Representations.}
+\label{Table:f1score}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{cccccccc}
+\specialrule{1.5pt}{1pt}{1pt}
+ & \textbf{BOW} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Unigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Bigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Trigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Unigram,\\ No Stop Words)\end{tabular}} & \textbf{Doc2Vec} & \textbf{Word2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
+\textbf{RF} & 0.65 & 0.65 & 0.64 & 0.64 & 0.69 & 0.59 & 0.63 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{DT} & 0.57 & 0.59 & 0.58 & 0.6 & 0.63 & 0.56 & 0.54 \\ \hline
+\textbf{MLP} & 0.71 & 0.7 & 0.69 & 0.69 & 0.69 & 0.57 & 0.71 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{SVM} & 0.45 & \textcolor{red}{0.73} & \textcolor{red}{0.73} & 0.71 & 0.71 & 0.63 & 0.71 \\ \hline
+\textbf{LR} & 0.71 & 0.7 & 0.69 & 0.68 & 0.69 & 0.6 & 0.71 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{KNN} & 0.49 & 0.62 & 0.62 & 0.62 & 0.61 & 0.55 & 0.67 \\ \hline
+\textbf{GP} & 0.71 & 0.71 & 0.72 & 0.7 & 0.7 & 0.61 & 0.72 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{AB} & 0.63 & 0.62 & 0.63 & 0.62 & 0.63 & 0.59 & 0.63 \\ \hline
+\textbf{GNB} & 0.5 & 0.51 & 0.49 & 0.47 & 0.5 & 0.51 & 0.58 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{MNB} & \multicolumn{1}{c}{\cellcolor[HTML]{EFEFEF}0.67} & 0.63 & 0.66 & 0.65 & 0.64 &  &  \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{BNB} & 0.72 & 0.72 & 0.67 & 0.64 & 0.71 & 0.55 & 0.58 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{QDA} & 0.23 & 0.19 & 0.19 & 0.48 & 0.23 & 0.61 & 0.55 \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{LDA} & 0.62 & 0.62 & 0.62 & 0.6 & 0.6 & 0.66 & 0.69 \\ \hline
+\end{tabular}}
+\end{table}
+
+Again, the SVM classifier achieved the best f1-score of 0.73, with the TFIDF unigram and bigram feature representations again performing equally well.
 
 % *** ACCURACY ***
 \begin{table}[h!]
@@ -154,65 +197,36 @@ The blah classifier was the best performing in terms of recall..
 \caption{Accuracy of Classifiers for different Feature Representations.}
 \label{Table:accuracy}
 \resizebox{\textwidth}{!}{
-\begin{tabular}{ccccccc}
+\begin{tabular}{cccccccc}
 \specialrule{1.5pt}{1pt}{1pt}
- & \textbf{Uni-gram} & \textbf{Bi-gram} & \textbf{Tri-gram} & \textbf{\begin{tabular}[c]{@{}c@{}}Uni-gram \\ (No Stop Words)\end{tabular}} & \textbf{Doc2Vec} & \textbf{Word2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
-\textbf{RF} & 0.706 & 0.696 & 0.691 & 0.721 & 0.635 & 0.677 \\ \hline
+ & \textbf{BOW} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Unigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Bigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Trigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TFIDF\\ (Unigram,\\ No Stop Words)\end{tabular}} & \textbf{Doc2Vec} & \textbf{Word2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
+\textbf{RF} & 0.703 & 0.706 & 0.696 & 0.691 & 0.721 & 0.635 & 0.677 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{DT} & 0.596 & 0.614 & 0.621 & 0.652 & 0.594 & 0.563 \\ \hline
-\textbf{MLP} & 0.719 & 0.711 & 0.711 & 0.709 & 0.621 & 0.718 \\ \hline
+\textbf{DT} & 0.614 & 0.596 & 0.614 & 0.621 & 0.652 & 0.594 & 0.563 \\ \hline
+\textbf{MLP} & 0.719 & 0.719 & 0.711 & 0.711 & 0.709 & 0.621 & 0.718 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{SVM} & 0.744 & 0.737 & 0.718 & 0.724 & 0.637 & 0.716 \\ \hline
-\textbf{LR} & 0.721 & 0.709 & 0.696 & 0.713 & 0.639 & 0.722 \\ \hline
+\textbf{SVM} & 0.594 & \textcolor{red}{0.744} & 0.737 & 0.718 & 0.724 & 0.637 & 0.716 \\ \hline
+\textbf{LR} & 0.724 & 0.721 & 0.709 & 0.696 & 0.713 & 0.639 & 0.722 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{KNN} & 0.655 & 0.657 & 0.652 & 0.649 & 0.609 & 0.681 \\ \hline
-\textbf{GP} & 0.726 & 0.724 & 0.706 & 0.708 & 0.644 & 0.729 \\ \hline
+\textbf{KNN} & 0.608 & 0.655 & 0.657 & 0.652 & 0.649 & 0.609 & 0.681 \\ \hline
+\textbf{GP} & 0.726 & 0.726 & 0.724 & 0.706 & 0.708 & 0.644 & 0.729 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{AB} & 0.644 & 0.650 & 0.650 & 0.655 & 0.609 & 0.637 \\ \hline
-\textbf{GNB} & 0.483 & 0.473 & 0.448 & 0.479 & 0.486 & 0.565 \\ \hline
+\textbf{AB} & 0.654 & 0.644 & 0.650 & 0.650 & 0.655 & 0.609 & 0.637 \\ \hline
+\textbf{GNB} & 0.478 & 0.483 & 0.473 & 0.448 & 0.479 & 0.486 & 0.565 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{BNB} & 0.713 & 0.662 & 0.621 & 0.709 & 0.537 & 0.565 \\ \hline
-\textbf{QDA} & 0.235 & 0.238 & 0.558 & 0.261 & 0.678 & 0.612 \\ \hline
+\textbf{MNB} & \multicolumn{1}{c}{\cellcolor[HTML]{EFEFEF}0.660} & 0.683 & 0.691 & 0.675 & 0.678 &  &  \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{BNB} & 0.713 & 0.713 & 0.662 & 0.621 & 0.709 & 0.537 & 0.565 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{LDA} & 0.614 & 0.609 & 0.588 & 0.591 & 0.665 & 0.693 \\ \hline
+\textbf{QDA} & 0.263 & 0.235 & 0.238 & 0.558 & 0.261 & 0.678 & 0.612 \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{LDA} & 0.609 & 0.614 & 0.609 & 0.588 & 0.591 & 0.665 & 0.693 \\ \hline
 \end{tabular}}
 \end{table}
 
-The classifier with the highest accuracy score was the...
+The classifier with the highest accuracy score was the SVM classifier with 0.744.
 
-% *** F1 SCORE ***
-\begin{table}[h!]
-\setlength\extrarowheight{5pt}
-\caption{F1-Score of Classifiers for different Feature Representations.}
-\label{Table:f1score}
-\resizebox{\textwidth}{!}{
-\begin{tabular}{ccccccc}
-\specialrule{1.5pt}{1pt}{1pt}
- & \textbf{Uni-gram} & \textbf{Bi-gram} & \textbf{Tri-gram} & \textbf{\begin{tabular}[c]{@{}c@{}}Uni-gram \\ (No Stop Words)\end{tabular}} & \textbf{Doc2Vec} & \textbf{Word2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
-\textbf{RF} & 0.65 & 0.64 & 0.64 & 0.69 & 0.59 & 0.63 \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-\textbf{DT} & 0.59 & 0.58 & 0.6 & 0.63 & 0.56 & 0.54 \\ \hline
-\textbf{MLP} & 0.7 & 0.69 & 0.69 & 0.69 & 0.57 & 0.71 \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-\textbf{SVM} & 0.73 & 0.73 & 0.71 & 0.71 & 0.63 & 0.71 \\ \hline
-\textbf{LR} & 0.7 & 0.69 & 0.68 & 0.69 & 0.6 & 0.71 \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-\textbf{KNN} & 0.62 & 0.62 & 0.62 & 0.61 & 0.55 & 0.67 \\ \hline
-\textbf{GP} & 0.71 & 0.72 & 0.7 & 0.7 & 0.61 & 0.72 \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-\textbf{AB} & 0.62 & 0.63 & 0.62 & 0.63 & 0.59 & 0.63 \\ \hline
-\textbf{GNB} & 0.51 & 0.49 & 0.47 & 0.5 & 0.51 & 0.58 \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-\textbf{BNB} & 0.72 & 0.67 & 0.64 & 0.71 & 0.55 & 0.58 \\ \hline
-\textbf{QDA} & 0.19 & 0.19 & 0.48 & 0.23 & 0.61 & 0.55 \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-\textbf{LDA} & 0.62 & 0.62 & 0.6 & 0.6 & 0.66 & 0.69 \\ \hline
-\end{tabular}}
-\end{table}
-
-The blah classifier achieved the best f1-score...
-
-Overall the best performing classifier was..
+Overall taking the four metrics into account the best performing classifier was the SVM Classfier.
 
 \subsection*{Feature Representations}
 
