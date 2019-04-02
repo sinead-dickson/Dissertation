@@ -1,7 +1,7 @@
 \chapter{Evaluation}
 
 \section{Introduction}
-This chapter will outline the results of this research project. First, the evaluation metrics that were used to evaluate the classifiers will be presented.
+This chapter will outline the results of this research project. First, the evaluation metrics that were used to evaluate the classifiers will be introduced. The results of the evaluation of the thirteen classifiers with the seven different feature representations will be presented. 
 
 \section{Evaluation Metrics for Classification}
 The following four metrics were used to evaluate the classifiers:
@@ -54,7 +54,7 @@ There are three ways that precision, recall, f1-score and accuracy can be calcul
 
 The metrics listed in the tables below (Tables ~\ref{Table:precision},~\ref{Table:recall},~\ref{Table:accuracy},~\ref{Table:f1score}) display the weighted average.
 
-\section{Classification Results}
+\section{Classification Results and Analysis}
 
 In this section, the performance of the classifiers will be presented. The following thirteen classifiers were evaluated:
 \begin{enumerate}
@@ -119,7 +119,9 @@ Each classifier and feature representation was evaluated in terms of precision, 
 \end{tabular}}
 \end{table}
 
-In terms of precision, QDA with Unigram TFIDF with no stop words removed was the best performing classifier with 0.79.
+In terms of precision, QDA with unigram TFIDF with no stop words feature representation was the best performing classifier with 0.79 (Table ~\ref{Table:precision}). This indicates that QDA had a high percentage of positive identifications that were classified correctly. QDA with TFIDF, this time with stop words has the next highest precision score of 0.76, confirming that unigram is the way to go with QDA. RF and SVM, both with unigram TFIDF were the next best performing classifiers with precision values of 0.74.
+
+In the study by A.Rane and A.Kumar \cite{Rane2018}, in which they classified the sentiment of twitter reviews. RF achieved the best precision score, followed by AdaBoost and then SVM. They did not include QDA in their evaluation. Our results do not fully agree with this study but they are not miles off. Two out of three of our top performing classifiers agree. Overall there precision scores are higher than ours, at about 0.8 compared to our 0.7. A possible cause of this that they trained their classifiers on a much larger dataset, a total of 14640 tweets, while our classifiers were trained on a set of 3116 tweets.
 
 % *** RECALL ***
 \begin{table}[h!]
@@ -154,10 +156,14 @@ In terms of precision, QDA with Unigram TFIDF with no stop words removed was the
 \end{tabular}}
 \end{table}
 
-The SVM classifier was the best performing in terms of recall with 0.74. TFIDF unigram and bigram performed equally well. Notice that QDA which performed the best in terms of precision does pretty poorly. 
+The SVM classifier was the best performing in terms of recall with a recall score of 0.74 (Table ~\ref{Table:recall}). The feature representations TFIDF unigram and bigram performed equally well. This again somewhat agrees with \cite{Rane2018}, who found that SVM was their second best performing classifier, with RF coming in on top.
+
+Notice that QDA which performed the best in precision does pretty poorly in recall. This is a common issue and is why we have also evaluated the classifiers in terms of f1-score, which shows the balance between precision and recall.
+
+GP was the next highest preforming classifier in terms of recall with a recall score of 0.73 with unigram TFIDF feature representation. This is interesting as I have not found any studies where a GP classifier has been applied to tweets. GP performed well in precision as well achieving a precision score of 0.72.  
 
 % *** F1 SCORE ***
-\begin{table}[]
+\begin{table}[h!]
 \setlength\extrarowheight{5pt}
 \caption{F1-Score of Classifiers for different Feature Representations.}
 \label{Table:f1score}
@@ -189,7 +195,11 @@ The SVM classifier was the best performing in terms of recall with 0.74. TFIDF u
 \end{tabular}}
 \end{table}
 
-Again, the SVM classifier achieved the best f1-score of 0.73, with the TFIDF unigram and bigram feature representations again performing equally well.
+Again, the SVM classifier achieved the best f1-score of 0.73 (Table ~\ref{Table:f1score}), with the TFIDF unigram and bigram feature representations again performing equally well. This indicates that the SVM classifier has a good balance of precision and recall.This confirms the results of both M. Rathi, A. Malik, D. Varshney, R. Sharma, and S. Mendiratta \cite{Raithi2018}, and A. Rane and A. Kumar \cite{Rane2018} who both found that the SVM classifier performed well in classifying tweets. However, it disagrees with the results of A. Bermingham and A. Smeaton who found that MNB performed better than SVM on tweets and short reviews. In this experiment SVM outperformed MNB in all metrics.
+
+One reason that SVM performs the best could be that in general the SVM classifier is effective in high dimensional feature spaces. Out Twitter data produces a large feature set so this property of SVMs is useful. SVMs are still effective in cases where the number of dimensions is greater than the number of samples. The number of dimensions in this case is not higher than the number of samples. However the number of samples is relatively low.
+
+The next best performing classifiers were GP and BNB, with f1-scores of 0.72. This somewhat agrees with A. Bermingham and A. Smeaton, who found that MNB achieved the best classification results on their set of tweets. I have not come across any example of GP performing well for tweet classification.
 
 % *** ACCURACY ***
 \begin{table}[h!]
@@ -224,11 +234,16 @@ Again, the SVM classifier achieved the best f1-score of 0.73, with the TFIDF uni
 \end{tabular}}
 \end{table}
 
-The classifier with the highest accuracy score was the SVM classifier with 0.744.
+The classifier with the highest accuracy score was the SVM classifier with an accuracy score of 0.744 (Table ~\ref{Table:accuracy}).
 
-Overall taking the four metrics into account the best performing classifier was the SVM Classfier.
+Overall taking the four metrics into account the best performing classifier was the SVM classifier, achieving the highest score in three out of four of the metrics, all but precision. It has a good balance of precision and recall and also has a high accuracy score.
 
 \subsection*{Feature Representations}
+
+\subsubsection*{N-Grams}
+Three different N-gram feature sets were evaluated: unigrams, unigrams and bigrams, unigrams and bigrams and trigrams. We found that increasing the number of N-grams did not improve the classification precision, accuracy, recall or f1-score. In most cases it actually worsened the performance of the classifiers or had little to no affect. This agrees with the findings of A. Bermingham and A. Smeaton \cite{Berm2010} who that expanding N-grams did not help the classification performance of either the tweets or the short reviews they tested them on. 
+
+
 
 
 \section{Evaluation Metrics for Recommender Systems}
