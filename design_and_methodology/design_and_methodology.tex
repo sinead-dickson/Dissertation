@@ -590,6 +590,8 @@ The sentiment scores produced by the Stanford NLP Sentiment Analyser were produc
 
 A majority voting technique was used to normalise the scores. For each hotel we have a selection of tweets. These tweets are divided into five clusters; very negative, negative, neutral (ignored), positive and very positive. A mean value was calculated for each cluster. This was calculated bu summing the corresponding score in the sentiment distribution for each tweet and dividing by the number of tweets in the cluster. The class with the highest mean value was assigned to the hotel.
 
+Sentiment scores were generated for some hotel chains, for example Hilton Hotels. In these cases the chain score was assigned to each hotel in the chain.
+
 This mean score was then normalised between zero and one, with the following weighting.
 \begin{itemize}
     \item Very Negative: 0 --> 0.25
@@ -600,18 +602,14 @@ This mean score was then normalised between zero and one, with the following wei
 
 The following normalisation formulae were used:
 
-\begin{tcolorbox}
-\begin{center}
-	$Normalised\ Score\ (Negative) = max\ score\ -\ (actual\ score\ \times\ (max\ score\ -\ min\ score))$
-
-    $Normalised\ score\ (Positive) = (actual\ score\ \times\ (max\ score\ -\ min\ score)) + min\ score$
-\end{center}
+\begin{tcolorbox}[title=Normalisation]
+$Normalised\ Score\ (-) = max\ score-(actual\ score \times (max\ score - min\ score))$
+$Normalised\ Score\ (+) = (actual\ score \times (max\ score - min\ score)) + min\ score$
 \end{tcolorbox}
 
 Taking the tweet above with a positive score of 0.42548434014862 as an example:
-\begin{tcolorbox}
+\begin{tcolorbox}[title=Example]
 $Normalised\ score\ (Positive) = (0.42548434014862\ \times\ (0.75\ -\ 0.5)) + 0.5.$
-
 $Normalised\ score\ (Positive) = 0.606$
 \end{tcolorbox}
 
