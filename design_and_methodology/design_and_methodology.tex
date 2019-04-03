@@ -2,13 +2,13 @@
 
 \section{Introduction}
 
-In this chapter the design and methodology choices involved in this project will be presented. This project consists of five main stages (Figure ~\ref{fig:pipeline}), each of which will be discussed in this chapter. These five stages are:
+In this chapter the design and methodology choices involved in this project will be presented. This project consists of five key stages (Figure ~\ref{fig:pipeline}). Each of these will be discussed in detail in this chapter. The five stages are:
 \begin{itemize}
-    \item Data Collection and Filtering: Collecting the twitter data and filtering it so it only contains tweets about hotels posted from Dublin.
-    \item Dataset Annotation: Annotating the filtered dataset.
-    \item Classification: Training and evaluating multiple supervised machine learning classifiers with different feature representations.
-    \item Sentiment Analysis: Analysing the sentiment of those tweets classified as reviews.
-    \item Application to Recommender System: Using the sentiment scores produced to re rank the results of the CoRE\cite{core2019} recommender system.
+    \item Data Collection and Filtering: This stage involved first collecting the Twitter data. The data was then filtered so it only contained tweets about hotels posted from Dublin.
+    \item Dataset Annotation: This stage involved annotating the filtered dataset of tweets about hotels in Dublin.
+    \item Classification: In this stage of the project multiple supervised machine learning classifiers were trained with different feature representations.
+    \item Sentiment Analysis: This part of the project involved analysing the sentiment of those tweets that were classified as reviews.
+    \item Application to Recommender System: In this stage the sentiment scores produced were used to re rank the results of the CoRE \cite{core2019} recommender system.
 \end{itemize}
 
 \begin{figure}[h!]
@@ -18,27 +18,29 @@ In this chapter the design and methodology choices involved in this project will
 \end{figure}
 
 \section{Data Collection}
-The data was collected using the Twitter Streaming API \footnote{\url{https://developer.twitter.com}} between October 2017 and September 2018. Twitter has a Search API and a Streaming API. The Search API allows you to find historical tweets and the Streaming API allows you to stream real-time tweets.
+The data was collected using the Twitter Streaming API \footnote{\url{https://developer.twitter.com}} (Application Programming Interface) between October 2017 and September 2018. Twitter has a Search API and a Streaming API. The Search API allows you to find historical tweets and the Streaming API allows you to stream real-time tweets.
 
-The data for this project was collected using the Streaming API. A filter was specified so that only tweets posted from within a bounding box of Dublin were returned. A total of 2.5 million tweets were collected.
+The tweets used in this project were collected using the Streaming API. A location filter was specified so that only tweets posted from within the bounding box of Dublin were returned (Figure ~\ref{fig:dublinBB}). A total of 2.5 million tweets were collected.
 
-After inspecting the collection of tweets it was found that although a bounding box had been specified not all tweets in the collection were posted from Dublin. A significant amount of tweets had slipped through Twitter's location filter. This meant the first step was to filter the dataset.
+After inspecting the collection of tweets it was found that although a bounding box had been specified not all tweets in the collection had been posted from Dublin. A significant amount of tweets had slipped through Twitter's location filter. This meant that the first step was to filter the dataset.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{design_and_methodology/dublinBB.png}
+\caption{\label{fig:dublinBB} Bounding Box for Dublin.}
+\end{figure}
 
 \section{Data Filtering}
 
 \subsection*{Geo-tagged Tweets}
 
-All of the tweets in the dataset were Geo-tagged since they were collected with a location filter. This meant they all had location data; a specified location from which the tweet was posted. There are two main types of Geo-tagged tweets:
+All of the tweets in the dataset were Geo-tagged since they were collected with a location filter. This meant they all had location data: a specified location from which the tweet was posted. There are two types of Geo-tagged tweets:
 \begin{itemize}
-    \item Tweets with a specific latitude/longitude or 'Point' coordinate. These tweets come from GPS enabled devices (Listing ~\ref{lst:pointjson}).
-    \item Tweets with a bounding box or Twitter 'Place'. A bounding box is a four-sided geographic area, defined by four points of the form [longitude, latitude] (Figure ~\ref{fig:dublinBB}). This defines the general area the tweet was posted from (Listing ~\ref{lst:placejson}).
+    \item \textbf{Point Coordinate}\newline
+    Tweets with a specific latitude/longitude or point coordinate. These tweets come from GPS enabled devices (Listing ~\ref{lst:pointjson}).
+    \item \textbf{Twitter Place}\newline
+    Tweets with a bounding box or Twitter Place. A bounding box is a four-sided geographic area, defined by four points of the form [longitude, latitude] (Figure ~\ref{fig:dublinBB}). This defines the general area the tweet was posted from (Listing ~\ref{lst:placejson}). \newline
 \end{itemize}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.6\textwidth]{design_and_methodology/dublinBB.png}
-\caption{\label{fig:dublinBB} Bounding Box for Dublin.}
-\end{figure}
 
 \begin{lstlisting}[caption={Geo-tagged Tweet with Point Coordinate},
 captionpos=b,label=lst:pointjson,language=json,firstnumber=1]
@@ -89,9 +91,9 @@ captionpos=b,label=lst:pointjson,language=json,firstnumber=1]
 
 \subsection*{Filtering Out Non-Dublin Tweets}
 
-The first attempt to filter out any non Dublin tweets involved using the point coordinate of the tweets. The point coordinate of each tweet was compared to the bounding box of Dublin. If it lay inside the box it was kept, otherwise it was filtered out. However, only 7.23\% of the tweets in our collection actually had a specific 'Point' coordinate. Filtering based on this excluded the majority of the dataset. To address this we instead filtered tweets based on either their point coordinate or their Twitter place.
+The first attempt to filter out any non Dublin tweets used the point coordinates of the tweets. The point coordinate of each tweet was compared to the bounding box of Dublin. If it lay inside the box it was kept, otherwise it was filtered out. However, only 7.23\% of the tweets in our collection actually had a specific point coordinate. Filtering based on this excluded the majority of the dataset. To address this we instead filtered tweets based on a combination of their point coordinates and their Twitter places.
 
-All of the tweets in the collection have a Twitter place defining the general area that the tweet was posted from. A combination of the Twitter place and the point coordinates was used to filter out any non Dublin tweets that had ended up in the dataset. 
+All of the tweets in the collection have a Twitter place defining the general area that the tweet was posted from. A combination of the Twitter place and the point coordinates was used to filter out any non-Dublin tweets that had ended up in the dataset. 
 
 \begin{table}[h!]
 \caption{Coordinates for Dublin's Bounding Box}
@@ -108,8 +110,8 @@ West Longitude & -6.447485 \\ \hline
 
 A bounding box for the Dublin area was defined (Table ~\ref{tab:dublinbb}). Tweets with a point coordinate and tweets with only a Twitter place were filtered differently:
 \begin{itemize}
-    \item \textbf{Point Coordinates}\newline
-    Each tweet with a point coordinate was checked to see if it fell within the defined bounding box for Dublin. If it lay inside the box it was kept, otherwise it was filtered out.
+    \item \textbf{Point Coordinate}\newline
+    Each tweet with a point coordinate was checked to see if the point coordinate fell within the defined bounding box for Dublin. If it lay inside the box it was kept, otherwise it was filtered out.
     \item \textbf{Twitter Place}\newline
     Each tweet with a Twitter place has a bounding box specifying the location of the place. The centroid of this bounding box was calculated for each tweet. Then the centroid was checked to see if it fell within the defined bounding box for Dublin. If it lay inside the box it was kept, otherwise it was filtered out.
 \end{itemize}
@@ -118,9 +120,9 @@ The filtered dataset consisted of 1.6 million tweets posted from Dublin between 
 
 \subsection*{Filter Out Tweets About Hotels}
 
-Now that the dataset had been filtered so that it only contained tweets posted from Dublin, the next step was to extract the tweets that mentioned hotels.
+The dataset of tweets posted from Dublin now had to be further filtered. The next step was to extract all tweets that mentioned hotels.
 
-A list of the hotels in Dublin was compiled. This included the hotel's name and the hotel's Twitter handle (@hotelname). This list consisted of ?? hotels and Twitter handles.
+A list of the hotels in Dublin was compiled. This included the hotel's name and the hotel's Twitter handles (@hotelname). This list consisted of 159 hotels and Twitter handles (Table ~\ref{Table:hotels}).
 
 The tweets were stored in a Lucene index. A fuzzy search query was used to match the tweets against each of the hotel names and hotel Twitter handles. The fuzzy search query uses a similarity measure that is based on the Damerau-Levenshtein algorithm. The maximum edits option was set to two. This means that strings with a maximum difference of two characters would match. This accounted for misspellings and broadened our search slightly. We experimented with higher numbers of maximum edits but found that too many irrelevant tweets were returned.
 
