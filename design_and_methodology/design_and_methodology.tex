@@ -124,19 +124,30 @@ The dataset of tweets posted from Dublin now had to be further filtered. The nex
 
 A list of the hotels in Dublin was compiled. This included the hotel's name and the hotel's Twitter handles (@hotelname). This list consisted of 159 hotels and Twitter handles (Table ~\ref{Table:hotels}).
 
-The tweets were stored in a Lucene index. A fuzzy search query was used to match the tweets against each of the hotel names and hotel Twitter handles. The fuzzy search query uses a similarity measure that is based on the Damerau-Levenshtein algorithm. The maximum edits option was set to two. This means that strings with a maximum difference of two characters would match. This accounted for misspellings and broadened our search slightly. We experimented with higher numbers of maximum edits but found that too many irrelevant tweets were returned.
+The tweets were stored in a Lucene index. A fuzzy search query was used to match the tweets against each of the hotel names and hotel Twitter handles. The fuzzy search query uses a similarity measure that is based on the Damerau-Levenshtein algorithm. The maximum edits option was set to two, meaning that strings with a maximum difference of two characters would still match. This accounted for misspellings and broadened our search slightly. We experimented with higher numbers of maximum edits but found that too many irrelevant tweets were returned.
 
 This further filtered dataset consisted of 3116 tweets that mention hotels posted from Dublin between October 2017 and September 2018.
 
 \section{Dataset Annotation}
 
-One major goal of this research was to categorise tweets as review-like tweets, tweets that contain some content and irrelevant tweets. In order to train a classifier to do this a set of tweets had to first be manually annotated. The set of 3116 tweets about hotels in Dublin was annotated. This involved building an annotation webpage where users could view tweets and assign them a label.
+One major goal of this research was to categorise tweets as review-like tweets, tweets that contain some content and irrelevant tweets. In order to train a classifier to do this a set of tweets had to first be manually annotated. The set of 3116 tweets about hotels in Dublin was annotated. This involved building an annotation webpage where users could view tweets and assign them labels.
 
 \subsection*{Annotation Webpage}
 
-A simple webpage was created in order to annotate the tweets (Figure ~\ref{fig:webpage}). The webpage can be found at \url{http://reviewtweets.epizy.com}. The text of each tweet was displayed alongside three buttons; review, some content and irrelevant. The participant could click on the option they thought best described the tweet shown. Once they chose a label, the next tweet would be displayed. 
+A simple webpage was created in order to annotate the tweets (Figure ~\ref{fig:webpage}). The webpage can be found at:
+\begin{center}
+    \url{http://reviewtweets.epizy.com}\newline
+\end{center}
+The text of each tweet was displayed alongside three buttons; review, some content and irrelevant. The participant could click on the option that they thought best described the tweet shown. Once they chose a label, the next tweet would be displayed. 
 
 Each time the webpage is loaded a random tweet from the dataset is displayed. The participant can annotate the tweets incrementally from that random tweet on. This means each participant will label a different section of the tweets, ensuring all tweets in the collection get annotated evenly.
+
+\begin{figure}[h!]
+\centering
+\fbox{\includegraphics[width=1\textwidth]{design_and_methodology/webpage.PNG}}
+\caption{\label{fig:webpage} Webpage for gathering Tweet Annotations.}
+\end{figure}
+
 
 The following instructions, describing what a review, some content and irrelevant tweet should look like accompanied the webpage:
 \begin{itemize}
@@ -148,15 +159,7 @@ The following instructions, describing what a review, some content and irrelevan
     This tweet is completely irrelevant. While perhaps mentioning the name of a hotel, the tweet doesn't give any additional information about that hotel or offer any opinions related to the hotel.
 \end{itemize}
 
-In this research we decided to focus solely on the text of the tweets. For this reason all images, videos and URLs were removed from the tweets.
-
-\begin{figure}[h!]
-\centering
-\fbox{\includegraphics[width=1\textwidth]{design_and_methodology/webpage.PNG}}
-\caption{\label{fig:webpage} Webpage for gathering Tweet Annotations.}
-\end{figure}
-
-The tweets were stored in an SQL table (Table ~\ref{Table:TweetAnnotation}) linked to the webpage, along with a count of the number of times the tweet had been labelled as a review, some content or irrelevant. Each time a participant chooses a label the corresponding value in the database is incremented. The final label of a tweet is determined by calculating which label had the maximum number of votes. 
+In this research we decided to focus solely on the text of the tweets. For this reason all images, videos and URLs were stripped from the tweets before being displayed on the annotation webpage.
 
 \begin{table}[h!]
 \caption{Sample of tweets from SQL table}
@@ -208,6 +211,10 @@ The tweets were stored in an SQL table (Table ~\ref{Table:TweetAnnotation}) link
 \end{tabular}}
 \end{table}
 
+The tweets were stored in an SQL table (Table ~\ref{Table:TweetAnnotation}) linked to the webpage, along with a count of the number of times the tweet had been labelled as a review, some content or irrelevant. Each time a participant chooses a label the corresponding value in the database is incremented. The final label of a tweet is determined by calculating which label had the maximum number of votes. 
+
+
+
 The annotation webpage was circulated to friends, family and members of the Adapt Research Centre to gather annotations.
 
 \section{Tweet Classification}
@@ -219,64 +226,77 @@ The annotated set of tweets was used to train a series of different classifiers.
 The following steps were taken to preprocess the tweets, before they were used to train the classifiers:
 \begin{itemize}
     \item Emojis were removed and replaced with text using Python's Emoji library \cite{emoji}. For example a thumbs up emoji would be converted to the text \emph{':thumbs\_up:'} and then \emph{'thumbs up'} once punctuation is removed.
-    \item Special characters and punctuation were removed. This included everything except the digits 0 - 9 and the letters a - z (upper and lower case).
+    \item Special characters and all punctuation was removed. This included everything except the digits 0 - 9 and the letters a - z (in upper and lower case).
     \item All single characters were removed.
     \item Words were split on case changes. For example \emph{'MerrionHotel'} --> \emph{'Merrion Hotel'}.
     \item Words were split on word-digit boundaries. For example \emph{'HouseDublin2'} --> \emph{'House Dublin 2'}.
     \item All text was converted to lower case.
     \item Stemming was performed using the Word Net Lemmatizer. Stemming is the process of reducing words down to their base or root. For example \emph{'organise'}, \emph{'organised'} and \emph{'organisation'} would all be reduced to \emph{'organis'}. Stemming conflates similar terms, reducing the number of words that are fed to the classifier.
-    \item Stop words were removed. All text contain words that are irrelevant and do not add any additional meaning. These are called stop words. Some examples of stop words are \emph{'and'}, \emph{'I'}, \emph{'of'} and \emph{'the'}.
+    \item Stop words were removed. All text contain words that are irrelevant and do not add any additional meaning. These are called stop words. Some examples of stop words are \emph{'and'}, \emph{'I'}, \emph{'of'} and \emph{'the'}. Stop words were not removed in all cases. It will be clearly stated in all cases where stop words were removed.
 \end{itemize}
 
 \subsection*{Feature Extraction}
 
 The classifiers require numerical feature vectors of fixed length rather than variable length raw text as their input. To comply with this our processed tweets had to be converted into numerical feature vectors. This process of converting raw text to a numerical feature vector is called vectorization.
 
-We experimented with seven different feature extraction methods to see which performed best on the Twitter data. Twitter data is quite different to standard text so standard feature extraction methods that perform well on text will not necessarily perform well for the Twitter data.
+We experimented with seven different feature extraction methods to see which performed best at classifying the Twitter data. Twitter data is quite different to standard text so standard feature extraction methods that perform well on text will not necessarily perform well for the Twitter data.
 
 The seven feature extraction methods implemented were:
 \begin{enumerate}
-    \item Unigram Bag-of-Words.
-    \item Unigram Bag-of-Words with TF-IDF.
-    \item Bigram Bag-of-Words with TF-IDF.
-    \item Trigram Bag-of-Words with TF-IDF.
-    \item Unigram Bag-of-Words with TF-IDF (with stop words removed).
-    \item Word2Vec.
-    \item Doc2Vec.
+    \item \textbf{Unigram Bag-of-Words (BOW)}\newline
+    A unigram implementation of BOW using Scikit Learn's Count Vectorizer.
+    \item \textbf{Unigram TF-IDF}\newline
+    A unigram implementation of TFIDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
+    \item \textbf{Bigram TF-IDF}\newline
+    A bigram implementation of TFIDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
+    \item \textbf{Trigram TF-IDF} \newline
+    A trigram implementation of TFIDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
+    \item \textbf{Unigram TF-IDF (stop words removed)}\newline
+    A unigram implementation of TFIDF with stop words removed using Scikit Learn's Count Vectorizer, TFIDF transformer and English stop word list.
+    \item \textbf{Doc2Vec}\newline
+    Gensim's implementation of doc2vec, each tweet being considered a document.
+    \item \textbf{Word2Vec}\newline
+    Gensim's implementation of word2vec with Google's pretrained model.
 \end{enumerate}
 
 \subsubsection{Bag-of-Words}
 
-In Bag-of-Words (BOW) documents are described by word occurrences. A vocabulary is created of all unique terms in the dataset. The vocabulary is ranked by frequency of occurrence. The maximum size of the vocabulary can be specified, so only the top however many terms are kept. Each tweet is then represented as a feature vector consisting of ones and zeroes. One representing a terms occurrence and zero representing a terms lack of occurrence. A major drawback of BOW is that it does not take word ordering into account. This is why it is called 'bag' of words. You can imagine all the words have been thrown into a bag together.
+In Bag-of-Words (BOW) documents are described by word occurrences. A vocabulary is created of all unique terms in the dataset. The vocabulary is ranked by frequency of occurrence. The maximum size of the vocabulary can be specified, so only the top however many terms are kept. Each tweet is then represented as a feature vector consisting of ones and zeroes. One representing a terms occurrence and zero representing a terms lack of occurrence. A major drawback of BOW is that it does not take word ordering into account. This is why it is called 'bag' of words. You can imagine that all the words have been thrown into a bag together and have lost any ordering.
 
 The Count Vectorizer from Python's Scikit Learn was used to implement BOW. 
 
 \subsubsection{TF-IDF}
 
-BOW can be extended with TF-IDF (Term Frequency Inverse Document Frequency). Term frequency is the frequency of the word in the current document. Inverse Document Frequency takes into account how often the word occurs in the whole dataset. The idea is to balance how important a term is in a document versus how important it is in the entire collection. We are less interested in a very frequently occurring term like for example 'the' than some less frequently occurring words. The TF-IDF score is used to re-weight the count features produced by the Count Vectorizer.
+BOW can be extended with TF-IDF (Term Frequency Inverse Document Frequency). Term frequency is the frequency of the word in the current document. Inverse Document Frequency takes into account how often the word occurs in the whole dataset. The idea is to balance how important a term is in a document versus how important it is in the entire collection. We are less interested in a very frequently occurring term like for example 'the' or 'and' than some less frequently occurring words. The TF-IDF score is used to re-weight the count features produced by the Count Vectorizer.
 
 \begin{tcolorbox}[title=TF-IDF]
-\begin{center}
-$TF-IDF = term\ frequency \times inverse\ document\ frequency$ 
-
-$TF = \frac{Number\ of\ Term\ Occurrences\ in\ Document}{Number\ of\ Terms\ in\ Document}$
-
-$IDF = \log \frac{1\ +\ n}{1\ +\ df(t)} + 1$
-
-$n = Total\ number\ of\ documents\ in\ the\ dataset.$
-
-$df(t) = Number\ of\ documents\ in\ the\ dataset\ containing\ term\ t.$
-\end{center}
+\begin{equation}
+    TFIDF = Term\ Frequency \times Inverse\ Document\ Frequency 
+\end{equation}
+\newline
+\begin{equation}
+    Term\ Frequency = \frac{Number\ of\ Term\ Occurrences\ in\ a\ Document}{Number\ of\ Terms\ in\ a\ Document}
+\end{equation}
+\newline
+\begin{equation}
+    Inverse\ Document\ Frequency\ = \log (\frac{1\ +\ n}{1\ +\ df(t)}) + 1 
+\end{equation}
+\newline
+\begin{equation}
+    n = Total\ number\ of\ documents\ in\ the\ dataset. 
+\end{equation}
+\newline
+\begin{equation}
+    df(t) = Number\ of\ documents\ in\ the\ dataset\ containing\ term\ t.
+\end{equation}
 \end{tcolorbox}
 The TF-IDF transformer from Python's Scikit Learn was used to implement TF-IDF.
-
-% SCIKIT: very short texts are likely to have noisy tf–idf values while the binary occurrence info is more stable.
 
 \subsubsection*{N-Grams}
 
 Another extension of BOW is the use of N-grams. N-grams help to address the problem BOW has with discarding word ordering.
 
-An N-gram is a sequence of N consecutive terms. For example the bi-grams of \emph{'Twitter as an Alternative Review Site'} are:
+An N-gram is a sequence of N consecutive terms. For example the bigrams of \emph{'Twitter as an Alternative Review Site'} are:
 \begin{itemize}
     \item \emph{'Twitter as'}
     \item \emph{'as an'}
@@ -285,15 +305,13 @@ An N-gram is a sequence of N consecutive terms. For example the bi-grams of \emp
     \item \emph{'Review Site'}
 \end{itemize}
 
-
-Combing bi-grams with BOW means that occurrences of pairs of consecutive words are counted instead of individual terms. Uni-grams, bi-grams and tri-grams were implemented.
+Combing bigrams with BOW means that occurrences of pairs of consecutive words are counted instead of individual terms. Unigrams, bigrams and trigrams were implemented.
 
 \subsubsection{Word2Vec}
 
-Word2Vec is another method for converting text into numerical feature vectors. It takes a large dataset as it's input and produces a vector space. Each word in the dataset is represented by a corresponding vector. It groups the vector of similar words together in the vector space. Cosine similarity, the cosine of the angle between two vectors, measures the similarity of vectors in the vector space. 
+Word2Vec is another method for converting text into numerical feature vectors. It takes a dataset as it's input and produces a vector space. Each word in the dataset is represented by a corresponding vector. It groups the vector of similar words together in the vector space. Cosine similarity, the cosine of the angle between two vectors, measures the similarity of vectors in the vector space. 
 
-Gensim's implementation of Word2Vec \cite{gensim} and Google's pre-trained model was used. Google's model includes word vectors for three million words and phrases. It was trained with about 100 billion words from a Google News dataset. The word vectors of each word in a document are averaged to produce a feature vector for each document.
-% Similar to BOW? doesn't perform any better really, also has no relationship between words.
+Gensim's implementation of Word2Vec \cite{gensim} and Google's pre-trained model was used. Google's model includes word vectors for three million words and phrases. It was trained with about 100 billion words from a Google News dataset. The word vectors of each word in a document are averaged to produce a feature vector for that document.
 
 \subsubsection*{Doc2Vec}
 
@@ -307,30 +325,30 @@ Thirteen different classifiers were implemented, each with their implementation 
 
 The twelve classifiers implemented were:
 \begin{enumerate}
-    \item Decision Tree Classifier.
-    \item Random Forest Classifier.
-    \item Multi Layer Perceptron Classifier.
-    \item Support Vector Machine Classifier.
-    \item Logistic Regression Classifier.
-    \item K Nearest Neighbours Classifier.
-    \item Gaussian Process Classifier.
-    \item Adaboost Classifier.
-    \item Gaussian Naive Bayes Classifier.
-    \item Bernoulli Naive Bayes Classifier.
-    \item Multinomial Naive Bayes
-    \item Quadratic Discriminant Analysis Classifier.
-    \item Linear Discriminant Analysis Classifier.
+    \item Decision Tree (DT) Classifier.
+    \item Random Forest (RF) Classifier.
+    \item Multi Layer Perceptron (MLP) Classifier.
+    \item Support Vector Machine (SVM) Classifier.
+    \item Logistic Regression (LR) Classifier.
+    \item K Nearest Neighbours (KNN) Classifier.
+    \item Gaussian Process (GP) Classifier.
+    \item Adaboost (AB) Classifier.
+    \item Gaussian Naive Bayes (GNB) Classifier.
+    \item Bernoulli Naive Bayes (BNB) Classifier.
+    \item Multinomial Naive Bayes (MNB) Classifier.
+    \item Quadratic Discriminant Analysis (QDA) Classifier.
+    \item Linear Discriminant Analysis (LDA) Classifier.
 \end{enumerate}
 
 \subsubsection*{Decision Tree}
 
-The Decision Tree Classifiers is a simple classification algorithm that can be used for binary or multi-class classification. They learn simple decision rules based on the attributes of the training data. These decision rules form a tree structure (Figure ~\ref{fig:decisiontree}) which is used to predict the value of a target variable. The leaf nodes represent the class labels. When an unclassified document is received questions are asked until a leaf node is reached and the document is assigned that class.
-
 \begin{figure}[h!]
 \centering
 \fbox{\includegraphics[width=0.75\textwidth]{design_and_methodology/decisiontree.png}}
-\caption{\label{fig:decisiontree} Decision Tree Example}
+\caption{\label{fig:decisiontree} Decision Tree Classifier Example.}
 \end{figure}
+
+The Decision Tree Classifiers is a simple classification algorithm that can be used for binary or multi-class classification. DT classifiers learn simple decision rules based on the attributes of the training data. These decision rules form a tree structure (Figure ~\ref{fig:decisiontree}) which is used to predict the value of a target variable. The leaf nodes represent the class labels. When an unclassified document is received questions are asked until a leaf node is reached and the document is assigned that class.
 
 The DT Classifier was implemented with Scikit Learn with the following parameters:
 
@@ -342,9 +360,7 @@ The DT Classifier was implemented with Scikit Learn with the following parameter
 
 \subsubsection*{Random Forest}
 
-%[B2001]	Breiman, “Random Forests”, Machine Learning, 45(1), 5-32, 2001.
-
-The Random Forest Classifier (RF) is an ensemble classification algorithm, meaning it combines multiple base classification algorithms. It consists of multiple decision trees. The final class prediction is calculated by getting the average of the decision of the individual decision trees.
+The Random Forest Classifier is an ensemble classification algorithm, meaning it combines multiple base classification algorithms. It consists of multiple decision trees. The final class prediction is calculated by getting the average of the decision of the individual decision trees.
 
 The RF Classifier was implemented with Scikit Learn with the following parameters:
 
@@ -354,17 +370,17 @@ The RF Classifier was implemented with Scikit Learn with the following parameter
 \end{center}
 \end{tcolorbox}
 
-\subsubsection*{Multi Layer Perceptron}
-
-The Multi Layer Perceptron (MLP) Classifier is a deep, feedforward, artificial neural network. It conists of a minimum of three layers (Figure ~\ref{fig:mlp}); an input layer, a hidden layer and an output layer. The input layer receives the data, the output layer makes a decision and the hidden layers approximate the function.
-
 \begin{figure}[h!]
 \centering
 \fbox{\includegraphics[width=0.5\textwidth]{design_and_methodology/multilayerperceptron_network.png}}
-\caption{\label{fig:mlp} MLP with one hidden layer \cite{scikit-learn}}
+\caption{\label{fig:mlp} Multi Layer Perceptron Classifier with one hidden layer \cite{scikit-learn}.}
 \end{figure}
 
-The MLP learns a function by based on the training set. Given a set of features X = x1,x2,x3,...,xn and a target y, it learns a non-linear approximation function. Backpropagation is used to train the MLP.
+\subsubsection*{Multi Layer Perceptron}
+
+The Multi Layer Perceptron Classifier is a deep, feedforward, artificial neural network. It consists of a minimum of three layers (Figure ~\ref{fig:mlp}): an input layer, a hidden layer and an output layer. The input layer receives the data, the output layer makes a decision and the hidden layers approximate the function.
+
+The MLP learns a function by based on the training set. Given a set of features $X = x_1,x_2,x_3,...,x_n$ and a target y, it learns a non-linear approximation function. Backpropagation is used to train the MLP.
 
 The MLP Classifier was implemented with Scikit Learn with the following parameters:
 
@@ -376,7 +392,7 @@ The MLP Classifier was implemented with Scikit Learn with the following paramete
 
 \subsubsection*{Support Vector Machine}
 
-The Support Vector Machine (SVM) Classifier is a discriminative classifier. It finds the optimum hyperplane that separates the data into the labelled classes. It aims to maximise the distance between the hyperplane and the support vectors (the points closest to the hyper plane).
+The Support Vector Machine Classifier is a discriminative classifier (Figure ~\ref{fig:svm}). It finds the optimum hyperplane that separates the data into the labelled classes. It aims to maximise the distance between the hyperplane and the support vectors (the points closest to the hyper plane).
 
 \begin{figure}[h!]
 \centering
@@ -394,10 +410,10 @@ The SVM Classifier was implemented with Scikit Learn with the following paramete
 
 \subsubsection*{Logistic Regression}
 
-The Linear Regression (LR) Classifier is a linear classification algorithm that uses the logistic function to model the training data. The logistic function is as follows:
-\begin{center}
-  \(g(z)=1/(1+e^{-z})\)  
-\end{center}
+The Logistic Regression Classifier is a linear classification algorithm that uses the logistic function to model the training data. The logistic function is as follows:
+\begin{equation}
+  g(z)= \frac{1}{(1+e^{-z})}  
+\end{equation}
 
 The LR Classifier was implemented with Scikit Learn with the following parameters:
 
@@ -409,13 +425,13 @@ The LR Classifier was implemented with Scikit Learn with the following parameter
 
 \subsubsection*{K Nearest Neighbours}
 
-The K Nearest Neighbours (KNN) Classifier doesn't build a model like other classification algorithms. It uses a majority vote of the "nearest neighbours" to a document. A label is assigned to a document based on the class that has the majority of the nearest neighbours to the document. For example, point one would be assigned the label blue. Taking it's four nearest neighbours it has three blue neighbours and one red neighbour. The point is assigned to the class with the majority of the nearest neighbour, blue.
-
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.7\textwidth]{design_and_methodology/knn.png}
 \caption{\label{fig:knn} K Nearest Neighbours.}
 \end{figure}
+
+The K Nearest Neighbours (KNN) Classifier doesn't build a model like other classification algorithms. It uses a majority vote of the "nearest neighbours" to a document. A label is assigned to a document based on the class that has the majority of the nearest neighbours to the document. For example, point one would be assigned the label blue. Taking it's four nearest neighbours it has three blue neighbours and one red neighbour. The point is assigned to the class with the majority of the nearest neighbour, blue.
 
 The KNN Classifier was implemented with Scikit Learn with the following parameters:
 

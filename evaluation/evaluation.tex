@@ -97,13 +97,13 @@ In this section, the results and evaluation of the classifiers will be presented
 
 These classifiers were evaluated with seven different feature representations defined below:
 \begin{enumerate}
-    \item Unigram Bag-of-Words (BOW): A unigram implementation of BOW using Scikit Learn's Count Vectorizer.
-    \item Unigram TF-IDF: A unigram implementation of TFIDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
-    \item Bigram TF-IDF: A bigram implementation of TFIDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
-    \item Trigram TF-IDF: A trigram implementation of TFIDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
-    \item Unigram TF-IDF with stop words removed: A unigram implementation of TFIDF with stop words removed using Scikit Learn's Count Vectorizer, TFIDF transformer and English stop word list.
-    \item Doc2Vec: Gensim's implementation of doc2vec, each tweet being considered a document.
-    \item Word2Vec: Gensim's implementation of word2vec with Google's pretrained model.
+    \item Unigram Bag-of-Words (BOW).
+    \item Unigram TF-IDF.
+    \item Bigram TF-IDF.
+    \item Trigram TF-IDF.
+    \item Unigram TF-IDF with stop words removed.
+    \item Doc2Vec.
+    \item Word2Vec.
 \end{enumerate}
 
 Taking the thirteen classifiers and seven feature representations there are 91 different combinations. Each was evaluated in terms of precision, recall, accuracy and f1-score.
@@ -281,6 +281,9 @@ Neither Doc2Vec or Word2Vec achieved any better performance than TFIDF. Word2Vec
 \subsubsection*{Stop Words}
 
 The unigram TFIDF feature representation was implemented with and without stop words. The implementation with stop words included performed better in nine out of the thirteen classifiers. This indicates that stop word removal did not improve classification performance. TFIDF itself reflects how important a document is within a collection. It may be that TFIDF is already accounting for the stop words high frequency so no stop word removal is required.
+% SCIKIT: very short texts are likely to have noisy tf–idf values while the binary occurrence info is more stable.
+% Word2vec Similar to BOW? doesn't perform any better really, also has no relationship between words.
+
 
 \section{Evaluation Metrics for Recommender Systems}
 
