@@ -28,16 +28,16 @@ Text classification is one application of both supervised and unsupervised machi
 A Support Vector Machine (SVM) is a discriminative classifier, first introduced by Cortes and Vapnik \cite{Vapnik1995,  Vapnik21995}. SVMs have been successfully used for text classification \cite{Joachims1998, tong2001support}. The algorithm functions by finding the optimum hyperplane that separates the data into the defined classes. The aim of a SVM is to maximise the distance between the hyperplane and the support vectors (the data points closest to the hyperplane). 
 
 Another popular supervised learning method often used for text classification is the Naive Bayes (NB) Classifier  \cite{NaiveBayes1998}. NB is a generative classifier, learning a model of the joint probability P(A,B), and making predictions by using Bayes Rule. It calculates the probability that an observation belongs to a particular class. NB is based on applying Bayes Rule along with the ‘naive’ assumption that features are conditionally independent. Bayes Rule is as follows:
-\begin{center}
-    \(P(A\mid B)=\frac{P(B\mid A)\:P(A)}{P(B)}\) 
-\end{center}
+\begin{equation}
+    P(A\mid B) = \frac{P(B\mid A)\:P(A)}{P(B)}
+\end{equation}
 In the case of text classification, this means we assume all words are independent, which is of course not the case. This assumption is a major pitfall of the algorithm. 
 
 Logistic Regression (LR) is the discriminative counterpart to Naive Bayes \cite{ng2002discriminative}. It is a linear classifier. LR uses the logistic function, also known as the sigmoid function or logit function to model the data. This is an S-shaped curve, taking real-valued inputs and mapping them to the range 0 – 1. The logistic function is as follows:
 
-\begin{center}
-    \(g(z)=1/(1+e^{-z})\)
-\end{center}
+\begin{equation}
+    g(z)= \frac{1}{(1+e^{-z})}
+\end{equation}
 
 Logistic Regression models the probability that an observation belongs to a particular class. The coefficients of the LR algorithm are estimated from the training data, using maximum likelihood estimation or gradient descent.
 
