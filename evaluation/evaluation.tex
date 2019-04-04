@@ -260,10 +260,6 @@ The next best performing classifiers were GP and BNB, with f1-scores of 0.72. Th
 
 The classifier with the highest accuracy score was also the SVM classifier with an accuracy score of 0.744 (Table ~\ref{Table:accuracy}). This indicates it had the highest percentage of correct predictions. The next best performing classifier was the GP classifier.
 
-Overall considering the four metrics, the best performing classifier was the SVM classifier, achieving the highest score in three out of four of the metrics, all but precision. The SVM classifier has a good balance of precision and recall, achieving the highest f1-score, and also had the highest accuracy score of all the classifiers.
-
-A possible reason that SVM achieves the top performance is that the SVM classifier tends to be effective in high dimensional feature spaces. Twitter data produces a large feature set making this property of the SVM classifier useful. Another property of the SVM classifier is that they are still effective in cases where the number of dimensions is greater than the number of samples. The number of dimensions in this case is not higher than the number of samples. However our number of samples is relatively low.
-
 \subsection*{Feature Representation}
 
 Different types of feature representation were explored to try and improve the performance of the classifiers. This section will outline the changes in performance produced by these feature representation methods. 
@@ -288,19 +284,24 @@ The unigram TFIDF feature representation was implemented with and without stop w
 
 \section{Evaluation Metrics for Recommender Systems}
 
+\subsection*{A/B Test}
+
+A common evaluation for a recommender system is an A/B test. This is only possible if you have a recommender system with an existing user population. The test involves redirecting a percentage of the traffic to the new recommender system. The systems can then be compared based on implicit user feedback such as clicks and skips. An A/B test is currently being designed to incorporate CoRE into the live Ryanair Rooms website.
+
+\subsection*{Leave-One-Out}
+
+CoRE was evaluated using the 'leave-one-out' cross validation approach. In this approach one of a users n bookings is taken out and the remaining bookings are used to build the user model. A list of hotels is produced ranked in descending order by their predicted value. The booking that was removed is compared to this list to see where it ranked, the higher the better. This can be repeated with each of the users n bookings.
+
 \section{Recommender Results and Analysis}
 
 \section{Summary}
 
-In this section, the results of this research will be summarised. This will be broken up into classification and recommendation.
-
 \subsection*{Classification}
 
-One of the aims of this research was to identify whether tweets were reviews. 
-The best performing classifier was the Support Vector Machine.
+One of the aims of this research was to identify whether it was possible to identify whether tweets contained reviews. A series of classifiers and feature representations were evaluated. 
 
-\subsection*{Recommendation}
+Overall considering the four metrics, the best performing classifier was the SVM classifier, achieving the highest score in three out of four of the metrics, all but precision. The SVM classifier has a good balance of precision and recall, achieving the highest f1-score, and also had the highest accuracy score of all the classifiers.
 
-\subsection*{Limitations}
+A possible reason that SVM achieves the top performance is that the SVM classifier tends to be effective in high dimensional feature spaces. Twitter data produces a large feature set making this property of the SVM classifier useful. Another property of the SVM classifier is that they are still effective in cases where the number of dimensions is greater than the number of samples. The number of dimensions in this case is not higher than the number of samples. However our number of samples is relatively low.
 
-The size of our dataset is a major limiting factor. Although the results are promising we cannot claim that this method performs well without evaluating it on a larger dataset. 
+\subsection*{Recommender System}
