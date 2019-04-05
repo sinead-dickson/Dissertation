@@ -14,7 +14,7 @@ In this chapter the design and methodology choices involved in this project will
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1\textwidth]{design_and_methodology/pipeline.png}
-\caption{\label{fig:pipeline} Overview of Project.}
+\caption{\label{fig:pipeline} An overview of the key stages of the project.}
 \end{figure}
 
 \section{Data Collection}
@@ -27,7 +27,7 @@ After inspecting the collection of tweets it was found that although a bounding 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.75\textwidth]{design_and_methodology/dublinBB.png}
-\caption{\label{fig:dublinBB} Bounding Box for Dublin.}
+\caption{\label{fig:dublinBB} Bounding Box of Dublin.}
 \end{figure}
 
 \section{Data Filtering}
@@ -96,7 +96,7 @@ The first attempt to filter out any non Dublin tweets used the point coordinates
 All of the tweets in the collection have a Twitter place defining the general area that the tweet was posted from. A combination of the Twitter place and the point coordinates was used to filter out any non-Dublin tweets that had ended up in the dataset. 
 
 \begin{table}[h!]
-\caption{Coordinates for Dublin's Bounding Box}
+\caption{The coordinates of Dublin's Bounding Box.}
 \label{tab:dublinbb}
 \setlength\extrarowheight{5pt}
 \begin{tabular}{|c|c|}
@@ -126,11 +126,11 @@ A list of the hotels in Dublin was compiled. This included the hotel's name and 
 
 The tweets were stored in a Lucene index. A fuzzy search query was used to match the tweets against each of the hotel names and hotel Twitter handles. The fuzzy search query uses a similarity measure that is based on the Damerau-Levenshtein algorithm. The maximum edits option was set to two, meaning that strings with a maximum difference of two characters would still match. This accounted for misspellings and broadened our search slightly. We experimented with higher numbers of maximum edits but found that too many irrelevant tweets were returned.
 
-This further filtered dataset consisted of 3116 tweets that mention hotels posted from Dublin between October 2017 and September 2018.
+This further filtered dataset consisted of 3115 tweets that mention hotels posted from Dublin between October 2017 and September 2018.
 
 \section{Dataset Annotation}
 
-One major goal of this research was to categorise tweets as review-like tweets, tweets that contain some content and irrelevant tweets. In order to train a classifier to do this a set of tweets had to first be manually annotated. The set of 3116 tweets about hotels in Dublin was annotated. This involved building an annotation webpage where users could view tweets and assign them labels.
+One major goal of this research was to categorise tweets as review-like tweets, tweets that contain some content and irrelevant tweets. In order to train a classifier to do this a set of tweets had to first be manually annotated. The set of 3115 tweets about hotels in Dublin was annotated. This involved building an annotation webpage where users could view tweets and assign them labels.
 
 \subsection*{Annotation Webpage}
 
@@ -145,7 +145,7 @@ Each time the webpage is loaded a random tweet from the dataset is displayed. Th
 \begin{figure}[h!]
 \centering
 \fbox{\includegraphics[width=1\textwidth]{design_and_methodology/webpage.PNG}}
-\caption{\label{fig:webpage} Webpage for gathering Tweet Annotations.}
+\caption{\label{fig:webpage} Tweet Annotation Webpage.}
 \end{figure}
 
 
@@ -162,7 +162,7 @@ The following instructions, describing what a review, some content and irrelevan
 In this research we decided to focus solely on the text of the tweets. For this reason all images, videos and URLs were stripped from the tweets before being displayed on the annotation webpage.
 
 \begin{table}[h!]
-\caption{Sample of tweets from SQL table}
+\caption{A sample of the tweets from the SQL table.}
 \label{Table:TweetAnnotation}
 \setlength\extrarowheight{5pt}
 \resizebox{\textwidth}{!}{
@@ -345,7 +345,7 @@ The twelve classifiers implemented were:
 \begin{figure}[h!]
 \centering
 \fbox{\includegraphics[width=0.75\textwidth]{design_and_methodology/decisiontree.png}}
-\caption{\label{fig:decisiontree} Decision Tree Classifier Example.}
+\caption{\label{fig:decisiontree} An example of a Decision Tree Classifier.}
 \end{figure}
 
 The Decision Tree Classifiers is a simple classification algorithm that can be used for binary or multi-class classification. DT classifiers learn simple decision rules based on the attributes of the training data. These decision rules form a tree structure (Figure ~\ref{fig:decisiontree}) which is used to predict the value of a target variable. The leaf nodes represent the class labels. When an unclassified document is received questions are asked until a leaf node is reached and the document is assigned that class.
@@ -373,7 +373,7 @@ The RF Classifier was implemented with Scikit Learn with the following parameter
 \begin{figure}[h!]
 \centering
 \fbox{\includegraphics[width=0.5\textwidth]{design_and_methodology/multilayerperceptron_network.png}}
-\caption{\label{fig:mlp} Multi Layer Perceptron Classifier with one hidden layer \cite{scikit-learn}.}
+\caption{\label{fig:mlp} A Multi Layer Perceptron Classifier with one hidden layer \cite{scikit-learn}.}
 \end{figure}
 
 \subsubsection*{Multi Layer Perceptron}
@@ -397,7 +397,7 @@ The Support Vector Machine Classifier is a discriminative classifier (Figure ~\r
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.75\textwidth]{design_and_methodology/svm.png}
-\caption{\label{fig:svm} SVM.}
+\caption{\label{fig:svm} An example of a Support Vector Machine Classifier.}
 \end{figure}
 
 The SVM Classifier was implemented with Scikit Learn with the following parameters:
@@ -428,7 +428,7 @@ The LR Classifier was implemented with Scikit Learn with the following parameter
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.7\textwidth]{design_and_methodology/knn.png}
-\caption{\label{fig:knn} K Nearest Neighbours.}
+\caption{\label{fig:knn} An example of a K Nearest Neighbours Classifier.}
 \end{figure}
 
 The K Nearest Neighbours (KNN) Classifier doesn't build a model like other classification algorithms. It uses a majority vote of the "nearest neighbours" to a document. A label is assigned to a document based on the class that has the majority of the nearest neighbours to the document. For example, point one would be assigned the label blue. Taking it's four nearest neighbours it has three blue neighbours and one red neighbour. The point is assigned to the class with the majority of the nearest neighbour, blue.
@@ -528,7 +528,7 @@ The Quadratic Discriminant Analysis Classifier and the Linear Discriminant Analy
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1\textwidth]{design_and_methodology/qda_and_lda.png}
-\caption{\label{fig:qdalda} Quadratic Discriminant Analysis and Linear Discriminant Analysis.}
+\caption{\label{fig:qdalda} Boundaries of the Quadratic Discriminant Analysis and Linear Discriminant Analysis Classifiers \cite{scikit-learn}.}
 \end{figure}
 
 Both QDA AND LDA were implemented with Scikit Learn with the folllowing parameters:
@@ -615,12 +615,21 @@ $Normalised\ score\ (Positive) = 0.606$
 
 \section{CoRE Recommender System}
 
-The sentiment scores produced by the Stanford Sentiment Analyser were used to re rank the list of hotel recommendations produced by the CoRE recommender system.
+The sentiment scores produced by the Stanford NLP Sentiment Analyser \cite{stanfordSentiment2013} were used to re-rank the list of hotel recommendations produced by the CoRE recommender system \cite{core2019}.
 
 \subsection*{CoRE}
-What core is...
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{design_and_methodology/centroid.png}
+\caption{\label{fig:centroid} Centroid of CoRE Models.}
+\end{figure}
+
+CoRE \cite{core2019} is a Cold Start Resistant and Extensible Recommender system. It makes use of collaborative filtering, content-based recommendation and contextual suggestion. CoRE is made up of three models, a user model, a segment model and a context model. Each model is generated as a weighted feature vector. A centroid vector is then calculated, and a weighting is applied to determine the effect of each model. The cosine similarity between the vector of each hotel and the centroid vector of the user is then calculated, and a list of hotels is produced, ranked based on this score.
+
 \subsection*{Re-Ranking}
-How CoRE was re-ranked...
+
+The score produced by the Stanford NLP Sentiment Analyser were used to re-rank this list of hotels. This was done by simply multiplying the score of the hotel in the CoRE ranked list by the normalised sentiment score. The sentiment score normalised between zero and one boosts the score of hotels with a positive sentiment score and drags down the score of the hotels with a negative sentiment score.
 
 
 

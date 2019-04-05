@@ -1,1 +1,23 @@
 \chapter{Summary}
+
+This dissertation proposes a method of first identifying review-like tweets and then incorporating the sentiment of these tweets into a recommender system. This research aims to evaluate to which extent Twitter can provide a suitable source of online reviews that can be used effectively in the generation of recommendations in a recommender system. The project will focus on reviews about hotels in Dublin.
+
+Online reviews have become an important source of consumer information. They provide vast amounts of valuable information on consumer preferences.
+
+Twitter is a huge microblogging social media site with 126 million users and 500 million tweets posted daily. Twitter users regularly share their opinions on a wide range of different topics. Often these tweets can take the form of a review. This project aims to utilise the review-like tweet posted to Twitter.
+
+Previous literature has shown that supervised machine learning methods can be successfully used to classify tweets. Numerous studies have focused on classifying the sentiment of tweets. However, there are few papers which have investigated the classification of reviews in tweets. The objective of this research is to investigate whether it is possible to classify whether a tweet contains a review.
+
+The increasing amount of information available on the internet, has meant that recommender systems have grown in importance. They are needed to help users quickly find relevant information and to overcome the information overload problem. Hotel recommender systems such as Expedia, TripAdvisor and Booking.com are widely used.
+
+Research has shown that incorporating TripAdvisor reviews into a hotel recommender system increased the average user satisfaction. This suggests that incorporating review like tweets could work equally well. 
+
+The data was collected through the Twitter Streaming API. It then had to be filtered so that it only contained tweets about hotels posted from Dublin. Once the dataset was filtered it had to be manually annotated so that it could be used to train a classification algorithm. A webpage was built to facilitate this annotation process. The tweets were labelled as a 'review', 'some content' or 'irrelevant'.
+
+Thirteen different classifiers were evaluated. These included: Decision Tree Classifier, Random Forest Classifier, Multi Layer Perceptron Classifier, Support Vector Machine Classifier, Logistic Regression Classifier, K Nearest Neighbours Classifier, Gaussian Process Classifier, Adaboost Classifier, Gaussian Naive Bayes Classifier, Bernoulli Naive Bayes Classifier, Multinomial Naive Bayes, Classifier, Quadratic Discriminant Analysis Classifier, Linear Discriminant Analysis Classifier. Seven feature representations were experimented with, unigram bag-of-words, unigram, bigram and trigram TFIDF, unigram TFIDF with stop words removed, Word2Vec and Doc2Vec. The classifiers were implemented using Python's Scikit Learn library.
+
+Sentiment analysis was carried out on the tweets classified as reviews. The Stanford NLP Sentiment Analyser was used for this. The sentiment scores produced were used to re-rank the results of the CoRE recommender system.
+
+The results show that the Support Vector Machine Classifier performed best at classifying whether the tweets contained reviews. It achieved accuracy of 74.4\%.
+
+Further work needs to be done to confirm our results. The dataset needs to be expanded.
