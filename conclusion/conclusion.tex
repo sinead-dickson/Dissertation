@@ -2,24 +2,37 @@
 
 \section{Summary of Results}
 
-\subsection*{Limitations}
+In this dissertation, two problems were addressed. The first was whether it was possible to classify if a tweet contains a review. The second was to determine to what extent can Twitter provide a suitable source of online reviews that can be used effectively in the generation of recommendations in a recommender system.
 
-The size of our dataset is a major limiting factor. Although the results are promising we cannot claim that this method performs well without evaluating it on a larger dataset.
+Tweets were collected through the Twitter Streaming API. They were then filtered so that they only contained tweets about hotels posted from Dublin. Once the dataset was filtered it had to be manually annotated so that it could be used to train a series of classification algorithms. A webpage was built to facilitate this annotation process. The tweets were labelled as 'review', 'some content' or 'irrelevant'.
+
+Thirteen different classifiers were evaluated. These included: Decision Tree Classifier, Random Forest Classifier, Multi Layer Perceptron Classifier, Support Vector Machine Classifier, Logistic Regression Classifier, K Nearest Neighbours Classifier, Gaussian Process Classifier, Adaboost Classifier, Gaussian Naive Bayes Classifier, Bernoulli Naive Bayes Classifier, Multinomial Naive Bayes, Classifier, Quadratic Discriminant Analysis Classifier, Linear Discriminant Analysis Classifier. Seven feature representations were experimented with, unigram bag-of-words, unigram, bigram and trigram TFIDF, unigram TFIDF with stop words removed, Word2Vec and Doc2Vec. The classifiers were implemented using Python's Scikit Learn library.
+
+We evaluated the performance of these classifiers. The best performing classifier was the Support Vector Machine classifier. It achieved a precision score of 74\%, a recall score of 74\%, an f1-score of 73\% and an accuracy score of 74.4\%. The best performing feature representation was unigram TFIDF. These results confirm that text classification is a valid method of extracting reviews from Twitter. 
+
+Sentiment analysis was performed on the tweets that were classified as reviews, using the Stanford NLP Sentiment Analyser. The sentiment scores produced were used to re-rank the results of the CoRE recommender system. The performance of the CoRE recommender system with the sentiment scores was evaluated against the original CoRE recommender.
+
+The sentiment scores had an effect on the CoRE recommender system.
+
+The size of our dataset needs to be considered when analysing these results. Although the results are promising? we cannot claim that this method performs well without evaluating it on a larger dataset. 
+
+%RECOMMENDER RESULTS
 
 \section{Future Work}
-One line of future work would be to improve the accuracy of the machine learning algorithms. This could be achieved by:
+
+Several lines of future work have arisen from this dissertation.
+
+One line of future work would be to improve the classification performance of the machine learning algorithms. An accuracy of 74.4\% was achieved with the SVM classifier. There is definitely improvements to be made here. This could be achieved by:
 \begin{itemize}
-    \item Increasing the size of the dataset. In general, supervised machine learning methods perform better on large datasets. This would involve gathering more tweets and manually annotating them.
-    \item Investigating other feature representations. Part-of-speech tagging and natural language processing techniques could be experimented with.
-    \item Trying more classification algorithms. Algorithms such as fakshfksj which were not evaluated in this research could be investigated. 
+    \item Increasing the size of the dataset used for training the classifiers. In general, supervised machine learning methods perform better on large datasets. This would involve gathering more tweets and manually annotating them.
+    \item Investigating other feature representations. BOW, TFIDF, N-Grams, Word2Vec and Doc2Vec evaluated. Other feature representations like Part-of-speech tagging and natural language processing techniques could be experimented with.
+    \item More classification algorithms could be implemented. Algorithms such as fakshfksj which were not evaluated in this research could be investigated. 
 \end{itemize}
 
-This research focused on hotels in Dublin. This scope could be expanded first geographically and then to different fields. Twitter could be used to gain sentiment information about restaurants, movies etc. and applied to recommender systems relating to these fields.
+A second line of future work would be to expand the scope of the project. This research focused on hotels in Dublin. This scope could be expanded first geographically. It could then be expanded to different fields. Twitter could be used to gain sentiment information about restaurants, movies etc. and applied to recommender systems relating to these fields.
 
-The Stanford NLP Sentiment Analyser was trained on a set of movie reviews from rotten tomatoes. It would be interesting to evaluate whether re-training the analyser using review-like tweets would improve it's performance. 
+A possible improvement to the methodology outlined in this project would be re-training the Stanford NLP Sentiment Analyser.The Stanford NLP Sentiment Analyser was trained on a set of movie reviews from rotten tomatoes. Due to this it will perform best in classifying texts similar to the movie reviews, rather that tweets which have a very different format. It would be interesting to evaluate whether re-training the analyser using review-like tweets would improve how well it classifies the sentiment of the tweets. 
 
-More data could be collected to evaluate the recommender system.
+Another important line of future work would be to evaluate the performance of the recommender system on a larger dataset. In this project the system was evaluated for 21 hotels. Out results could be confirmed and would hold more weight if the recommender was re evaluated with data for more hotels.
 
-Prioritising more recent reviews.
-
-\section{Final Thoughts}
+Finally, the proposed methodology could be improved by experimenting with prioritising the sentiment of more recent Twitter reviews or reviews from Twitter users similar to the user in question.
