@@ -4,11 +4,16 @@
 
 In this chapter the design and methodology choices involved in this project will be presented. This project consists of five key stages (Figure ~\ref{fig:pipeline}). Each of these will be discussed in detail in this chapter. The five stages are:
 \begin{itemize}
-    \item Data Collection and Filtering: This stage involved first collecting the Twitter data. The data was then filtered so it only contained tweets about hotels posted from Dublin.
-    \item Dataset Annotation: This stage involved annotating the filtered dataset of tweets about hotels in Dublin.
-    \item Classification: In this stage of the project multiple supervised machine learning classifiers were trained with different feature representations.
-    \item Sentiment Analysis: This part of the project involved analysing the sentiment of those tweets that were classified as reviews.
-    \item Application to Recommender System: In this stage the sentiment scores produced were used to re rank the results of the CoRE \cite{core2019} recommender system.
+    \item \textbf{Data Collection and Filtering}\newline
+    This stage involved first collecting the Twitter data. The data was then filtered so it only contained tweets about hotels posted from Dublin.
+    \item \textbf{Dataset Annotation}\newline
+    This stage involved annotating the filtered dataset of tweets about hotels in Dublin.
+    \item \textbf{Classification}\newline 
+    In this stage of the project multiple supervised machine learning classifiers were trained with different feature representations.
+    \item \textbf{Sentiment Analysis}\newline 
+    This part of the project involved analysing the sentiment of those tweets that were classified as reviews.
+    \item \textbf{Application to Recommender System}\newline
+    In this stage the sentiment scores produced were used to re rank the results of the CoRE \cite{core2019} recommender system.
 \end{itemize}
 
 \begin{figure}[h!]
