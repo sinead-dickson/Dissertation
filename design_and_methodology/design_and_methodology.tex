@@ -126,7 +126,7 @@ A list of the hotels in Dublin was compiled. This included the hotel's name and 
 
 The tweets were stored in a Lucene index. A fuzzy search query was used to match the tweets against each of the hotel names and hotel Twitter handles. The fuzzy search query uses a similarity measure that is based on the Damerau-Levenshtein algorithm. The maximum edits option was set to two, meaning that strings with a maximum difference of two characters would still match. This accounted for misspellings and broadened our search slightly. We experimented with higher numbers of maximum edits but found that too many irrelevant tweets were returned.
 
-This further filtered dataset consisted of 3115 tweets that mention hotels posted from Dublin between October 2017 and September 2018.
+This further filtered dataset consisted of 3115 tweets that mention hotels posted from Dublin between October 2017 and September 2018. The distribution of tweets collected per hotel can be seen in the appendix (Table ~\ref{Table:tweetsperhotels}).
 
 \section{Dataset Annotation}
 

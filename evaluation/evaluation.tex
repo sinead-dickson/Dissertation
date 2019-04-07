@@ -297,6 +297,22 @@ Neither Doc2Vec or Word2Vec achieved any better performance than BOW or TFIDF. L
 
 The unigram TFIDF feature representation was implemented with and without stop words. The implementation with stop words included performed better in nine out of the thirteen classifiers. This indicates that stop word removal did not improve classification performance. TFIDF itself reflects how important a document is within a collection. It may be that TFIDF is already accounting for the stop words high frequency so no stop word removal is required.
 
+\section{Sentiment Scores}
+
+The Stanford NLP Sentiment Analyser was used to generate sentiment scores for the tweets that were classified as reviews. They were aggregated and normalised to produce an overall sentiment score for each hotel. Each score lies between zero and one, with one being the most positive score and zero being the most negative score. The sentiment scores of the top ten highest scoring hotels (Figure ~\ref{fig:highest}) and the top ten lowest scoring hotels (Figure ~\ref{fig:lowest}) are presented below.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\textwidth]{evaluation/highest.png}
+\caption{\label{fig:highest} Hotels with Highest Sentiment Scores.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\textwidth]{evaluation/lowest.png}
+\caption{\label{fig:lowest} Hotels with Lowest Sentiment Scores.}
+\end{figure}
+
 \section{Evaluation Metrics for Recommender Systems}
 
 \subsection*{CoRE Evaluation}
