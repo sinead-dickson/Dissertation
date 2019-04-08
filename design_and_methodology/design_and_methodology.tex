@@ -5,15 +5,15 @@
 In this chapter the design and methodology choices involved in this project will be presented. This project consists of five key stages (Figure ~\ref{fig:pipeline}). Each of these will be discussed in detail in this chapter. The five stages are:
 \begin{itemize}
     \item \textbf{Data Collection and Filtering}\newline
-    This stage involved first collecting the Twitter data. The data was then filtered so it only contained tweets about hotels posted from Dublin.
+    This stage involved collecting the Twitter data. The data was then filtered so it only contained tweets about hotels posted from Dublin.
     \item \textbf{Dataset Annotation}\newline
     This stage involved annotating the filtered dataset of tweets about hotels in Dublin.
     \item \textbf{Classification}\newline 
     In this stage of the project multiple supervised machine learning classifiers were trained with different feature representations.
     \item \textbf{Sentiment Analysis}\newline 
     This part of the project involved analysing the sentiment of those tweets that were classified as reviews.
-    \item \textbf{Application to Recommender System}\newline
-    In this stage the sentiment scores produced were used to re rank the results of the CoRE \cite{core2019} recommender system.
+    \item \textbf{Application within a Recommender System}\newline
+    In this stage the sentiment scores produced were used to re-rank the results of the CoRE \cite{core2019} recommender system.
 \end{itemize}
 
 \begin{figure}[h!]
@@ -27,7 +27,7 @@ The data was collected using the Twitter Streaming API \footnote{\url{https://de
 
 The tweets used in this project were collected using the Streaming API. A location filter was specified so that only tweets posted from within the bounding box of Dublin were returned (Figure ~\ref{fig:dublinBB}). A total of 2.5 million tweets were collected.
 
-After inspecting the collection of tweets it was found that although a bounding box had been specified not all tweets in the collection had been posted from Dublin. A significant amount of tweets had slipped through Twitter's location filter. This meant that the first step was to filter the dataset.
+After inspecting the collection of tweets it was found that although a bounding box had been specified, not all tweets in the collection had been posted from Dublin. A significant amount of tweets had slipped through Twitter's location filter. This meant that the first step required was to filter the dataset to ensure, as much as was possible, that all tweets related to Dublin.
 
 \begin{figure}[h!]
 \centering
@@ -37,14 +37,14 @@ After inspecting the collection of tweets it was found that although a bounding 
 
 \section{Data Filtering}
 
-\subsection*{Geo-tagged Tweets}
+\subsection{Geo-tagged Tweets}
 
-All of the tweets in the dataset were Geo-tagged since they were collected with a location filter. This meant they all had location data: a specified location from which the tweet was posted. There are two types of Geo-tagged tweets:
+All of the tweets in the dataset were Geo-tagged because they were collected with a location filter. This meant they all had location data: a specified location from which the tweet was posted. There are two types of Geo-tagged tweets:
 \begin{itemize}
     \item \textbf{Point Coordinate}\newline
     Tweets with a specific latitude/longitude or point coordinate. These tweets come from GPS enabled devices (Listing ~\ref{lst:pointjson}).
     \item \textbf{Twitter Place}\newline
-    Tweets with a bounding box or Twitter Place. A bounding box is a four-sided geographic area, defined by four points of the form [longitude, latitude] (Figure ~\ref{fig:dublinBB}). This defines the general area the tweet was posted from (Listing ~\ref{lst:placejson}). \newline
+    Tweets with a specified bounding box and Twitter Place. A bounding box is a four-sided geographic area, defined by four points of the form [longitude, latitude] (Figure ~\ref{fig:dublinBB}). This defines the general area the tweet was posted from (Listing ~\ref{lst:placejson}). \newline
 \end{itemize}
 
 \begin{lstlisting}[caption={Geo-tagged Tweet with Point Coordinate},
@@ -94,9 +94,9 @@ captionpos=b,label=lst:pointjson,language=json,firstnumber=1]
 }
 \end{lstlisting}
 
-\subsection*{Filtering Out Non-Dublin Tweets}
+\subsection{Filtering Out Non-Dublin Tweets}
 
-The first attempt to filter out any non Dublin tweets used the point coordinates of the tweets. The point coordinate of each tweet was compared to the bounding box of Dublin. If it lay inside the box it was kept, otherwise it was filtered out. However, only 7.23\% of the tweets in our collection actually had a specific point coordinate. Filtering based on this excluded the majority of the dataset. To address this we instead filtered tweets based on a combination of their point coordinates and their Twitter places.
+The first attempt to filter out any non-Dublin tweets used the point coordinates of the tweets. The point coordinate of each tweet was compared to the bounding box of Dublin. If it lay inside the box it was kept, otherwise it was filtered out. However, only 7.23\% of the tweets in our collection actually had a specific point coordinate. Filtering based on this excluded the majority of the dataset. To address this we instead filtered tweets based on a combination of their point coordinates and their Twitter places.
 
 All of the tweets in the collection have a Twitter place defining the general area that the tweet was posted from. A combination of the Twitter place and the point coordinates was used to filter out any non-Dublin tweets that had ended up in the dataset. 
 
@@ -123,7 +123,7 @@ A bounding box for the Dublin area was defined (Table ~\ref{tab:dublinbb}). Twee
 
 The filtered dataset consisted of 1.6 million tweets posted from Dublin between October 2017 and September 2018.
 
-\subsection*{Filter Out Tweets About Hotels}
+\subsection{Filtering Tweets About Hotels}
 
 The dataset of tweets posted from Dublin now had to be further filtered. The next step was to extract all tweets that mentioned hotels.
 
@@ -131,21 +131,23 @@ A list of the hotels in Dublin was compiled. This included the hotel's name and 
 
 The tweets were stored in a Lucene index. A fuzzy search query was used to match the tweets against each of the hotel names and hotel Twitter handles. The fuzzy search query uses a similarity measure that is based on the Damerau-Levenshtein algorithm. The maximum edits option was set to two, meaning that strings with a maximum difference of two characters would still match. This accounted for misspellings and broadened our search slightly. We experimented with higher numbers of maximum edits but found that too many irrelevant tweets were returned.
 
+No NLP that attempts to identify all mentions will be 100\% accurate. Users will refer to hotels in all manner of ways, anaphora like 'the hotel'. We have tried to be reasonably conservative and ensure we have a pretty clean dataset, but there are a range of ways to identify hotels that could be experimented with. 
+
 This further filtered dataset consisted of 3115 tweets that mention hotels posted from Dublin between October 2017 and September 2018. The distribution of tweets collected per hotel can be seen in the appendix (Table ~\ref{Table:tweetsperhotels}).
 
 \section{Dataset Annotation}
 
 One major goal of this research was to categorise tweets as review-like tweets, tweets that contain some content and irrelevant tweets. In order to train a classifier to do this a set of tweets had to first be manually annotated. The set of 3115 tweets about hotels in Dublin was annotated. This involved building an annotation webpage where users could view tweets and assign them labels.
 
-\subsection*{Annotation Webpage}
+\subsection{Annotation Webpage}
 
 A simple webpage was created in order to annotate the tweets (Figure ~\ref{fig:webpage}). The webpage can be found at:
 \begin{center}
     \url{http://reviewtweets.epizy.com}\newline
 \end{center}
-The text of each tweet was displayed alongside three buttons; review, some content and irrelevant. The participant could click on the option that they thought best described the tweet shown. Once they chose a label, the next tweet would be displayed. 
+The text of each tweet was displayed alongside three buttons: 'review', 'some content' and 'irrelevant'. The participant could click on the option that they thought best described the tweet shown. Once they chose a label, the next tweet would be displayed. 
 
-Each time the webpage is loaded a random tweet from the dataset is displayed. The participant can annotate the tweets incrementally from that random tweet on. This means each participant will label a different section of the tweets, ensuring all tweets in the collection get annotated evenly.
+Each time the webpage is loaded a random tweet from the dataset is displayed. This means each participant will label a different section of the tweets, ensuring all tweets in the collection get annotated evenly.
 
 \begin{figure}[h!]
 \centering
@@ -154,17 +156,17 @@ Each time the webpage is loaded a random tweet from the dataset is displayed. Th
 \end{figure}
 
 
-The following instructions, describing what a review, some content and irrelevant tweet should look like accompanied the webpage:
+The following instructions, describing what a 'review', 'some content' and 'irrelevant' tweet should look like accompanied the webpage:
 \begin{itemize}
     \item \textbf{Review} \newline
-    The tweet could be considered as a review (of any aspects related to a hotel such as the venue, food, view, swimming pool etc.) for any hotel. Examples would include: \emph{"Amazing view of the Aviva Stadium from my hotel balcony at hotel X"} (positive review), "Room service was awful at hotel Y" (negative review), \emph{"Thank you hotel X for a lovely stay"} (positive review) or \emph{"Had an awful night at hotel Y"} (negative review).
+    The tweet could be considered as a review (of any aspects related to a hotel such as the venue, food, view, swimming pool, etc.) for any hotel. Examples would include: \emph{"Amazing view of the Aviva Stadium from my hotel balcony at hotel X"} (positive review), "Room service was awful at hotel Y" (negative review), \emph{"Thank you hotel X for a lovely stay"} (positive review) or \emph{"Had an awful night at hotel Y"} (negative review).
     \item \textbf{Some Content} \newline
-    The tweet doesn't look like a review, but it does provide some information related to a hotel, such as the hotel hosts events, information on the menu, information related to accommodation etc. Examples would include: \emph{"Hotel Z serves Tuna salad on Wednesday”} or \emph{“A packed room for the 2018 fashion conference at Hotel X”}.
+    The tweet doesn't look like a review, but it does provide some information related to a hotel, such as the hotel hosts events, information on the menu, information related to accommodation, etc. Examples would include: \emph{"Hotel Z serves Tuna salad on Wednesday”} or \emph{“A packed room for the 2018 fashion conference at Hotel X”}.
     \item \textbf{Irrelevant} \newline
     This tweet is completely irrelevant. While perhaps mentioning the name of a hotel, the tweet doesn't give any additional information about that hotel or offer any opinions related to the hotel.
 \end{itemize}
 
-In this research we decided to focus solely on the text of the tweets. For this reason all images, videos and URLs were stripped from the tweets before being displayed on the annotation webpage.
+In this research we decided to focus solely on the text of the tweets. For this reason all images, videos and URLs were stripped from the tweets before being displayed on the annotation webpage. Images, videos and URLs could all carry valuable information and could be considered in future research. Image and video processing techniques could be experimented with to gather additional information from the tweets.   
 
 \begin{table}[h!]
 \caption{A sample of the tweets from the SQL table.}
@@ -189,14 +191,14 @@ In this research we decided to focus solely on the text of the tweets. For this 
         Morrison Hotel! \#CARE \\
         \#DoubleTree \#dublincity \\ 
         \#brandculture
-    \end{tabular} & 0 & 0 & 0 \\ 
+    \end{tabular} & 0 & 1 & 0 \\ 
 \hline
     2 & 00000 & 
     \begin{tabular}[c]{@{}l@{}}
         @bfitzsimons @doubletree \\
         @DTHydePark Oohh. \\
         Impressed!
-    \end{tabular} & 0 & 0 & 0 \\ 
+    \end{tabular} & 2 & 0 & 0 \\ 
 \hline
 \rowcolor[HTML]{EFEFEF} 
     3 & 00000 & 
@@ -205,46 +207,44 @@ In this research we decided to focus solely on the text of the tweets. For this 
         \#EliteFest2018 @ The \\ 
         Morrison, a DoubleTree \\ 
         by Hilton Hotel
-    \end{tabular} & 0 & 0 & 0 \\ 
+    \end{tabular} & 0 & 1 & 0 \\ 
 \hline
     4 & 00000 & 
     \begin{tabular}[c]{@{}l@{}}
         Drinking a Heineken by \\ 
         @heineken at @doubletree —
-    \end{tabular} & 0 & 0 & 0 \\ 
+    \end{tabular} & 0 & 2 & 0 \\ 
 \hline
 \end{tabular}}
 \end{table}
 
-The tweets were stored in an SQL table (Table ~\ref{Table:TweetAnnotation}) linked to the webpage, along with a count of the number of times the tweet had been labelled as a review, some content or irrelevant. Each time a participant chooses a label the corresponding value in the database is incremented. The final label of a tweet is determined by calculating which label had the maximum number of votes. 
-
-
+The tweets were stored in a SQL table (Table ~\ref{Table:TweetAnnotation}) linked to the webpage, along with a count of the number of times the tweet had been labelled as a review, some content or irrelevant. Each time a participant chooses a label the corresponding value in the database is incremented. The final label of a tweet is determined by calculating which label had the maximum number of votes. 
 
 The annotation webpage was circulated to friends, family and members of the Adapt Research Centre to gather annotations.
 
 \section{Tweet Classification}
 
-The annotated set of tweets was used to train a series of different classifiers. These classifiers were implemented using Python's Scikit Learn library \cite{scikit-learn}. The data was split into a training set and a testing set. The data was split 80:20 where 80\% was used for training and 20\% was used for testing.
+The annotated set of tweets was used to train a series of different classifiers to determine which classifier was most suited to the task. These classifiers were implemented using Python's Scikit Learn library \cite{scikit-learn}. The data was split into a training set and a testing set. The data was split 80:20 where 80\% was used for training and 20\% was used for testing.
 
-\subsection*{Data Preprocessing}
+\subsection{Data Pre-processing}
 
-The following steps were taken to preprocess the tweets, before they were used to train the classifiers:
+The following steps were taken to pre-process the tweets, before they were used to train the classifiers:
 \begin{itemize}
-    \item Emojis were removed and replaced with text using Python's Emoji library \cite{emoji}. For example a thumbs up emoji would be converted to the text \emph{':thumbs\_up:'} and then \emph{'thumbs up'} once punctuation is removed.
-    \item Special characters and all punctuation was removed. This included everything except the digits 0 - 9 and the letters a - z (in upper and lower case).
-    \item All single characters were removed.
-    \item Words were split on case changes. For example \emph{'MerrionHotel'} --> \emph{'Merrion Hotel'}.
-    \item Words were split on word-digit boundaries. For example \emph{'HouseDublin2'} --> \emph{'House Dublin 2'}.
-    \item All text was converted to lower case.
+    \item Emojis were removed and replaced with text using Python's Emoji library \cite{emoji}. For example, a thumbs up emoji would be converted to the text \emph{':thumbs\_up:'} and then \emph{'thumbs up'} once punctuation is removed. In this way some meaning was extracted from each emoji. Emojis are another area of potential valuable sentiment information for future work. A. Go, R. Bhayani and L. Huang \cite{Go2009} used emojis to automatically label a dataset of tweets as positive or negative.
+    \item Special characters and all punctuation was removed. This included everything except the digits 0 - 9 and the letters a - z (in upper and lower case). Tweets are generally quite noisy and contain a lot of unwanted punctuation.
+    \item All single characters were removed. The majority of the single characters were typos or added no extra meaning to the text. 
+    \item Words were split on case changes. For example \emph{'MerrionHotel'} --> \emph{'Merrion Hotel'}. This was because we noticed a lot of Twitter handles and hashtags contain words joined together without space. 
+    \item Words were split on word-digit boundaries. For example \emph{'HouseDublin2'} --> \emph{'House Dublin 2'}. Again, a lot of Twitter handles and hashtags contain words and digits joined together without space. 
+    \item All text was converted to lower case. This is so that a word with a capital letter is not treated differently to the same word without a capital letter.
     \item Stemming was performed using the Word Net Lemmatizer. Stemming is the process of reducing words down to their base or root. For example \emph{'organise'}, \emph{'organised'} and \emph{'organisation'} would all be reduced to \emph{'organis'}. Stemming conflates similar terms, reducing the number of words that are fed to the classifier.
-    \item Stop words were removed. All text contain words that are irrelevant and do not add any additional meaning. These are called stop words. Some examples of stop words are \emph{'and'}, \emph{'I'}, \emph{'of'} and \emph{'the'}. Stop words were not removed in all cases. It will be clearly stated in all cases where stop words were removed.
+    \item Stop words were removed. All text contains words that are irrelevant and do not add any additional meaning. These are called stop words. Some examples of stop words are \emph{'and'}, \emph{'I'}, \emph{'of'} and \emph{'the'}. Stop words were not removed in all cases. It will be clearly stated in all cases where stop words were removed.
 \end{itemize}
 
-\subsection*{Feature Extraction}
+\subsection{Feature Extraction}
 
 The classifiers require numerical feature vectors of fixed length rather than variable length raw text as their input. To comply with this our processed tweets had to be converted into numerical feature vectors. This process of converting raw text to a numerical feature vector is called vectorization.
 
-We experimented with seven different feature extraction methods to see which performed best at classifying the Twitter data. Twitter data is quite different to standard text so standard feature extraction methods that perform well on text will not necessarily perform well for the Twitter data.
+We experimented with seven different feature extraction methods to see which performed best at classifying the Twitter data. Twitter data is quite different to standard text so standard feature extraction methods that perform well on regular, long-form text will not necessarily perform well on Twitter data.
 
 The seven feature extraction methods implemented were:
 \begin{enumerate}
@@ -266,13 +266,13 @@ The seven feature extraction methods implemented were:
 
 \subsubsection{Bag-of-Words}
 
-In Bag-of-Words (BOW) documents are described by word occurrences. A vocabulary is created of all unique terms in the dataset. The vocabulary is ranked by frequency of occurrence. The maximum size of the vocabulary can be specified, so only the top however many terms are kept. Each tweet is then represented as a feature vector consisting of ones and zeroes. One representing a terms occurrence and zero representing a terms lack of occurrence. A major drawback of BOW is that it does not take word ordering into account. This is why it is called 'bag' of words. You can imagine that all the words have been thrown into a bag together and have lost any ordering.
+In Bag-of-Words (BOW) documents are described by word occurrences. A vocabulary is created of all unique terms in the dataset. The vocabulary is ranked by frequency of occurrence. The maximum size of the vocabulary can be specified, so only the top \textit{n} terms are kept. Each tweet is then represented as a feature vector consisting of ones and zeroes. One representing a term's occurrence and zero representing a term's absence. A major drawback of BOW is that it does not take word order into account. This is why it is called 'bag' of words. You can imagine that all the words have been thrown into a bag together and have lost any ordering.
 
 The Count Vectorizer from Python's Scikit Learn was used to implement BOW. 
 
 \subsubsection{TF-IDF}
 
-BOW can be extended with TF-IDF (Term Frequency Inverse Document Frequency). Term frequency is the frequency of the word in the current document. Inverse Document Frequency takes into account how often the word occurs in the whole dataset. The idea is to balance how important a term is in a document versus how important it is in the entire collection. We are less interested in a very frequently occurring term like for example 'the' or 'and' than some less frequently occurring words. The TF-IDF score is used to re-weight the count features produced by the Count Vectorizer.
+BOW can be extended with TF-IDF (Term Frequency - Inverse Document Frequency). Term frequency is the frequency of the word in the current document. Inverse Document Frequency takes into account how often the word occurs in the whole dataset. The idea is to balance how important a term is in a document versus how important it is in the entire collection. We are less interested in a very frequently occurring term like for example 'the' or 'and' than some less frequently occurring words which occur frequently in a small number of documents. The TF-IDF score is used to re-weight the count features produced by the Count Vectorizer.
 
 \begin{tcolorbox}[title=TF-IDF]
 \begin{equation}
@@ -288,20 +288,22 @@ BOW can be extended with TF-IDF (Term Frequency Inverse Document Frequency). Ter
 \end{equation}
 \newline
 \begin{equation}
+\notag
     n = Total\ number\ of\ documents\ in\ the\ dataset. 
 \end{equation}
 \newline
 \begin{equation}
+\notag
     df(t) = Number\ of\ documents\ in\ the\ dataset\ containing\ term\ t.
 \end{equation}
 \end{tcolorbox}
 The TF-IDF transformer from Python's Scikit Learn was used to implement TF-IDF.
 
-\subsubsection*{N-Grams}
+\subsubsection*{N-grams}
 
 Another extension of BOW is the use of N-grams. N-grams help to address the problem BOW has with discarding word ordering.
 
-An N-gram is a sequence of N consecutive terms. For example the bigrams of \emph{'Twitter as an Alternative Review Site'} are:
+An N-gram is a sequence of N consecutive terms. For example the bi-grams of \emph{'Twitter as an Alternative Review Site'} are:
 \begin{itemize}
     \item \emph{'Twitter as'}
     \item \emph{'as an'}
@@ -310,11 +312,11 @@ An N-gram is a sequence of N consecutive terms. For example the bigrams of \emph
     \item \emph{'Review Site'}
 \end{itemize}
 
-Combing bigrams with BOW means that occurrences of pairs of consecutive words are counted instead of individual terms. Unigrams, bigrams and trigrams were implemented.
+Combining bi-grams with BOW means that occurrences of pairs of consecutive words are counted instead of individual terms. Uni-gram, bi-gram and tri-gram versions of TF-IDF were implemented.
 
 \subsubsection{Word2Vec}
 
-Word2Vec is another method for converting text into numerical feature vectors. It takes a dataset as it's input and produces a vector space. Each word in the dataset is represented by a corresponding vector. It groups the vector of similar words together in the vector space. Cosine similarity, the cosine of the angle between two vectors, measures the similarity of vectors in the vector space. 
+Word2Vec is another method for converting text into numerical feature vectors. It takes a dataset as its input and produces a vector space. Each word in the dataset is represented by a corresponding vector. It groups the vector of similar words together in the vector space. Cosine similarity, the cosine of the angle between two vectors, measures the similarity of vectors in the vector space. 
 
 Gensim's implementation of Word2Vec \cite{gensim} and Google's pre-trained model was used. Google's model includes word vectors for three million words and phrases. It was trained with about 100 billion words from a Google News dataset. The word vectors of each word in a document are averaged to produce a feature vector for that document.
 
@@ -324,7 +326,7 @@ Doc2Vec takes the same idea as Word2Vec, but instead of words being represented 
 
 Gensim's implementation of Doc2Vec was again used. Unlike Word2Vec, we built our own Doc2Vec vocabulary based on the training data.
 
-\subsection*{Classifiers}
+\subsection{Classifiers}
 
 Thirteen different classifiers were implemented, each with their implementation from Python's Scikit Learn library \cite{scikit-learn}.
 
@@ -353,9 +355,9 @@ The twelve classifiers implemented were:
 \caption{\label{fig:decisiontree} An example of a Decision Tree Classifier.}
 \end{figure}
 
-The Decision Tree Classifiers is a simple classification algorithm that can be used for binary or multi-class classification. DT classifiers learn simple decision rules based on the attributes of the training data. These decision rules form a tree structure (Figure ~\ref{fig:decisiontree}) which is used to predict the value of a target variable. The leaf nodes represent the class labels. When an unclassified document is received questions are asked until a leaf node is reached and the document is assigned that class.
+The Decision Tree Classifier is a simple classification algorithm that can be used for binary or multi-class classification. DT classifiers learn simple decision rules based on the attributes of the training data. These decision rules form a tree structure (Figure ~\ref{fig:decisiontree}) which is used to predict the value of a target variable. The leaf nodes represent the class labels. When an unclassified document is received questions are asked until a leaf node is reached and the document is assigned that class.
 
-The DT Classifier was implemented with Scikit Learn with the following parameters:
+The DT Classifier was implemented using Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -365,9 +367,9 @@ The DT Classifier was implemented with Scikit Learn with the following parameter
 
 \subsubsection*{Random Forest}
 
-The Random Forest Classifier is an ensemble classification algorithm, meaning it combines multiple base classification algorithms. It consists of multiple decision trees. The final class prediction is calculated by getting the average of the decision of the individual decision trees.
+The Random Forest Classifier is an ensemble classification algorithm, meaning it combines multiple base classification algorithms. It consists of multiple DT classifiers. The final class prediction is calculated by getting the average of the decisions of the individual decision trees.
 
-The RF Classifier was implemented with Scikit Learn with the following parameters:
+The RF Classifier was implemented using Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -385,9 +387,9 @@ The RF Classifier was implemented with Scikit Learn with the following parameter
 
 The Multi Layer Perceptron Classifier is a deep, feedforward, artificial neural network. It consists of a minimum of three layers (Figure ~\ref{fig:mlp}): an input layer, a hidden layer and an output layer. The input layer receives the data, the output layer makes a decision and the hidden layers approximate the function.
 
-The MLP learns a function by based on the training set. Given a set of features $X = x_1,x_2,x_3,...,x_n$ and a target y, it learns a non-linear approximation function. Backpropagation is used to train the MLP.
+The MLP classifier learns a function by based on the training set. Given a set of features $X = x_1,x_2,x_3,...,x_n$ and a target y, it learns a non-linear approximation function. Backpropagation is used to train the MLP classifier.
 
-The MLP Classifier was implemented with Scikit Learn with the following parameters:
+The MLP Classifier was implemented using Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -397,7 +399,7 @@ The MLP Classifier was implemented with Scikit Learn with the following paramete
 
 \subsubsection*{Support Vector Machine}
 
-The Support Vector Machine Classifier is a discriminative classifier (Figure ~\ref{fig:svm}). It finds the optimum hyperplane that separates the data into the labelled classes. It aims to maximise the distance between the hyperplane and the support vectors (the points closest to the hyper plane).
+The Support Vector Machine Classifier is a discriminative classifier (Figure ~\ref{fig:svm}). It finds the optimum hyperplane that separates the data into the labelled classes. It aims to maximise the distance between the hyperplane and the support vectors (the points closest to the hyperplane).
 
 \begin{figure}[h!]
 \centering
@@ -405,7 +407,7 @@ The Support Vector Machine Classifier is a discriminative classifier (Figure ~\r
 \caption{\label{fig:svm} An example of a Support Vector Machine Classifier.}
 \end{figure}
 
-The SVM Classifier was implemented with Scikit Learn with the following parameters:
+The SVM Classifier was implemented using Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -420,7 +422,7 @@ The Logistic Regression Classifier is a linear classification algorithm that use
   g(z)= \frac{1}{(1+e^{-z})}  
 \end{equation}
 
-The LR Classifier was implemented with Scikit Learn with the following parameters:
+The LR Classifier was implemented using Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -438,7 +440,7 @@ The LR Classifier was implemented with Scikit Learn with the following parameter
 
 The K Nearest Neighbours (KNN) Classifier doesn't build a model like other classification algorithms. It uses a majority vote of the "nearest neighbours" to a document. A label is assigned to a document based on the class that has the majority of the nearest neighbours to the document. For example, point one would be assigned the label blue. Taking it's four nearest neighbours it has three blue neighbours and one red neighbour. The point is assigned to the class with the majority of the nearest neighbour, blue.
 
-The KNN Classifier was implemented with Scikit Learn with the following parameters:
+The KNN Classifier was implemented using Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -449,13 +451,13 @@ The KNN Classifier was implemented with Scikit Learn with the following paramete
 
 \subsubsection*{Gaussian Process}
 
-The Gaussian Process (GP) Classifier implements Gaussian Processes for classification. Gaussian processes are probability distributions over possible functions.
+The Gaussian Process Classifier implements Gaussian Processes for classification. Gaussian Processes are probability distributions over possible functions.
 
-The definition of a Gaussian process is: $P(f)$ is a Gaussian process if for any finite subset $\{x_1,x_2,...,x_n\} \subset X$, the marginal distribution over that finite subset $P(f)$ has a multivariate Gaussian distribution.
+The definition of a Gaussian Process is: $P(f)$ is a Gaussian process if for any finite subset $\{x_1,x_2,...,x_n\} \subset X$, the marginal distribution over that finite subset $P(f)$ has a multivariate Gaussian distribution.
 
-The GP Classifier puts a Gaussian process on a latent function, which is then squashed through a link function to get the probabilistic classification. For classification, the posterior of the latent function is not Gaussian, instead the logit function is used. A Gaussian likelihood function is inappropriate for discrete class labels \cite{gaussianProcesses2006}.
+The GP Classifier puts a Gaussian Process on a latent function, which is then squashed through a link function to get the probabilistic classification. For classification, the posterior of the latent function is not Gaussian, instead the logit function is used. A Gaussian likelihood function is inappropriate for discrete class labels \cite{gaussianProcesses2006}.
 
-The GP Classifier was implemented with Scikit Learn with the following parameters:
+The GP Classifier was implemented using Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -467,9 +469,9 @@ The GP Classifier was implemented with Scikit Learn with the following parameter
 
 The AdaBoost Classifier is another ensemble classification algorithm, introduced by Freund and Schapire \cite{adaboost1997}.
 
-AdaBoost works by fitting a series of weak base classifiers on incrementally re-weighted versions of the training data. The predictions from the base classifiers are combined with a majority vote or sum, to get an overall classification. The 'boosting' component of the algorithm involves re-weighting the data on each iteration.Samples that were predicted correctly have their weight increased and samples that were predicted incorrectly have their weight decreased.
+AB works by fitting a series of weak base classifiers on incrementally re-weighted versions of the training data. The predictions from the base classifiers are combined with a majority vote or sum, to get an overall classification. The 'boosting' component of the algorithm involves re-weighting the data on each iteration. Samples that were predicted correctly have their weight increased and samples that were predicted incorrectly have their weight decreased.
 
-The AdaBoost Classifier was implemented with Scikit Learn with the following parameters:
+The AB Classifier was implemented using Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -481,7 +483,7 @@ Scikit Learn's version of AdaBoost implements the SAMME algorithm \cite{multicla
 
 \subsubsection*{Gaussian Naive Bayes}
 
-The Gaussian Naive Bayes (GNB) Classifier is one of a set of Naive Bayes Classification algorithms. All of the Naive Bayes classifiers are based applying Bayes Rule along with the ‘naive’ assumption that features are conditionally independent. Bayes Rule: 
+The Gaussian Naive Bayes Classifier is one of a set of Naive Bayes Classification algorithms. All of the Naive Bayes classifiers are based applying Bayes Rule along with the ‘naive’ assumption that features are conditionally independent. Bayes Rule: 
 \begin{center}
 \(P(A\mid B)=\frac{P(B\mid A)\:P(A)}{P(B)}\). 
 \end{center}
@@ -489,7 +491,7 @@ In GNB the likelihood of the features is assumed to be Gaussian:
 \begin{center}
 $P(x_i|y) = \frac{1}{\sqrt{2\pi\sigma_y^2}} exp (- \frac{(x_i - \mu_y)^2}{2\sigma_y^2})$
 \end{center}
-The GNB Classifier was implemented with Scikit Learn with the following parameters:
+The GNB Classifier was implemented using Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -499,14 +501,14 @@ The GNB Classifier was implemented with Scikit Learn with the following paramete
 
 \subsubsection*{Bernoulli Naive Bayes}
 
-The Bernoulli Naive Bayes (BNB) Classifier is another of the Naive Bayes Classification algorithms. BNB implements the Naive Bayes algorithm for data that is distributed according to multivariate Bernoulli distributions. It has been seen to work better than GNB on shorter texts.
+The Bernoulli Naive Bayes Classifier is another of the Naive Bayes Classification algorithms. BNB implements the Naive Bayes algorithm for data that is distributed according to multivariate Bernoulli distributions. It has been seen to work better than GNB on shorter texts.
 
 The decision rule for BNB is:
 \begin{center}
 $P(x_i|y) = P(i|y)x_i + (1 - P(i|y))(1 - x_i)$
 \end{center}
 
-The BNB Classifier was implemented with Scikit Learn with the following parameters:
+The BNB Classifier was implemented using Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -516,9 +518,9 @@ The BNB Classifier was implemented with Scikit Learn with the following paramete
 
 \subsubsection*{Multinomial Naive Bayes}
 
-The Multinomial Naive Bayes (MNB) Classifier is another of the Naive Bayes Classification algorithms. MNB implements the Naive Bayes algorithm for multinomial distributed data.
+The Multinomial Naive Bayes Classifier is another of the Naive Bayes Classification algorithms. MNB implements the Naive Bayes algorithm for multinomial distributed data.
 
-The MNB Classifier was implemented with Scikit Learn with the following parameters:
+The MNB Classifier was implemented using Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -536,7 +538,7 @@ The Quadratic Discriminant Analysis Classifier and the Linear Discriminant Analy
 \caption{\label{fig:qdalda} Boundaries of the Quadratic Discriminant Analysis and Linear Discriminant Analysis Classifiers \cite{scikit-learn}.}
 \end{figure}
 
-Both QDA AND LDA were implemented with Scikit Learn with the folllowing parameters:
+Both QDA AND LDA were implemented using Scikit Learn with the folllowing parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -555,7 +557,7 @@ Both QDA AND LDA were implemented with Scikit Learn with the folllowing paramete
 
 Once the tweets had been classified as reviews, sentiment analysis was performed on them. Sentiment analysis is the process of identifying the opinion expressed about a particular subject in some text. The goal is to determine whether the opinion is positive, negative or neutral, and to what extent. The Stanford NLP Sentiment Analyser \cite{stanfordSentiment2013} was used to classify the sentiment of the tweets.
 
-\subsection*{The Stanford Sentiment Analyser}
+\subsection{The Stanford NLP Sentiment Analyser}
 
 The Stanford Sentiment Analyser is based on a Recursive Neural Network. It was trained on a sentiment treebank of movie reviews from the movie review site RottenTomatoes. The treebank consists of sentences which are annotated on a phrase level. The Sentiment Analyser has reported accuracy of 85.4\% in single sentence positive/negative classification. 
 
@@ -589,11 +591,11 @@ captionpos=b,label=lst:stanfordoutput,language=json,firstnumber=1]
 
 The sentiment value and sentiment define the class the tweet has been assigned. In this case the tweet is positive. The sentiment distribution shows how strongly the tweet aligns with each class, from very negative to very positive. This tweet has a maximum value of 0.42548434014862 so it is assigned the positive label.
 
-\subsection*{Normalisation}
+\subsection{Normalisation}
 
 The sentiment scores produced by the Stanford NLP Sentiment Analyser were produced per tweet. They needed to be normalised so that they were per hotel and lay between zero and one.
 
-A majority voting technique was used to normalise the scores. For each hotel we have a selection of tweets. These tweets are divided into five clusters; very negative, negative, neutral (ignored), positive and very positive. A mean value was calculated for each cluster. This was calculated bu summing the corresponding score in the sentiment distribution for each tweet and dividing by the number of tweets in the cluster. The class with the highest mean value was assigned to the hotel.
+A majority voting technique was used to normalise the scores. For each hotel we have a selection of tweets. These tweets are divided into five clusters; very negative, negative, neutral (ignored), positive and very positive. A mean value was calculated for each cluster. This was calculated by summing the corresponding score in the sentiment distribution for each tweet and dividing by the number of tweets in the cluster. The class with the highest mean value was assigned to the hotel.
 
 Sentiment scores were generated for some hotel chains, for example Hilton Hotels. In these cases the chain score was assigned to each hotel in the chain.
 
@@ -622,7 +624,7 @@ $Normalised\ score\ (Positive) = 0.606$
 
 The sentiment scores produced by the Stanford NLP Sentiment Analyser \cite{stanfordSentiment2013} were used to re-rank the list of hotel recommendations produced by the CoRE recommender system \cite{core2019}.
 
-\subsection*{CoRE}
+\subsection{CoRE}
 
 \begin{figure}[h!]
 \centering
@@ -632,9 +634,9 @@ The sentiment scores produced by the Stanford NLP Sentiment Analyser \cite{stanf
 
 CoRE \cite{core2019} is a Cold Start Resistant and Extensible Recommender system. It makes use of collaborative filtering, content-based recommendation and contextual suggestion. CoRE is made up of three models, a user model, a segment model and a context model. Each model is generated as a weighted feature vector. A centroid vector is then calculated, and a weighting is applied to determine the effect of each model. The cosine similarity between the vector of each hotel and the centroid vector of the user is then calculated, and a list of hotels is produced, ranked based on this score.
 
-\subsection*{Re-Ranking}
+\subsection{Re-Ranking}
 
-The score produced by the Stanford NLP Sentiment Analyser were used to re-rank this list of hotels. This was done by simply multiplying the score of the hotel in the CoRE ranked list by the normalised sentiment score. The sentiment score normalised between zero and one boosts the score of hotels with a positive sentiment score and drags down the score of the hotels with a negative sentiment score.
+The scores produced by the Stanford NLP Sentiment Analyser were used to re-rank this list of hotels. This was done by simply multiplying the score of the hotel in the CoRE ranked list by the normalised sentiment score. The sentiment score normalised between zero and one boosts the score of hotels with a positive sentiment score and drags down the score of the hotels with a negative sentiment score.
 
 
 
