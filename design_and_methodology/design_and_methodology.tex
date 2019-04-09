@@ -132,7 +132,6 @@ A list of the hotels in Dublin was compiled. This included the hotel's name and 
 The tweets were stored in a Lucene index. A fuzzy search query was used to match the tweets against each of the hotel names and hotel Twitter handles. The fuzzy search query uses a similarity measure that is based on the Damerau-Levenshtein algorithm. The maximum edits option was set to two, meaning that strings with a maximum difference of two characters would still match. This accounted for misspellings and broadened our search slightly. We experimented with higher numbers of maximum edits but found that too many irrelevant tweets were returned.
 
 No NLP that attempts to identify all mentions will be 100\% accurate. Users will refer to hotels in all manner of ways, anaphora like 'the hotel'. We have tried to be reasonably conservative and ensure we have a pretty clean dataset, but there are a range of ways to identify hotels that could be experimented with. 
-
 This further filtered dataset consisted of 3115 tweets that mention hotels posted from Dublin between October 2017 and September 2018. The distribution of tweets collected per hotel can be seen in the appendix (Table ~\ref{Table:tweetsperhotels}).
 
 \section{Dataset Annotation}
@@ -228,23 +227,36 @@ The annotated set of tweets was used to train a series of different classifiers 
 
 \subsection{Data Pre-processing}
 
-The following steps were taken to pre-process the tweets, before they were used to train the classifiers:
+The set of annotated tweets was pre-processed before it was used to train the classifiers. The pre-processing stage tokenizes the tweets and deals with things like punctuation and case. The data pre-processing techniques used were inspired by the techniques found in previous literature \cite{Ankit2018,Rane2018,Go2009,Raithi2018}. 
+
+The following steps were taken to pre-process the tweets, before they were used to train the classifiers:\newline
 \begin{itemize}
-    \item Emojis were removed and replaced with text using Python's Emoji library \cite{emoji}. For example, a thumbs up emoji would be converted to the text \emph{':thumbs\_up:'} and then \emph{'thumbs up'} once punctuation is removed. In this way some meaning was extracted from each emoji. Emojis are another area of potential valuable sentiment information for future work. A. Go, R. Bhayani and L. Huang \cite{Go2009} used emojis to automatically label a dataset of tweets as positive or negative.
-    \item Special characters and all punctuation was removed. This included everything except the digits 0 - 9 and the letters a - z (in upper and lower case). Tweets are generally quite noisy and contain a lot of unwanted punctuation.
-    \item All single characters were removed. The majority of the single characters were typos or added no extra meaning to the text. 
-    \item Words were split on case changes. For example \emph{'MerrionHotel'} --> \emph{'Merrion Hotel'}. This was because we noticed a lot of Twitter handles and hashtags contain words joined together without space. 
-    \item Words were split on word-digit boundaries. For example \emph{'HouseDublin2'} --> \emph{'House Dublin 2'}. Again, a lot of Twitter handles and hashtags contain words and digits joined together without space. 
-    \item All text was converted to lower case. This is so that a word with a capital letter is not treated differently to the same word without a capital letter.
-    \item Stemming was performed using the Word Net Lemmatizer. Stemming is the process of reducing words down to their base or root. For example \emph{'organise'}, \emph{'organised'} and \emph{'organisation'} would all be reduced to \emph{'organis'}. Stemming conflates similar terms, reducing the number of words that are fed to the classifier.
-    \item Stop words were removed. All text contains words that are irrelevant and do not add any additional meaning. These are called stop words. Some examples of stop words are \emph{'and'}, \emph{'I'}, \emph{'of'} and \emph{'the'}. Stop words were not removed in all cases. It will be clearly stated in all cases where stop words were removed.
+    \item \textbf{Emojis}\newline
+    Emojis were removed and replaced with text using Python's Emoji library \cite{emoji}. For example, a thumbs up emoji would be converted to the text \emph{':thumbs\_up:'} and then \emph{'thumbs up'} once punctuation is removed. In this way some meaning was extracted from each emoji. Emojis are another area of potential valuable sentiment information for future work. A. Go, R. Bhayani and L. Huang \cite{Go2009} used emojis to automatically label a dataset of tweets as positive or negative.
+    \item \textbf{Punctuation}\newline
+    The majority of special characters and punctuation was removed from the tweets. This included everything except the digits 0 - 9, the letters a - z (in upper and lower case), and the following set of symbols: . , ? ! ( ) \& ' - . Tweets are generally quite noisy and contain a lot of unnecessary punctuation. Symbols such as @ and \# were removed so that the hashtags and Twitter handles could be recognised as words. However, symbols like apostrophe's were not removed so that a word like 'won't' wouldn't be split into 'won' and 't'.
+    \item \textbf{Single Characters}\newline
+    All single characters were removed. The majority of the single characters in the tweets were typos or added no extra meaning to the text. The only one letter words are 'I' and 'a'. These are both stop words which are later removed anyway.
+    \item \textbf{Case Change}\newline
+    Words were split on case changes. For example \emph{'MerrionHotel'} --> \emph{'Merrion Hotel'}. This was because we noticed a lot of Twitter handles and hashtags contain words joined together without space. 
+    \item \textbf{Word-digit Boundaries}\newline
+    Words were split on word-digit boundaries. For example \emph{'HouseDublin2'} --> \emph{'House Dublin 2'}. Again, a lot of Twitter handles and hashtags contain words and digits joined together without space. 
+    \item \textbf{Lowercase}\newline
+    All text was converted to lower case. This is so that a word with a capital letter is not treated differently to the same word without a capital letter.
+    \item \textbf{Stemming}\newline
+    Stemming was performed using the Word Net Lemmatizer. Stemming is the process of reducing words down to their base or root. For example \emph{'organise'}, \emph{'organised'} and \emph{'organisation'} would all be reduced to \emph{'organis'}. Stemming conflates similar terms, reducing the number of words that are fed to the classifier.
+    \newline
+    \item \textbf{Stopwords}\newline
+    Stop words were removed. All text contains words that are irrelevant and do not add any additional meaning. These are called stop words. Some examples of stop words are \emph{'and'}, \emph{'I'}, \emph{'of'} and \emph{'the'}. Stop words were not removed in all cases. It will be clearly stated in all cases where stop words were removed.
 \end{itemize}
+
+
 
 \subsection{Feature Extraction}
 
 The classifiers require numerical feature vectors of fixed length rather than variable length raw text as their input. To comply with this our processed tweets had to be converted into numerical feature vectors. This process of converting raw text to a numerical feature vector is called vectorization.
 
-We experimented with seven different feature extraction methods to see which performed best at classifying the Twitter data. Twitter data is quite different to standard text so standard feature extraction methods that perform well on regular, long-form text will not necessarily perform well on Twitter data.
+We experimented with seven different feature extraction methods to see which performed best at classifying the Twitter data. Twitter data is quite different to standard text. Tweets are short with a maximum of 280 characters, which has led to the use of particular characteristic features. They contain features like hashtags, emojis, Twitter handles, URLs, images, videos and gifs, which don't occur in standard text. This means that standard feature extraction methods that perform well on regular, long-form text will not necessarily perform well on Twitter data.
 
 The seven feature extraction methods implemented were:
 \begin{enumerate}
@@ -276,22 +288,21 @@ BOW can be extended with TF-IDF (Term Frequency - Inverse Document Frequency). T
 
 \begin{tcolorbox}[title=TF-IDF]
 \begin{equation}
-    TFIDF = Term\ Frequency \times Inverse\ Document\ Frequency 
+    TF-IDF = Term\ Frequency \times Inverse\ Document\ Frequency 
 \end{equation}
-\newline
+%\newline
 \begin{equation}
     Term\ Frequency = \frac{Number\ of\ Term\ Occurrences\ in\ a\ Document}{Number\ of\ Terms\ in\ a\ Document}
 \end{equation}
-\newline
+%\newline
 \begin{equation}
     Inverse\ Document\ Frequency\ = \log (\frac{1\ +\ n}{1\ +\ df(t)}) + 1 
 \end{equation}
-\newline
+%\newline
 \begin{equation}
 \notag
     n = Total\ number\ of\ documents\ in\ the\ dataset. 
 \end{equation}
-\newline
 \begin{equation}
 \notag
     df(t) = Number\ of\ documents\ in\ the\ dataset\ containing\ term\ t.
@@ -397,6 +408,21 @@ The MLP Classifier was implemented using Scikit Learn with the following paramet
 \end{center}
 \end{tcolorbox}
 
+\subsubsection*{Logistic Regression}
+
+The Logistic Regression Classifier is a linear classification algorithm that uses the logistic function to model the training data. The logistic function is as follows:
+\begin{equation}
+  g(z)= \frac{1}{(1+e^{-z})}  
+\end{equation}
+
+The LR Classifier was implemented using Scikit Learn with the following parameters:
+
+\begin{tcolorbox}
+\begin{center}
+	LogisticRegression (C=1,multi\_class='multinomial',penalty='l2',solver='saga')
+\end{center}
+\end{tcolorbox}
+
 \subsubsection*{Support Vector Machine}
 
 The Support Vector Machine Classifier is a discriminative classifier (Figure ~\ref{fig:svm}). It finds the optimum hyperplane that separates the data into the labelled classes. It aims to maximise the distance between the hyperplane and the support vectors (the points closest to the hyperplane).
@@ -412,21 +438,6 @@ The SVM Classifier was implemented using Scikit Learn with the following paramet
 \begin{tcolorbox}
 \begin{center}
 	SVC (C=10.1,decision\_function\_shape='ovo',degree=1,gamma=1,kernel='rbf')
-\end{center}
-\end{tcolorbox}
-
-\subsubsection*{Logistic Regression}
-
-The Logistic Regression Classifier is a linear classification algorithm that uses the logistic function to model the training data. The logistic function is as follows:
-\begin{equation}
-  g(z)= \frac{1}{(1+e^{-z})}  
-\end{equation}
-
-The LR Classifier was implemented using Scikit Learn with the following parameters:
-
-\begin{tcolorbox}
-\begin{center}
-	LogisticRegression (C=1,multi\_class='multinomial',penalty='l2',solver='saga')
 \end{center}
 \end{tcolorbox}
 
@@ -530,13 +541,13 @@ The MNB Classifier was implemented using Scikit Learn with the following paramet
 
 \subsubsection*{Quadratic Discriminant Analysis and Linear Discriminant Analysis}
 
-The Quadratic Discriminant Analysis Classifier and the Linear Discriminant Analysis Classifier, have a quadratic and linear decision surface, respectively. QDA is more flexible as it can learn quadratic boundaries, LDA can only learn linear boundaries (Figure ~\ref{fig:qdalda}). 
-
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1\textwidth]{design_and_methodology/qda_and_lda.png}
 \caption{\label{fig:qdalda} Boundaries of the Quadratic Discriminant Analysis and Linear Discriminant Analysis Classifiers \cite{scikit-learn}.}
 \end{figure}
+
+The Quadratic Discriminant Analysis Classifier and the Linear Discriminant Analysis Classifier, have a quadratic and linear decision surface, respectively. QDA is more flexible as it can learn quadratic boundaries, LDA can only learn linear boundaries (Figure ~\ref{fig:qdalda}). 
 
 Both QDA AND LDA were implemented using Scikit Learn with the folllowing parameters:
 
@@ -555,15 +566,15 @@ Both QDA AND LDA were implemented using Scikit Learn with the folllowing paramet
 
 \section{Sentiment Analysis}
 
-Once the tweets had been classified as reviews, sentiment analysis was performed on them. Sentiment analysis is the process of identifying the opinion expressed about a particular subject in some text. The goal is to determine whether the opinion is positive, negative or neutral, and to what extent. The Stanford NLP Sentiment Analyser \cite{stanfordSentiment2013} was used to classify the sentiment of the tweets.
+Once the tweets had been classified as reviews, sentiment analysis was performed on them. Sentiment analysis is the process of identifying the opinion expressed about a particular subject in some text. The goal is to determine whether the opinion is positive, negative or neutral, and to what extent. 
+
+The Stanford NLP Sentiment Analyser \cite{stanfordSentiment2013} was used to classify the sentiment of the tweets. The Stanford NLP Sentiment Analyser was chosen as it is the dominant NLP library used in research in this area. It has achieved 85.4\% accuracy in single sentence positive/negative classification. 
 
 \subsection{The Stanford NLP Sentiment Analyser}
 
-The Stanford Sentiment Analyser is based on a Recursive Neural Network. It was trained on a sentiment treebank of movie reviews from the movie review site RottenTomatoes. The treebank consists of sentences which are annotated on a phrase level. The Sentiment Analyser has reported accuracy of 85.4\% in single sentence positive/negative classification. 
+The Stanford Sentiment Analyser is based on a Recursive Neural Network. It was trained on a sentiment treebank of movie reviews from the movie review site RottenTomatoes. The treebank consists of sentences which are annotated on a phrase level. 
 
-The Stanford NLP Sentiment Analyser has it's limitations. Due to the fact that it was trained on movie reviews and is being applied to tweets, optimum performance is not achieved. Ideally the Sentiment Analyser would be re-trained with a set of tweets. This would involve manually annotating a collection of tweets at a phrase level to produce a treebank.
-
-% we don't have pos/neg labels on the tweets so can't evaluate it's performance except for by eye?
+The Stanford NLP Sentiment Analyser has it's limitations. Due to the fact that it was trained on movie reviews and is being applied to tweets, optimum performance is not achieved. The best performance would be achieved if the Sentiment Analyser was re-trained on a dataset as similar to ours as possible. Ideally the Sentiment Analyser would be re-trained with a set of hotel related tweets. This would involve manually annotating a collection of tweets at a phrase level to produce a treebank.
 
 The Stanford NLP Sentiment Analyser classifies the text into one of the following five sentiment judgements: 
 \begin{enumerate}
@@ -597,7 +608,7 @@ The sentiment scores produced by the Stanford NLP Sentiment Analyser were produc
 
 A majority voting technique was used to normalise the scores. For each hotel we have a selection of tweets. These tweets are divided into five clusters; very negative, negative, neutral (ignored), positive and very positive. A mean value was calculated for each cluster. This was calculated by summing the corresponding score in the sentiment distribution for each tweet and dividing by the number of tweets in the cluster. The class with the highest mean value was assigned to the hotel.
 
-Sentiment scores were generated for some hotel chains, for example Hilton Hotels. In these cases the chain score was assigned to each hotel in the chain.
+There were some cases where tweets related to a hotel chain, for example Hilton Hotels, rather than an individual Hilton Hotel, for example Hilton Dublin Kilmainham. In these cases sentiment scores were generated for the chain as a whole. The score for the chain was assigned to each hotel in the chain. This only happened in the cases where we had no information about the individual hotel but had information about the chain as a whole, in an attempt to boost the numbers of hotels we had sentiment scores for. The possibility is there that one Hilton Hotel could be amazing and another could be terrible. Ideally more information would be collected so that every hotel has it's own individual sentiment score.
 
 This mean score was then normalised between zero and one, with the following weighting.
 \begin{itemize}
@@ -622,9 +633,17 @@ $Normalised\ score\ (Positive) = 0.606$
 
 \section{CoRE Recommender System}
 
-The sentiment scores produced by the Stanford NLP Sentiment Analyser \cite{stanfordSentiment2013} were used to re-rank the list of hotel recommendations produced by the CoRE recommender system \cite{core2019}.
+The sentiment scores produced by the Stanford NLP Sentiment Analyser \cite{stanfordSentiment2013} were used to re-rank the list of hotel recommendations produced by the CoRE Recommender System \cite{core2019}. CoRE is a Cold Start Resistant and Extensible Recommender system, developed in collaboration with Ryanair. 
 
 \subsection{CoRE}
+
+The CoRE recommender is an algorithmic approach to hotel recommendation. It can function in extreme cold start conditions. CoRE is a hybrid recommender that makes use of collaborative filtering, content-based recommendation and contextual suggestion. It is made up of three models, a user model, a segment model and a context model. Each model is generated as a weighted feature vector.
+
+The user model takes hotel features from Expedia, such as Free Wi-Fi, Free Breakfast, Restaurant, Hair dryer, etc. and uses them to build a vector of features describing a hotel. These are stored for each hotel. Then, for each user who has a previous hotel booking, the user model is constructed by weighting the features of the hotels that the user has booked before.
+
+The segment model is constructed as a weighted vector of features of hotels that have been booked by all users from a specific segment. A segment is a group of similar users. Users are assigned to a segment based on their flight booking history. This is a form of collaborative filtering.
+
+The context model uses contextual information to recommend hotels to the user. The contextual information used is the trip type specified by the user on their flight booking. If trip type information is not available it can be inferred by the number of people travelling with the user. The context model is constructed as a weighted vector of features of hotels that have been booked by all users who had the same trip type.
 
 \begin{figure}[h!]
 \centering
@@ -632,11 +651,19 @@ The sentiment scores produced by the Stanford NLP Sentiment Analyser \cite{stanf
 \caption{\label{fig:centroid} Centroid of CoRE Models.}
 \end{figure}
 
-CoRE \cite{core2019} is a Cold Start Resistant and Extensible Recommender system. It makes use of collaborative filtering, content-based recommendation and contextual suggestion. CoRE is made up of three models, a user model, a segment model and a context model. Each model is generated as a weighted feature vector. A centroid vector is then calculated, and a weighting is applied to determine the effect of each model. The cosine similarity between the vector of each hotel and the centroid vector of the user is then calculated, and a list of hotels is produced, ranked based on this score.
+The three models are combined by calculating the centroid vector. A weighting is applied to determine the effect of each model in the final vector. The cosine similarity between the vector of each hotel and the centroid vector of the user is then calculated, and a list of hotels is produced. The hotels are ranked based on the similarity score. CoRE is easily extensible. A fourth model could easily be added and incorporated into the centroid calculation.
+
+CoRE was evaluated against the ranking approach currently used by Ryanair (Sequernce). Hotels from the target city are sorted based on their sequence number given to them by Expedia. The sequence number is based on the transactional data from the last 30 days. CoRE significantly outperforms this baseline (Figure ~\ref{fig:coreperform}) with a MPR (mean percentile rank) of 22.04\% without feature weighting and 18.27\% with feature weighting.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{design_and_methodology/core_results.PNG}
+\caption{\label{fig:coreperform} Performance of CoRE with multiple models.}
+\end{figure}
 
 \subsection{Re-Ranking}
 
-The scores produced by the Stanford NLP Sentiment Analyser were used to re-rank this list of hotels. This was done by simply multiplying the score of the hotel in the CoRE ranked list by the normalised sentiment score. The sentiment score normalised between zero and one boosts the score of hotels with a positive sentiment score and drags down the score of the hotels with a negative sentiment score.
+The scores produced by the Stanford NLP Sentiment Analyser were used to re-rank the list of hotels produced by the CoRE. This was done by simply multiplying the score of the hotel in the CoRE ranked list by the normalised sentiment score. The sentiment score normalised between zero and one boosts the score of hotels with a positive sentiment score and drags down the score of the hotels with a negative sentiment score.
 
 
 
