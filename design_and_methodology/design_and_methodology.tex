@@ -13,7 +13,7 @@ In this chapter the design and methodology choices involved in this project will
     \item \textbf{Sentiment Analysis}\newline 
     This part of the project involved analysing the sentiment of those tweets that were classified as reviews.
     \item \textbf{Application within a Recommender System}\newline
-    In this stage the sentiment scores produced were used to re-rank the results of the CoRE \cite{core2019} recommender system.
+    In this stage the sentiment scores produced were used to re-rank the results of the CoRE \cite{core2019} Recommender System.
 \end{itemize}
 
 \begin{figure}[h!]
@@ -144,9 +144,6 @@ A simple webpage was created in order to annotate the tweets (Figure ~\ref{fig:w
 \begin{center}
     \url{http://reviewtweets.epizy.com}\newline
 \end{center}
-The text of each tweet was displayed alongside three buttons: 'review', 'some content' and 'irrelevant'. The participant could click on the option that they thought best described the tweet shown. Once they chose a label, the next tweet would be displayed. 
-
-Each time the webpage is loaded a random tweet from the dataset is displayed. This means each participant will label a different section of the tweets, ensuring all tweets in the collection get annotated evenly.
 
 \begin{figure}[h!]
 \centering
@@ -154,6 +151,9 @@ Each time the webpage is loaded a random tweet from the dataset is displayed. Th
 \caption{\label{fig:webpage} Tweet Annotation Webpage.}
 \end{figure}
 
+The text of each tweet was displayed alongside three buttons: 'review', 'some content' and 'irrelevant'. The participant could click on the option that they thought best described the tweet shown. Once they chose a label, the next tweet would be displayed. 
+
+Each time the webpage is loaded a random tweet from the dataset is displayed. This means each participant will label a different section of the tweets, ensuring all tweets in the collection get annotated evenly.
 
 The following instructions, describing what a 'review', 'some content' and 'irrelevant' tweet should look like accompanied the webpage:
 \begin{itemize}
@@ -234,15 +234,15 @@ The following steps were taken to pre-process the tweets, before they were used 
     \item \textbf{Emojis}\newline
     Emojis were removed and replaced with text using Python's Emoji library \cite{emoji}. For example, a thumbs up emoji would be converted to the text \emph{':thumbs\_up:'} and then \emph{'thumbs up'} once punctuation is removed. In this way some meaning was extracted from each emoji. Emojis are another area of potential valuable sentiment information for future work. A. Go, R. Bhayani and L. Huang \cite{Go2009} used emojis to automatically label a dataset of tweets as positive or negative.
     \item \textbf{Punctuation}\newline
-    The majority of special characters and punctuation was removed from the tweets. This included everything except the digits 0 - 9, the letters a - z (in upper and lower case), and the following set of symbols: . , ? ! ( ) \& ' - . Tweets are generally quite noisy and contain a lot of unnecessary punctuation. Symbols such as @ and \# were removed so that the hashtags and Twitter handles could be recognised as words. However, symbols like apostrophe's were not removed so that a word like 'won't' wouldn't be split into 'won' and 't'.
+    The majority of special characters and punctuation was removed from the tweets. This included everything except the digits 0 - 9, the letters a - z (in upper and lower case), and the following set of symbols: . , ? ! ( ) \& ' - . Tweets are generally quite noisy and contain a lot of unnecessary punctuation. Symbols such as @ and \# were removed so that the words contained in hashtags and Twitter handles could be recognised as words. However, symbols like apostrophes were not removed so that a word like 'won't' wouldn't be split into 'won' and 't'.
     \item \textbf{Single Characters}\newline
-    All single characters were removed. The majority of the single characters in the tweets were typos or added no extra meaning to the text. The only one letter words are 'I' and 'a'. These are both stop words which are later removed anyway.
+    All single characters were removed. The majority of the single characters in the tweets were typos or added no extra meaning to the text. The only single character words are 'I' and 'a'. These are both stop words which are later removed anyway.
     \item \textbf{Case Change}\newline
     Words were split on case changes. For example \emph{'MerrionHotel'} --> \emph{'Merrion Hotel'}. This was because we noticed a lot of Twitter handles and hashtags contain words joined together without space. 
     \item \textbf{Word-digit Boundaries}\newline
     Words were split on word-digit boundaries. For example \emph{'HouseDublin2'} --> \emph{'House Dublin 2'}. Again, a lot of Twitter handles and hashtags contain words and digits joined together without space. 
     \item \textbf{Lowercase}\newline
-    All text was converted to lower case. This is so that a word with a capital letter is not treated differently to the same word without a capital letter.
+    All text was converted to lower case. This is so that a word with a capital letter and a word without a capital letter are recognised as the same word.
     \item \textbf{Stemming}\newline
     Stemming was performed using the Word Net Lemmatizer. Stemming is the process of reducing words down to their base or root. For example \emph{'organise'}, \emph{'organised'} and \emph{'organisation'} would all be reduced to \emph{'organis'}. Stemming conflates similar terms, reducing the number of words that are fed to the classifier.
     \newline
@@ -262,14 +262,14 @@ The seven feature extraction methods implemented were:
 \begin{enumerate}
     \item \textbf{Unigram Bag-of-Words (BOW)}\newline
     A unigram implementation of BOW using Scikit Learn's Count Vectorizer.
-    \item \textbf{Unigram TF-IDF}\newline
-    A unigram implementation of TFIDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
+    \item \textbf{Unigram Term Frequency - Inverse Document Frequency (TF-IDF)}\newline
+    A unigram implementation of TF-IDF using Scikit Learn's Count Vectorizer and TF-IDF transformer.
     \item \textbf{Bigram TF-IDF}\newline
-    A bigram implementation of TFIDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
+    A bigram implementation of TF-IDF using Scikit Learn's Count Vectorizer and TF-IDF transformer.
     \item \textbf{Trigram TF-IDF} \newline
-    A trigram implementation of TFIDF using Scikit Learn's Count Vectorizer and TFIDF transformer.
+    A trigram implementation of TF-IDF using Scikit Learn's Count Vectorizer and TF-IDF transformer.
     \item \textbf{Unigram TF-IDF (stop words removed)}\newline
-    A unigram implementation of TFIDF with stop words removed using Scikit Learn's Count Vectorizer, TFIDF transformer and English stop word list.
+    A unigram implementation of TF-IDF with stop words removed using Scikit Learn's Count Vectorizer, TF-IDF transformer and English stop word list.
     \item \textbf{Doc2Vec}\newline
     Gensim's implementation of doc2vec, each tweet being considered a document.
     \item \textbf{Word2Vec}\newline
@@ -314,7 +314,7 @@ The TF-IDF transformer from Python's Scikit Learn was used to implement TF-IDF.
 
 Another extension of BOW is the use of N-grams. N-grams help to address the problem BOW has with discarding word ordering.
 
-An N-gram is a sequence of N consecutive terms. For example the bi-grams of \emph{'Twitter as an Alternative Review Site'} are:
+An N-gram is a sequence of N consecutive terms. For example the bigrams of \emph{'Twitter as an Alternative Review Site'} are:
 \begin{itemize}
     \item \emph{'Twitter as'}
     \item \emph{'as an'}
@@ -323,7 +323,7 @@ An N-gram is a sequence of N consecutive terms. For example the bi-grams of \emp
     \item \emph{'Review Site'}
 \end{itemize}
 
-Combining bi-grams with BOW means that occurrences of pairs of consecutive words are counted instead of individual terms. Uni-gram, bi-gram and tri-gram versions of TF-IDF were implemented.
+Combining bigrams with BOW means that occurrences of pairs of consecutive words are counted instead of individual terms. Unigram, bigram and trigram versions of TF-IDF were implemented.
 
 \subsubsection{Word2Vec}
 
@@ -346,8 +346,8 @@ The twelve classifiers implemented were:
     \item Decision Tree (DT) Classifier.
     \item Random Forest (RF) Classifier.
     \item Multi Layer Perceptron (MLP) Classifier.
-    \item Support Vector Machine (SVM) Classifier.
     \item Logistic Regression (LR) Classifier.
+    \item Support Vector Machine (SVM) Classifier.
     \item K Nearest Neighbours (KNN) Classifier.
     \item Gaussian Process (GP) Classifier.
     \item Adaboost (AB) Classifier.
@@ -366,7 +366,7 @@ The twelve classifiers implemented were:
 \caption{\label{fig:decisiontree} An example of a Decision Tree Classifier.}
 \end{figure}
 
-The Decision Tree Classifier is a simple classification algorithm that can be used for binary or multi-class classification. DT classifiers learn simple decision rules based on the attributes of the training data. These decision rules form a tree structure (Figure ~\ref{fig:decisiontree}) which is used to predict the value of a target variable. The leaf nodes represent the class labels. When an unclassified document is received questions are asked until a leaf node is reached and the document is assigned that class.
+The Decision Tree Classifier is a simple classification algorithm that can be used for binary or multi-class classification. DT classifiers learn simple decision rules based on the attributes of the training data. These decision rules form a tree structure (Figure ~\ref{fig:decisiontree}) which is used to predict the value of a target variable. The leaf nodes represent the class labels. When an unclassified document is received questions are asked until a leaf node is reached and the document is assigned that class.\newline\newline
 
 The DT Classifier was implemented using Scikit Learn with the following parameters:
 
@@ -388,17 +388,17 @@ The RF Classifier was implemented using Scikit Learn with the following paramete
 \end{center}
 \end{tcolorbox}
 
-\begin{figure}[h!]
-\centering
-\fbox{\includegraphics[width=0.5\textwidth]{design_and_methodology/multilayerperceptron_network.png}}
-\caption{\label{fig:mlp} A Multi Layer Perceptron Classifier with one hidden layer \cite{scikit-learn}.}
-\end{figure}
-
 \subsubsection*{Multi Layer Perceptron}
 
 The Multi Layer Perceptron Classifier is a deep, feedforward, artificial neural network. It consists of a minimum of three layers (Figure ~\ref{fig:mlp}): an input layer, a hidden layer and an output layer. The input layer receives the data, the output layer makes a decision and the hidden layers approximate the function.
 
 The MLP classifier learns a function by based on the training set. Given a set of features $X = x_1,x_2,x_3,...,x_n$ and a target y, it learns a non-linear approximation function. Backpropagation is used to train the MLP classifier.
+
+\begin{figure}[h!]
+\centering
+\fbox{\includegraphics[width=0.5\textwidth]{design_and_methodology/multilayerperceptron_network.png}}
+\caption{\label{fig:mlp} A Multi Layer Perceptron Classifier with one hidden layer \cite{scikit-learn}.}
+\end{figure}
 
 The MLP Classifier was implemented using Scikit Learn with the following parameters:
 
@@ -490,7 +490,7 @@ The AB Classifier was implemented using Scikit Learn with the following paramete
 \end{center}
 \end{tcolorbox}
 
-Scikit Learn's version of AdaBoost implements the SAMME algorithm \cite{multiclassada2009}.
+Scikit Learn's version of AdaBoost implements the SAMME (Stagewise Additive Modeling using a Multi-class Exponential loss function) algorithm \cite{multiclassada2009}.
 
 \subsubsection*{Gaussian Naive Bayes}
 
@@ -543,13 +543,13 @@ The MNB Classifier was implemented using Scikit Learn with the following paramet
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=1\textwidth]{design_and_methodology/qda_and_lda.png}
+\includegraphics[width=0.9\textwidth]{design_and_methodology/qda_and_lda.png}
 \caption{\label{fig:qdalda} Boundaries of the Quadratic Discriminant Analysis and Linear Discriminant Analysis Classifiers \cite{scikit-learn}.}
 \end{figure}
 
 The Quadratic Discriminant Analysis Classifier and the Linear Discriminant Analysis Classifier, have a quadratic and linear decision surface, respectively. QDA is more flexible as it can learn quadratic boundaries, LDA can only learn linear boundaries (Figure ~\ref{fig:qdalda}). 
 
-Both QDA AND LDA were implemented using Scikit Learn with the folllowing parameters:
+Both QDA and LDA were implemented using Scikit Learn with the folllowing parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -572,7 +572,7 @@ The Stanford NLP Sentiment Analyser \cite{stanfordSentiment2013} was used to cla
 
 \subsection{The Stanford NLP Sentiment Analyser}
 
-The Stanford Sentiment Analyser is based on a Recursive Neural Network. It was trained on a sentiment treebank of movie reviews from the movie review site RottenTomatoes. The treebank consists of sentences which are annotated on a phrase level. 
+The Stanford Sentiment Analyser is based on a Recursive Neural Tensor Network. It was trained on a sentiment treebank of movie reviews from the movie review site RottenTomatoes. The treebank consists of sentences which are annotated on a phrase level. 
 
 The Stanford NLP Sentiment Analyser has it's limitations. Due to the fact that it was trained on movie reviews and is being applied to tweets, optimum performance is not achieved. The best performance would be achieved if the Sentiment Analyser was re-trained on a dataset as similar to ours as possible. Ideally the Sentiment Analyser would be re-trained with a set of hotel related tweets. This would involve manually annotating a collection of tweets at a phrase level to produce a treebank.
 
@@ -608,7 +608,7 @@ The sentiment scores produced by the Stanford NLP Sentiment Analyser were produc
 
 A majority voting technique was used to normalise the scores. For each hotel we have a selection of tweets. These tweets are divided into five clusters; very negative, negative, neutral (ignored), positive and very positive. A mean value was calculated for each cluster. This was calculated by summing the corresponding score in the sentiment distribution for each tweet and dividing by the number of tweets in the cluster. The class with the highest mean value was assigned to the hotel.
 
-There were some cases where tweets related to a hotel chain, for example Hilton Hotels, rather than an individual Hilton Hotel, for example Hilton Dublin Kilmainham. In these cases sentiment scores were generated for the chain as a whole. The score for the chain was assigned to each hotel in the chain. This only happened in the cases where we had no information about the individual hotel but had information about the chain as a whole, in an attempt to boost the numbers of hotels we had sentiment scores for. The possibility is there that one Hilton Hotel could be amazing and another could be terrible. Ideally more information would be collected so that every hotel has it's own individual sentiment score.
+There were some cases where tweets related to a hotel chain, for example Hilton Hotels, rather than an individual Hilton Hotel, for example Hilton Dublin Kilmainham. In these cases sentiment scores were generated for the chain as a whole. The score for the chain was assigned to each hotel in the chain. This only happened in the cases where we had no information about the individual hotel but had information about the chain as a whole, in an attempt to boost the numbers of hotels we had sentiment scores for. The possibility is there that one Hilton Hotel could be amazing and another could be terrible. Ideally more data would be collected so that every hotel has it's own individual sentiment score.
 
 This mean score was then normalised between zero and one, with the following weighting.
 \begin{itemize}
@@ -639,11 +639,11 @@ The sentiment scores produced by the Stanford NLP Sentiment Analyser \cite{stanf
 
 The CoRE recommender is an algorithmic approach to hotel recommendation. It can function in extreme cold start conditions. CoRE is a hybrid recommender that makes use of collaborative filtering, content-based recommendation and contextual suggestion. It is made up of three models, a user model, a segment model and a context model. Each model is generated as a weighted feature vector.
 
-The user model takes hotel features from Expedia, such as Free Wi-Fi, Free Breakfast, Restaurant, Hair dryer, etc. and uses them to build a vector of features describing a hotel. These are stored for each hotel. Then, for each user who has a previous hotel booking, the user model is constructed by weighting the features of the hotels that the user has booked before.
+The user model takes hotel features from Expedia, such as Free Wi-Fi, Free Breakfast, Restaurant, Hair dryer, etc. and uses them to build a vector of features describing a hotel. A vector of features is stored for each hotel. Then, for each user who has a previous hotel booking, the user model is constructed by weighting the features of the hotels that the user has booked before.
 
-The segment model is constructed as a weighted vector of features of hotels that have been booked by all users from a specific segment. A segment is a group of similar users. Users are assigned to a segment based on their flight booking history. This is a form of collaborative filtering.
+The segment model introduces collaborative filtering to the recommender. Collaborative filtering methods recommend to users based on the preferences of similar users. The segment model is constructed as a weighted vector of features of hotels that have been booked by all users from a specific segment. A segment is a group of similar users. Users are assigned to a segment based on their flight booking history.
 
-The context model uses contextual information to recommend hotels to the user. The contextual information used is the trip type specified by the user on their flight booking. If trip type information is not available it can be inferred by the number of people travelling with the user. The context model is constructed as a weighted vector of features of hotels that have been booked by all users who had the same trip type.
+The context model uses contextual information to recommend hotels to the user. The contextual information used is the trip type specified by the user on their flight booking. If trip type information is not available it can be inferred by the number of people travelling with the user, for example, two adults and two children indicates a family trip. The context model is constructed as a weighted vector of features of hotels that have been booked by all users who had the same trip type.
 
 \begin{figure}[h!]
 \centering
@@ -651,9 +651,9 @@ The context model uses contextual information to recommend hotels to the user. T
 \caption{\label{fig:centroid} Centroid of CoRE Models.}
 \end{figure}
 
-The three models are combined by calculating the centroid vector. A weighting is applied to determine the effect of each model in the final vector. The cosine similarity between the vector of each hotel and the centroid vector of the user is then calculated, and a list of hotels is produced. The hotels are ranked based on the similarity score. CoRE is easily extensible. A fourth model could easily be added and incorporated into the centroid calculation.
+The three models are combined by calculating the centroid vector (Figure ~\ref{fig:centroid}). A weighting is applied to determine the effect of each model in the final vector. The cosine similarity between the vector of each hotel and the centroid vector of the user is then calculated, and a list of hotels is produced. The hotels are ranked based on the similarity score. CoRE is easily extensible. A fourth model could easily be added and incorporated into the centroid calculation.
 
-CoRE was evaluated against the ranking approach currently used by Ryanair (Sequernce). Hotels from the target city are sorted based on their sequence number given to them by Expedia. The sequence number is based on the transactional data from the last 30 days. CoRE significantly outperforms this baseline (Figure ~\ref{fig:coreperform}) with a MPR (mean percentile rank) of 22.04\% without feature weighting and 18.27\% with feature weighting.
+CoRE was evaluated against the ranking approach currently used by Ryanair. Hotels from the target city are sorted based on their sequence number which is given to them by Expedia. The sequence number is based on the transactional data from the last 30 days. CoRE significantly outperforms this baseline, which is labelled 'Sequence' in Figure ~\ref{fig:coreperform}. CoRE achieves a mean percentile rank (MPR) of 22.04\% without feature weighting and 18.27\% with feature weighting.
 
 \begin{figure}[h!]
 \centering
@@ -665,5 +665,6 @@ CoRE was evaluated against the ranking approach currently used by Ryanair (Seque
 
 The scores produced by the Stanford NLP Sentiment Analyser were used to re-rank the list of hotels produced by the CoRE. This was done by simply multiplying the score of the hotel in the CoRE ranked list by the normalised sentiment score. The sentiment score normalised between zero and one boosts the score of hotels with a positive sentiment score and drags down the score of the hotels with a negative sentiment score.
 
-
-
+\begin{equation}
+    SentiCoRE\ Score = Sentiment\ Score \times CoRE\ Score
+\end{equation}
