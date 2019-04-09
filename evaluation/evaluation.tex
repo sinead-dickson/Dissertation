@@ -6,7 +6,7 @@ This chapter will present the results of this research. First, the evaluation me
 \section{Evaluation Metrics for Classification}
 
 \subsection{Confusion Matrix}
-A confusion matrix is a technique commonly used for evaluating the performance of a classification model. It presents a summary of the prediction results of the classifier. A confusion matrix consists of four different combinations of the actual values versus the predicted values. 
+A confusion matrix is a technique commonly used for evaluating the performance of a classification model. It presents a summary of the prediction results of the classifier. A confusion matrix consists of four different combinations of the actual values versus the predicted values (Table ~\ref{Table:confusionmatrix}). 
 
 \begin{table}[h!]
 \setlength\extrarowheight{5pt}
@@ -71,7 +71,7 @@ There are three ways that precision, recall, f1-score and accuracy can be calcul
     \item \textbf{Macro Average:}\newline
     The macro average calculates the metrics independently for each class. It then calculates the unweighted mean of the scores of the three classes.
     \item \textbf{Weighted Average:}\newline
-    The weighted average calculates the metrics independently for each class, like the macro average does. It then calculates the weighted average of the scores of the three classes. This differs from macro average in that it takes class imbalance into account.
+    The weighted average calculates the metrics independently for each class, like the macro average does. It then calculates the weighted average of the scores of the three classes. This differs from macro average in that it takes class imbalance into account. Class imbalance means that there is a significant amount more or less samples in one class. In our case there are significantly more tweets labelled as irrelevant that there are labelled as reviews (Table ~\ref{Table:tweetlabels}).
 \end{enumerate}
 
 The metrics listed in the tables below (Tables ~\ref{Table:precision},~\ref{Table:recall},~\ref{Table:accuracy},~\ref{Table:f1score}) were calculated with the weighted average.
@@ -83,8 +83,8 @@ In this section, the results and evaluation of the classifiers will be presented
     \item Random Forest (RF) Classifier.
     \item Decision Tree (DT) Classifier.
     \item Multi Layer Perceptron (MLP) Classifier.
+    \item Logistic Regression (LR) Classifier.    
     \item Support Vector Machine (SVM) Classifier.
-    \item Logistic Regression (LR) Classifier.
     \item K Nearest Neighbours (KNN) Classifier.
     \item Gaussian Process (GP) Classifier.
     \item AdaBoost (AB) Classifier.
@@ -97,7 +97,7 @@ In this section, the results and evaluation of the classifiers will be presented
 
 These classifiers were evaluated with seven different feature representations defined below:
 \begin{enumerate}
-    \item Unigram Bag-of-Words (BOW).
+    \item Unigram BOW.
     \item Unigram TF-IDF.
     \item Bigram TF-IDF.
     \item Trigram TF-IDF.
