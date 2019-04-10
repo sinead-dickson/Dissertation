@@ -131,12 +131,12 @@ A list of the hotels in Dublin was compiled. This included the hotel's name and 
 
 The tweets were stored in a Lucene index. A fuzzy search query was used to match the tweets against each of the hotel names and hotel Twitter handles. The fuzzy search query uses a similarity measure that is based on the Damerau-Levenshtein algorithm. The maximum edits option was set to two, meaning that strings with a maximum difference of two characters would still match. This accounted for misspellings and broadened our search slightly. We experimented with higher numbers of maximum edits but found that too many irrelevant tweets were returned.
 
-No NLP that attempts to identify all mentions will be 100\% accurate. Users will refer to hotels in all manner of ways, anaphora like 'the hotel'. We have tried to be reasonably conservative and ensure we have a pretty clean dataset, but there are a range of ways to identify hotels that could be experimented with. 
+No NLP (natural language processing) technique that attempts to identify all mentions will be 100\% accurate. Users will refer to hotels in all manner of ways, anaphora like 'the hotel'. We have tried to be reasonably conservative and ensure we have a pretty clean dataset, but there are a range of ways to identify hotels that could be experimented with. 
 This further filtered dataset consisted of 3115 tweets that mention hotels posted from Dublin between October 2017 and September 2018. The distribution of tweets collected per hotel can be seen in the appendix (Table ~\ref{Table:tweetsperhotels}).
 
 \section{Dataset Annotation}
 
-One major goal of this research was to categorise tweets as review-like tweets, tweets that contain some content and irrelevant tweets. In order to train a classifier to do this a set of tweets had to first be manually annotated. The set of 3115 tweets about hotels in Dublin was annotated. This involved building an annotation webpage where users could view tweets and assign them labels.
+One major goal of this research was to categorise tweets as review-like tweets, as tweets that contain some content and as irrelevant tweets. In order to train a classifier to do this a set of tweets had to first be manually annotated. The set of 3115 tweets about hotels in Dublin was annotated. This involved building an annotation webpage where users could view tweets and assign them labels.
 
 \subsection{Annotation Webpage}
 
@@ -151,11 +151,11 @@ A simple webpage was created in order to annotate the tweets (Figure ~\ref{fig:w
 \caption{\label{fig:webpage} Tweet Annotation Webpage.}
 \end{figure}
 
-The text of each tweet was displayed alongside three buttons: 'review', 'some content' and 'irrelevant'. The participant could click on the option that they thought best described the tweet shown. Once they chose a label, the next tweet would be displayed. 
+The text of each tweet was displayed alongside three buttons: 'Review', 'Some Content' and 'Irrelevant'. The participant could click on the option that they thought best described the tweet shown. Once they chose a label, the next tweet would be displayed. 
 
 Each time the webpage is loaded a random tweet from the dataset is displayed. This means each participant will label a different section of the tweets, ensuring all tweets in the collection get annotated evenly.
 
-The following instructions, describing what a 'review', 'some content' and 'irrelevant' tweet should look like accompanied the webpage:
+The following instructions, describing what a 'Review', 'Some Content' and 'Irrelevant' tweet should look like accompanied the webpage:
 \begin{itemize}
     \item \textbf{Review} \newline
     The tweet could be considered as a review (of any aspects related to a hotel such as the venue, food, view, swimming pool, etc.) for any hotel. Examples would include: \emph{"Amazing view of the Aviva Stadium from my hotel balcony at hotel X"} (positive review), "Room service was awful at hotel Y" (negative review), \emph{"Thank you hotel X for a lovely stay"} (positive review) or \emph{"Had an awful night at hotel Y"} (negative review).
@@ -244,8 +244,7 @@ The following steps were taken to pre-process the tweets, before they were used 
     \item \textbf{Lowercase}\newline
     All text was converted to lower case. This is so that a word with a capital letter and a word without a capital letter are recognised as the same word.
     \item \textbf{Stemming}\newline
-    Stemming was performed using the Word Net Lemmatizer. Stemming is the process of reducing words down to their base or root. For example \emph{'organise'}, \emph{'organised'} and \emph{'organisation'} would all be reduced to \emph{'organis'}. Stemming conflates similar terms, reducing the number of words that are fed to the classifier.
-    \newline
+    Stemming was performed using the Word Net Lemmatizer from the Natural Language Toolkit \footnote{\url{https://www.nltk.org/}} (NLTK). Stemming is the process of reducing words down to their base or root. For example \emph{'organise'}, \emph{'organised'} and \emph{'organisation'} would all be reduced to \emph{'organis'}. Stemming conflates similar terms, reducing the number of words that are fed to the classifier.
     \item \textbf{Stopwords}\newline
     Stop words were removed. All text contains words that are irrelevant and do not add any additional meaning. These are called stop words. Some examples of stop words are \emph{'and'}, \emph{'I'}, \emph{'of'} and \emph{'the'}. Stop words were not removed in all cases. It will be clearly stated in all cases where stop words were removed.
 \end{itemize}
@@ -270,10 +269,10 @@ The seven feature extraction methods implemented were:
     A trigram implementation of TF-IDF using Scikit Learn's Count Vectorizer and TF-IDF transformer.
     \item \textbf{Unigram TF-IDF (stop words removed)}\newline
     A unigram implementation of TF-IDF with stop words removed using Scikit Learn's Count Vectorizer, TF-IDF transformer and English stop word list.
+    \item \textbf{Word2Vec}\newline
+    Gensim's implementation of word2vec with Google's pretrained model.    
     \item \textbf{Doc2Vec}\newline
     Gensim's implementation of doc2vec, each tweet being considered a document.
-    \item \textbf{Word2Vec}\newline
-    Gensim's implementation of word2vec with Google's pretrained model.
 \end{enumerate}
 
 \subsubsection{Bag-of-Words}
@@ -392,7 +391,7 @@ The RF Classifier was implemented using Scikit Learn with the following paramete
 
 The Multi Layer Perceptron Classifier is a deep, feedforward, artificial neural network. It consists of a minimum of three layers (Figure ~\ref{fig:mlp}): an input layer, a hidden layer and an output layer. The input layer receives the data, the output layer makes a decision and the hidden layers approximate the function.
 
-The MLP classifier learns a function by based on the training set. Given a set of features $X = x_1,x_2,x_3,...,x_n$ and a target y, it learns a non-linear approximation function. Backpropagation is used to train the MLP classifier.
+The MLP classifier learns a function by based on the training set. Given a set of features $X = x_1,x_2,x_3,...,x_n$ and a target y, it learns a non-linear approximation function. Backpropagation is used to train the MLP Classifier.
 
 \begin{figure}[h!]
 \centering
@@ -449,7 +448,7 @@ The SVM Classifier was implemented using Scikit Learn with the following paramet
 \caption{\label{fig:knn} An example of a K Nearest Neighbours Classifier.}
 \end{figure}
 
-The K Nearest Neighbours (KNN) Classifier doesn't build a model like other classification algorithms. It uses a majority vote of the "nearest neighbours" to a document. A label is assigned to a document based on the class that has the majority of the nearest neighbours to the document. For example, point one would be assigned the label blue. Taking it's four nearest neighbours it has three blue neighbours and one red neighbour. The point is assigned to the class with the majority of the nearest neighbour, blue.
+The K Nearest Neighbours Classifier doesn't build a model like other classification algorithms. It uses a majority vote of the "nearest neighbours" to a document. A label is assigned to a document based on the class that has the majority of the nearest neighbours to the document. For example in Figure ~\ref{fig:knn}, point one would be assigned the label blue. Taking it's four nearest neighbours it has three blue neighbours and one red neighbour. The point is assigned to the class with the majority of the nearest neighbour, blue.
 
 The KNN Classifier was implemented using Scikit Learn with the following parameters:
 
@@ -480,7 +479,7 @@ The GP Classifier was implemented using Scikit Learn with the following paramete
 
 The AdaBoost Classifier is another ensemble classification algorithm, introduced by Freund and Schapire \cite{adaboost1997}.
 
-AB works by fitting a series of weak base classifiers on incrementally re-weighted versions of the training data. The predictions from the base classifiers are combined with a majority vote or sum, to get an overall classification. The 'boosting' component of the algorithm involves re-weighting the data on each iteration. Samples that were predicted correctly have their weight increased and samples that were predicted incorrectly have their weight decreased.
+The AB Classifier works by fitting a series of weak base classifiers on incrementally re-weighted versions of the training data. The predictions from the base classifiers are combined with a majority vote or sum, to get an overall classification. The 'boosting' component of the algorithm involves re-weighting the data on each iteration. Samples that were predicted correctly have their weight increased and samples that were predicted incorrectly have their weight decreased.
 
 The AB Classifier was implemented using Scikit Learn with the following parameters:
 
@@ -498,7 +497,7 @@ The Gaussian Naive Bayes Classifier is one of a set of Naive Bayes Classificatio
 \begin{center}
 \(P(A\mid B)=\frac{P(B\mid A)\:P(A)}{P(B)}\). 
 \end{center}
-In GNB the likelihood of the features is assumed to be Gaussian:
+In the GNB Classifier the likelihood of the features is assumed to be Gaussian:
 \begin{center}
 $P(x_i|y) = \frac{1}{\sqrt{2\pi\sigma_y^2}} exp (- \frac{(x_i - \mu_y)^2}{2\sigma_y^2})$
 \end{center}
@@ -512,9 +511,9 @@ The GNB Classifier was implemented using Scikit Learn with the following paramet
 
 \subsubsection*{Bernoulli Naive Bayes}
 
-The Bernoulli Naive Bayes Classifier is another of the Naive Bayes Classification algorithms. BNB implements the Naive Bayes algorithm for data that is distributed according to multivariate Bernoulli distributions. It has been seen to work better than GNB on shorter texts.
+The Bernoulli Naive Bayes Classifier is another of the Naive Bayes Classification algorithms. The BNB Classifier implements the Naive Bayes algorithm for data that is distributed according to multivariate Bernoulli distributions. It has been seen to work better than the GNB Classifier on shorter texts.
 
-The decision rule for BNB is:
+The decision rule for the BNB Classifier is:
 \begin{center}
 $P(x_i|y) = P(i|y)x_i + (1 - P(i|y))(1 - x_i)$
 \end{center}
@@ -549,7 +548,7 @@ The MNB Classifier was implemented using Scikit Learn with the following paramet
 
 The Quadratic Discriminant Analysis Classifier and the Linear Discriminant Analysis Classifier, have a quadratic and linear decision surface, respectively. QDA is more flexible as it can learn quadratic boundaries, LDA can only learn linear boundaries (Figure ~\ref{fig:qdalda}). 
 
-Both QDA and LDA were implemented using Scikit Learn with the folllowing parameters:
+Both the QDA and the LDA Classifier were implemented using Scikit Learn with the folllowing parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -574,7 +573,7 @@ The Stanford NLP Sentiment Analyser \cite{stanfordSentiment2013} was used to cla
 
 The Stanford Sentiment Analyser is based on a Recursive Neural Tensor Network. It was trained on a sentiment treebank of movie reviews from the movie review site RottenTomatoes. The treebank consists of sentences which are annotated on a phrase level. 
 
-The Stanford NLP Sentiment Analyser has it's limitations. Due to the fact that it was trained on movie reviews and is being applied to tweets, optimum performance is not achieved. The best performance would be achieved if the Sentiment Analyser was re-trained on a dataset as similar to ours as possible. Ideally the Sentiment Analyser would be re-trained with a set of hotel related tweets. This would involve manually annotating a collection of tweets at a phrase level to produce a treebank.
+The Stanford NLP Sentiment Analyser has it's limitations. Due to the fact that it was trained on movie reviews and is being applied to tweets, optimum performance is not achieved. The best performance would be achieved if the Sentiment Analyser was re-trained on a dataset as similar to ours as possible. Ideally the Sentiment Analyser would be re-trained with a set of hotel related tweets. This would involve manually annotating a collection of tweets at a phrase level to produce a treebank. This is an area for future research.
 
 The Stanford NLP Sentiment Analyser classifies the text into one of the following five sentiment judgements: 
 \begin{enumerate}
@@ -587,7 +586,8 @@ The Stanford NLP Sentiment Analyser classifies the text into one of the followin
 
 The output from the Sentiment Analyser for a tweet looks like this:
 
-\begin{lstlisting}[caption={Output from Stanford NLP Sentiment Analyser},
+\begin{lstlisting}[
+caption={Output from Stanford NLP Sentiment Analyser},
 captionpos=b,label=lst:stanfordoutput,language=json,firstnumber=1]
 "sentimentValue": "3",
 "sentiment": "Positive",
@@ -600,15 +600,15 @@ captionpos=b,label=lst:stanfordoutput,language=json,firstnumber=1]
 ]
 \end{lstlisting}
 
-The sentiment value and sentiment define the class the tweet has been assigned. In this case the tweet is positive. The sentiment distribution shows how strongly the tweet aligns with each class, from very negative to very positive. This tweet has a maximum value of 0.42548434014862 so it is assigned the positive label.
+The sentiment value (3) and sentiment (Positive) define the class the tweet has been assigned (Listing ~\ref{lst:stanfordoutput}). In this case the tweet is positive. The sentiment distribution shows how strongly the tweet aligns with each class, from very negative to very positive. This tweet has a maximum value of 0.42548434014862 so it is assigned the positive label.
 
 \subsection{Normalisation}
 
 The sentiment scores produced by the Stanford NLP Sentiment Analyser were produced per tweet. They needed to be normalised so that they were per hotel and lay between zero and one.
 
-A majority voting technique was used to normalise the scores. For each hotel we have a selection of tweets. These tweets are divided into five clusters; very negative, negative, neutral (ignored), positive and very positive. A mean value was calculated for each cluster. This was calculated by summing the corresponding score in the sentiment distribution for each tweet and dividing by the number of tweets in the cluster. The class with the highest mean value was assigned to the hotel.
+A majority voting technique was used to normalise the scores. For each hotel we had a selection of tweets. These tweets are divided into five clusters; very negative, negative, neutral (ignored), positive and very positive. A mean value was calculated for each cluster. This was calculated by summing the corresponding score in the sentiment distribution for each tweet and dividing by the number of tweets in the cluster. The class with the highest mean value was assigned to the hotel.
 
-There were some cases where tweets related to a hotel chain, for example Hilton Hotels, rather than an individual Hilton Hotel, for example Hilton Dublin Kilmainham. In these cases sentiment scores were generated for the chain as a whole. The score for the chain was assigned to each hotel in the chain. This only happened in the cases where we had no information about the individual hotel but had information about the chain as a whole, in an attempt to boost the numbers of hotels we had sentiment scores for. The possibility is there that one Hilton Hotel could be amazing and another could be terrible. Ideally more data would be collected so that every hotel has it's own individual sentiment score.
+There were some cases where tweets related to a hotel chain, for example Hilton Hotels, rather than an individual Hilton Hotel, for example Hilton Dublin Kilmainham. In these cases sentiment scores were generated for the chain as a whole. The score for the chain was assigned to each hotel in the chain. This only happened in the cases where we had no information about the individual hotel but had information about the chain as a whole, in an attempt to boost the numbers of hotels we had sentiment scores for. The problem is that one Hilton Hotel could be amazing and another could be terrible. Ideally more data would be collected so that every hotel had it's own individual sentiment score.
 
 This mean score was then normalised between zero and one, with the following weighting.
 \begin{itemize}
