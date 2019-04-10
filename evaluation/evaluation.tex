@@ -39,14 +39,14 @@ Precision is the percentage of positive identifications that were classified cor
 \begin{equation}
     Precision\ =\ \cfrac{True\ Positives}{True\ Positives\ +\ False\ Positives}
 \end{equation}
-The higher the precision score the better. A low precision score can indicate that there is a large number of false positives. A high precision score indicates that the majority of what was classified, was classified correctly. You could however, have a very high precision in the case where only a small portion of samples were actually classified but of these the majority were classified correctly. In this case the precision is high but the recall would be very low.
+The higher the precision score the better. A low precision score can indicate that there is a large number of false positives. A high precision score indicates that the majority of what was classified, was classified correctly. You could however, have a very high precision score in the case where only a small portion of samples were actually classified but of these the majority were classified correctly. In this case the precision score is high but the recall would be very low.
 
 \subsection{Recall}
 Recall is the percentage of all actual positives that were classified correctly.
 \begin{equation}
     Recall\ =\ \cfrac{True\ Positives}{True\ Positives\ +\ False\ Negatives}
 \end{equation}
-The higher the recall score the better. A low recall value can indicate there are a large number of false negatives. A high recall value indicates that the majority of what should have been classified as a was classified correctly. You could however have a very high recall and low precision if everything was classified. All the samples that that should have been classified are classified correctly, giving the high recall. But a lot of extra samples are classified that shouldn't have been classified, giving a low precision.
+The higher the recall score the better. A low recall value can indicate that there are a large number of false negatives. A high recall value indicates that the majority of what should have been classified was classified correctly. You could however have a very high recall and low precision if everything was classified. All the samples that should have been classified are classified correctly, giving the high recall. But a lot of extra samples are classified that shouldn't have been classified, giving a low precision.
 
 \subsection{Accuracy}
 Accuracy is the total number of predictions the classifier got right. It is the percentage of the tweets that were classified correctly.
@@ -63,7 +63,7 @@ F1-Score is the harmonic mean of precision and recall. It is also called the F-S
 The higher the F1-Score the better. A high F1-Score indicates a good balance between precision and recall.
 
 \subsection{Multi-Class Classification}
-Multi-Class Classification is any classification task that involves two or more classes. This research tackles a multi-class classification problem. We aim to classifying tweets as one of the following three classes: 'review', 'some content', or 'irrelevant'. For a binary classification problem, the precision, recall, f1-score and accuracy scores can be calculated simply with the above formulas. For multi-class classification there needs to be a way of getting an average metric over the three classes, rather than an individual class score.
+Multi-Class Classification is any classification task that involves two or more classes. This research tackles a multi-class classification problem. We aim to classifying tweets as one of the following three classes: 'Review', 'Some Content', or 'Irrelevant'. For a binary classification problem, the precision, recall, f1-score and accuracy scores can be calculated simply with the above formulas. For multi-class classification there needs to be a way of getting an average metric over the three classes, rather than an individual class score.
 There are three ways that precision, recall, f1-score and accuracy can be calculated for this kind of multi-class classification problem:
 \begin{enumerate}
     \item \textbf{Micro Average:}\newline
@@ -71,7 +71,7 @@ There are three ways that precision, recall, f1-score and accuracy can be calcul
     \item \textbf{Macro Average:}\newline
     The macro average calculates the metrics independently for each class. It then calculates the unweighted mean of the scores of the three classes.
     \item \textbf{Weighted Average:}\newline
-    The weighted average calculates the metrics independently for each class, like the macro average does. It then calculates the weighted average of the scores of the three classes. This differs from macro average in that it takes class imbalance into account. Class imbalance means that there is a significant amount more or less samples in one class. In our case there are significantly more tweets labelled as irrelevant that there are labelled as reviews (Table ~\ref{Table:tweetlabels}).
+    The weighted average calculates the metrics independently for each class, like the macro average does. It then calculates the weighted average of the scores of the three classes. This differs from the macro average in that it takes class imbalance into account. Class imbalance means that there is a significant amount more or less samples in one class. In our case there are significantly more tweets labelled as irrelevant than there are labelled as reviews (Table ~\ref{Table:tweetlabels}).
 \end{enumerate}
 
 The metrics listed in the tables below (Tables ~\ref{Table:precision},~\ref{Table:recall},~\ref{Table:accuracy},~\ref{Table:f1score}) were calculated with the weighted average.
@@ -125,6 +125,8 @@ Irrelevant     & 1639                 \\ \hline
 
 \subsection{Precision}
 
+In terms of precision, the QDA Classifier with unigram TF-IDF and no stop words feature representation was the best performing classifier achieving a precision score of 0.79 (Table ~\ref{Table:precision}). This indicates that the QDA Classifier had a high percentage of positive identifications that were classified correctly. The QDA Classifier with unigram TF-IDF feature representation, this time with stop words included achieved the next highest precision score of 0.76. This further confirmed that unigram feature representation seems to work best with the QDA Classifier. The RF Classifier and the SVM Classifier, both with unigram TF-IDF feature representations were the two next best performing classifiers both achieving precision values of 0.74.
+
 \begin{table}[h!]
 \setlength\extrarowheight{5pt}
 \caption{Precision of Classifiers for different Feature Representations.}
@@ -132,34 +134,32 @@ Irrelevant     & 1639                 \\ \hline
 \resizebox{\textwidth}{!}{
 \begin{tabular}{cccccccc}
 \specialrule{1.5pt}{1pt}{1pt}
- & \textbf{BOW} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Bigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Trigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram,\\ No Stop Words)\end{tabular}} & \textbf{Doc2Vec} & \textbf{Word2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
-\textbf{RF} & 0.72 & 0.74 & 0.7 & 0.69 & 0.73 & 0.59 & 0.71 \\ \hline
+ & \textbf{BOW} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Bigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Trigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram,\\ No Stop Words)\end{tabular}} & \textbf{Word2Vec} & \textbf{Doc2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
+\textbf{RF} & 0.72 & 0.74 & 0.7 & 0.69 & 0.73 & 0.71 & 0.59  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{DT} & 0.57 & 0.58 & 0.58 & 0.59 & 0.63 & 0.56 & 0.54 \\ \hline
-\textbf{MLP} & 0.71 & 0.71 & 0.7 & 0.7 & 0.7 & 0.59 & 0.71 \\ \hline
+\textbf{DT} & 0.57 & 0.58 & 0.58 & 0.59 & 0.63 & 0.54 & 0.56  \\ \hline
+\textbf{MLP} & 0.71 & 0.71 & 0.7 & 0.7 & 0.7 & 0.71 & 0.59  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{SVM} & 0.56 & 0.74 & 0.73 & 0.71 & 0.71 & 0.62 & 0.71 \\ \hline
-\textbf{LR} & 0.72 & 0.72 & 0.7 & 0.68 & 0.7 & 0.61 & 0.71 \\ \hline
+\textbf{SVM} & 0.56 & 0.74 & 0.73 & 0.71 & 0.71 & 0.71 & 0.62  \\ \hline
+\textbf{LR} & 0.72 & 0.72 & 0.7 & 0.68 & 0.7 & 0.71 & 0.61  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{KNN} & 0.53 & 0.62 & 0.62 & 0.62 & 0.61 & 0.54 & 0.67 \\ \hline
-\textbf{GP} & 0.72 & 0.72 & 0.71 & 0.69 & 0.7 & 0.61 & 0.72 \\ \hline
+\textbf{KNN} & 0.53 & 0.62 & 0.62 & 0.62 & 0.61 & 0.67 & 0.54  \\ \hline
+\textbf{GP} & 0.72 & 0.72 & 0.71 & 0.69 & 0.7 & 0.72 & 0.61  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{AB} & 0.63 & 0.62 & 0.63 & 0.62 & 0.64 & 0.57 & 0.63 \\ \hline
-\textbf{GNB} & 0.6 & 0.6 & 0.63 & 0.63 & 0.59 & 0.59 & 0.64 \\ \hline
+\textbf{AB} & 0.63 & 0.62 & 0.63 & 0.62 & 0.64 & 0.63 & 0.57  \\ \hline
+\textbf{GNB} & 0.6 & 0.6 & 0.63 & 0.63 & 0.59 & 0.64 & 0.59  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{MNB} & \multicolumn{1}{c}{\cellcolor[HTML]{EFEFEF}0.71} & 0.67 & 0.68 & 0.66 & 0.67 &  &  \\ \hline
+\textbf{MNB} & \multicolumn{1}{c}{\cellcolor[HTML]{EFEFEF}0.71} & 0.67 & 0.68 & 0.66 & 0.67 & 0.32 & 0.35    \\ \hline
 \rowcolor[HTML]{FFFFFF} 
-\textbf{BNB} & 0.73 & 0.73 & 0.71 & 0.71 & 0.72 & 0.58 & 0.65 \\ \hline
+\textbf{BNB} & 0.73 & 0.73 & 0.71 & 0.71 & 0.72 & 0.65 & 0.58  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{QDA} & 0.72 & 0.76 & 0.73 & 0.67 & \textcolor{red}{0.79} & 0.57 & 0.59 \\ \hline
+\textbf{QDA} & 0.72 & 0.76 & 0.73 & 0.67 & \textcolor{red}{0.79} & 0.59 & 0.57  \\ \hline
 \rowcolor[HTML]{FFFFFF} 
-\textbf{LDA} & 0.63 & 0.64 & 0.65 & 0.63 & 0.62 & 0.66 & 0.69 \\ \hline
+\textbf{LDA} & 0.63 & 0.64 & 0.65 & 0.63 & 0.62 & 0.69 & 0.66  \\ \hline
 \end{tabular}}
 \end{table}
 
-In terms of precision, the QDA classifier with unigram TF-IDF and no stop words feature representation was the best performing classifier achieving a precision score of 0.79 (Table ~\ref{Table:precision}). This indicates that the QDA classifier had a high percentage of positive identifications that were classified correctly. The QDA classifier with unigram TF-IDF feature representation, this time with stop words included achieved the next highest precision score of 0.76. This further confirmed that unigram feature representation seems to work best with the QDA classifier. The RF classifier and the SVM classifier, both with unigram TF-IDF feature representation were the two next best performing classifiers both achieving precision values of 0.74.
-
-It is interesting to compare our precision scores to those in the study by A.Rane and A.Kumar \cite{Rane2018}, in which they investigated the performance of various classifiers in classifying the sentiment of Twitter reviews about airlines. They found that the RF classifier achieved the highest precision score, followed first by AdaBoost and then the SVM classifier. They did not include the QDA classifier in their evaluation. Our results do not fully confirm or contradict the results of A.Rane and A.Kumar \cite{Rane2018}. Two out of three of our top performing classifiers agree, the RF classifier and the SVM classifier. Their precision scores are higher than ours for all the classifiers that they implemented, at approximately 0.8 compared to ours at approximately 0.7. A likely reason for this is that they trained their classifiers on a much larger dataset, a total of 14640 tweets, while our classifiers were trained on a smaller set of 3116 tweets. Supervised machine learning methods tend to perform the best on large datasets. Our results could possibly be improved by collecting and annotating a larger dataset.
+It is interesting to compare our precision scores to those in the study by A.Rane and A.Kumar \cite{Rane2018}, in which they investigated the performance of various classifiers in classifying the sentiment of Twitter reviews about airlines. They found that the RF Classifier achieved the highest precision score, followed first by the AdaBoost Classifier and then the SVM Classifier. They did not include the QDA Classifier in their evaluation. Our results do not fully confirm or contradict the results of A.Rane and A.Kumar \cite{Rane2018}. Two out of three of our top performing classifiers agree, the RF classifier and the SVM classifier. Their precision scores are higher than ours for all the classifiers that they implemented, at approximately 0.8 compared to ours at approximately 0.7. A likely reason for this is that they trained their classifiers on a much larger dataset, a total of 14640 tweets, while our classifiers were trained on a smaller set of 3116 tweets. Supervised machine learning methods tend to perform the best on large datasets. Our results could possibly be improved by collecting and annotating a larger dataset.
 
 \subsection{Recall}
 
@@ -170,36 +170,36 @@ It is interesting to compare our precision scores to those in the study by A.Ran
 \resizebox{\textwidth}{!}{
 \begin{tabular}{cccccccc}
 \specialrule{1.5pt}{1pt}{1pt}
- & \textbf{BOW} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Bigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Trigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram,\\ No Stop Words)\end{tabular}} & \textbf{Doc2Vec} & \textbf{Word2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
-\textbf{RF} & 0.7 & 0.71 & 0.7 & 0.69 & 0.72 & 0.64 & 0.69 \\ \hline
+ & \textbf{BOW} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Bigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Trigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram,\\ No Stop Words)\end{tabular}} & \textbf{Word2Vec} & \textbf{Doc2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
+\textbf{RF} & 0.7 & 0.71 & 0.7 & 0.69 & 0.72 & 0.69 & 0.64  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{DT} & 0.61 & 0.6 & 0.61 & 0.62 & 0.65 & 0.59 & 0.56 \\ \hline
-\textbf{MLP} & 0.72 & 0.72 & 0.71 & 0.71 & 0.71 & 0.62 & 0.72 \\ \hline
+\textbf{DT} & 0.61 & 0.6 & 0.61 & 0.62 & 0.65 & 0.56 & 0.59  \\ \hline
+\textbf{MLP} & 0.72 & 0.72 & 0.71 & 0.71 & 0.71 & 0.72 & 0.62  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{SVM} & 0.59 & \textcolor{red}{0.74} & \textcolor{red}{0.74} & 0.72 & 0.72 & 0.64 & 0.72 \\ \hline
-\textbf{LR} & 0.72 & 0.72 & 0.71 & 0.7 & 0.71 & 0.64 & 0.72 \\ \hline
+\textbf{SVM} & 0.59 & \textcolor{red}{0.74} & \textcolor{red}{0.74} & 0.72 & 0.72 & 0.72 & 0.64  \\ \hline
+\textbf{LR} & 0.72 & 0.72 & 0.71 & 0.7 & 0.71 & 0.72 & 0.64  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{KNN} & 0.61 & 0.66 & 0.66 & 0.65 & 0.65 & 0.61 & 0.68 \\ \hline
-\textbf{GP} & 0.73 & 0.73 & 0.72 & 0.71 & 0.71 & 0.64 & 0.73 \\ \hline
+\textbf{KNN} & 0.61 & 0.66 & 0.66 & 0.65 & 0.65 & 0.68 & 0.61  \\ \hline
+\textbf{GP} & 0.73 & 0.73 & 0.72 & 0.71 & 0.71 & 0.73 & 0.64  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{AB} & 0.65 & 0.64 & 0.65 & 0.65 & 0.66 & 0.61 & 0.64 \\ \hline
-\textbf{GNB} & 0.48 & 0.48 & 0.47 & 0.45 & 0.48 & 0.49 & 0.56 \\ \hline
+\textbf{AB} & 0.65 & 0.64 & 0.65 & 0.65 & 0.66 & 0.64 & 0.61  \\ \hline
+\textbf{GNB} & 0.48 & 0.48 & 0.47 & 0.45 & 0.48 & 0.56 & 0.49  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{MNB} & \multicolumn{1}{c}{\cellcolor[HTML]{EFEFEF}0.66} & 0.68 & 0.69 & 0.67 & 0.68 &  &  \\ \hline
+\textbf{MNB} & \multicolumn{1}{c}{\cellcolor[HTML]{EFEFEF}0.66} & 0.68 & 0.69 & 0.67 & 0.68 & 0.57 & 0.59  \\ \hline
 \rowcolor[HTML]{FFFFFF} 
-\textbf{BNB} & 0.71 & 0.71 & 0.66 & 0.62 & 0.71 & 0.54 & 0.56 \\ \hline
+\textbf{BNB} & 0.71 & 0.71 & 0.66 & 0.62 & 0.71 & 0.56 & 0.54  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{QDA} & 0.26 & 0.23 & 0.24 & 0.56 & 0.26 & 0.68 & 0.61 \\ \hline
+\textbf{QDA} & 0.26 & 0.23 & 0.24 & 0.56 & 0.26 & 0.61 & 0.68  \\ \hline
 \rowcolor[HTML]{FFFFFF} 
-\textbf{LDA} & 0.61 & 0.61 & 0.61 & 0.59 & 0.59 & 0.67 & 0.69 \\ \hline
+\textbf{LDA} & 0.61 & 0.61 & 0.61 & 0.59 & 0.59 & 0.69 & 0.67  \\ \hline
 \end{tabular}}
 \end{table}
 
-The SVM classifier was the best performing classifier with regard to recall, achieving a recall score of 0.74 (Table ~\ref{Table:recall}). The unigram TF-IDF and bigram TF-IDF feature representations performed equally well. This again partly agrees with \cite{Rane2018}, who found that the SVM classifier was their second best performing classifier in terms of recall, with the RF classifier again coming out on top. Our scores are again slightly lower than those of A.Rane and A.Kumar.
+The SVM Classifier was the best performing classifier with regard to recall, achieving a recall score of 0.74 (Table ~\ref{Table:recall}). The unigram TF-IDF and bigram TF-IDF feature representations performed equally well. This again partly agrees with A.Rane and A.Kumar \cite{Rane2018}, who found that the SVM Classifier was their second best performing classifier in terms of recall, with the RF classifier again coming out on top. Our scores are again slightly lower than those of A.Rane and A.Kumar \cite{Rane2018}.
 
-Notice that the QDA classifier which performed the best in precision, performs pretty poorly in terms of recall. This is a common issue and is why we have also evaluated the classifiers with the f1-score. The f1-score conveys the balance between precision and recall giving us a better idea of the actual performance of the classifier.
+Notice that the QDA Classifier which performed the best in precision, performs pretty poorly in terms of recall. This is a common issue and is why we have also evaluated the classifiers with the f1-score. The f1-score conveys the balance between precision and recall giving us a better idea of the actual performance of the classifier.
 
-The GP classifier was the next highest performing classifier, achieving a recall score of 0.73, with unigram TF-IDF feature representation. This is interesting as I have not come across any studies where a GP Classifier performs well in classifying tweets. The GP classifier also performed well in precision achieving a precision score of 0.72.  
+The GP Classifier was the next highest performing classifier, achieving a recall score of 0.73, with unigram TF-IDF feature representation. This is interesting as I have not come across any studies where a GP Classifier performs well in classifying tweets. The GP Classifier also performed well in precision achieving a precision score of 0.72.  
 
 \subsection{F1-Score}
 
@@ -210,34 +210,34 @@ The GP classifier was the next highest performing classifier, achieving a recall
 \resizebox{\textwidth}{!}{
 \begin{tabular}{cccccccc}
 \specialrule{1.5pt}{1pt}{1pt}
- & \textbf{BOW} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Bigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Trigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram,\\ No Stop Words)\end{tabular}} & \textbf{Doc2Vec} & \textbf{Word2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
-\textbf{RF} & 0.65 & 0.65 & 0.64 & 0.64 & 0.69 & 0.59 & 0.63 \\ \hline
+ & \textbf{BOW} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Bigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Trigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram,\\ No Stop Words)\end{tabular}} & \textbf{Word2Vec} & \textbf{Doc2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
+\textbf{RF} & 0.65 & 0.65 & 0.64 & 0.64 & 0.69 & 0.63 & 0.59  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{DT} & 0.57 & 0.59 & 0.58 & 0.6 & 0.63 & 0.56 & 0.54 \\ \hline
-\textbf{MLP} & 0.71 & 0.7 & 0.69 & 0.69 & 0.69 & 0.57 & 0.71 \\ \hline
+\textbf{DT} & 0.57 & 0.59 & 0.58 & 0.6 & 0.63 & 0.54 & 0.56  \\ \hline
+\textbf{MLP} & 0.71 & 0.7 & 0.69 & 0.69 & 0.69 & 0.71 & 0.57  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{SVM} & 0.45 & \textcolor{red}{0.73} & \textcolor{red}{0.73} & 0.71 & 0.71 & 0.63 & 0.71 \\ \hline
-\textbf{LR} & 0.71 & 0.7 & 0.69 & 0.68 & 0.69 & 0.6 & 0.71 \\ \hline
+\textbf{SVM} & 0.45 & \textcolor{red}{0.73} & \textcolor{red}{0.73} & 0.71 & 0.71 & 0.71 & 0.63  \\ \hline
+\textbf{LR} & 0.71 & 0.7 & 0.69 & 0.68 & 0.69 & 0.71 & 0.6  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{KNN} & 0.49 & 0.62 & 0.62 & 0.62 & 0.61 & 0.55 & 0.67 \\ \hline
-\textbf{GP} & 0.71 & 0.71 & 0.72 & 0.7 & 0.7 & 0.61 & 0.72 \\ \hline
+\textbf{KNN} & 0.49 & 0.62 & 0.62 & 0.62 & 0.61 & 0.67 & 0.55  \\ \hline
+\textbf{GP} & 0.71 & 0.71 & 0.72 & 0.7 & 0.7 & 0.72 & 0.61  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{AB} & 0.63 & 0.62 & 0.63 & 0.62 & 0.63 & 0.59 & 0.63 \\ \hline
-\textbf{GNB} & 0.5 & 0.51 & 0.49 & 0.47 & 0.5 & 0.51 & 0.58 \\ \hline
+\textbf{AB} & 0.63 & 0.62 & 0.63 & 0.62 & 0.63 & 0.63 & 0.59  \\ \hline
+\textbf{GNB} & 0.5 & 0.51 & 0.49 & 0.47 & 0.5 & 0.58 & 0.51  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{MNB} & \multicolumn{1}{c}{\cellcolor[HTML]{EFEFEF}0.67} & 0.63 & 0.66 & 0.65 & 0.64 &  &  \\ \hline
+\textbf{MNB} & \multicolumn{1}{c}{\cellcolor[HTML]{EFEFEF}0.67} & 0.63 & 0.66 & 0.65 & 0.64 & 0.41 & 0.44 \\ \hline
 \rowcolor[HTML]{FFFFFF} 
-\textbf{BNB} & 0.72 & 0.72 & 0.67 & 0.64 & 0.71 & 0.55 & 0.58 \\ \hline
+\textbf{BNB} & 0.72 & 0.72 & 0.67 & 0.64 & 0.71 & 0.58 & 0.55  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{QDA} & 0.23 & 0.19 & 0.19 & 0.48 & 0.23 & 0.61 & 0.55 \\ \hline
+\textbf{QDA} & 0.23 & 0.19 & 0.19 & 0.48 & 0.23 & 0.55 & 0.61  \\ \hline
 \rowcolor[HTML]{FFFFFF} 
-\textbf{LDA} & 0.62 & 0.62 & 0.62 & 0.6 & 0.6 & 0.66 & 0.69 \\ \hline
+\textbf{LDA} & 0.62 & 0.62 & 0.62 & 0.6 & 0.6 & 0.69 & 0.66  \\ \hline
 \end{tabular}}
 \end{table}
 
-Again, the SVM classifier achieved the highest f1-score of 0.73 (Table ~\ref{Table:f1score}), with the unigram and bigram TF-IDF feature representations again performing equally well. This high f1-score indicates that the SVM classifier has a good balance of precision and recall. This confirms the results of both Rathi et al. \cite{Raithi2018}, and Rane & Kumar \cite{Rane2018} who both found in their studies that the SVM classifier performed well in classifying tweets. However, it contradicts the results of Bermingham and Smeaton \cite{Berm2010} who found that MNB performed better than SVM on tweets and short reviews. In our experiments SVM outperformed MNB in all metrics. This difference in results could be due to the change in character count introduced by Twitter in 2017. The character count was increased from 180 characters to 280 characters. Bermingham and Smeaton \cite{Berm2010} found that SVM outperformed MNB on longer form text so perhaps the character count increase means tweets are now more similar to longer form text. This warrants further investigation in future work.
+Again, the SVM Classifier achieved the highest f1-score of 0.73 (Table ~\ref{Table:f1score}), with the unigram and bigram TF-IDF feature representations again performing equally well. This high f1-score indicates that the SVM Classifier has a good balance of precision and recall. This confirms the results of both Rathi et al. \cite{Raithi2018}, and A.Rane and A.Kumar \cite{Rane2018} who both found in their studies that the SVM Classifier performed well in classifying tweets. However, it contradicts the results of Bermingham and Smeaton \cite{Berm2010} who found that the MNB Classifier performed better than the SVM Classifier on tweets and short reviews. In our experiments the SVM Classifier outperformed the MNB Classifier in all metrics. This difference in results could be due to the change in character count introduced by Twitter in 2017. The character count was increased from 140 characters to 280 characters. Bermingham and Smeaton \cite{Berm2010} found that the SVM Classifier outperformed the MNB Classifier on longer form text so perhaps the character count increase means that tweets are now more similar to longer form text. This warrants further investigation in future work.
 
-The next best performing classifiers were GP and BNB, with f1-scores of 0.72. This somewhat agrees with Bermingham & Smeaton, who found that MNB achieved the best classification results on their set of tweets. I have not come across any examples of GP performing well for tweet classification.
+The next best performing classifiers were the GP Classifier and the BNB Classifier, with f1-scores of 0.72. This somewhat agrees with Bermingham and Smeaton, who found that the MNB Classifier achieved the best classification results on their set of tweets. I have not come across any examples of the GP Classifier performing well for tweet classification.
 
 \subsection{Accuracy}
 
@@ -248,28 +248,28 @@ The next best performing classifiers were GP and BNB, with f1-scores of 0.72. Th
 \resizebox{\textwidth}{!}{
 \begin{tabular}{cccccccc}
 \specialrule{1.5pt}{1pt}{1pt}
- & \textbf{BOW} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Bigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Trigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram,\\ No Stop Words)\end{tabular}} & \textbf{Doc2Vec} & \textbf{Word2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
-\textbf{RF} & 0.703 & 0.706 & 0.696 & 0.691 & 0.721 & 0.635 & 0.677 \\ \hline
+ & \textbf{BOW} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Bigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Trigram)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}TF-IDF\\ (Unigram,\\ No Stop Words)\end{tabular}} & \textbf{Word2Vec} & \textbf{Doc2Vec} \\ \specialrule{1.5pt}{1pt}{1pt}
+\textbf{RF} & 0.703 & 0.706 & 0.696 & 0.691 & 0.721 & 0.677 & 0.635  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{DT} & 0.614 & 0.596 & 0.614 & 0.621 & 0.652 & 0.594 & 0.563 \\ \hline
-\textbf{MLP} & 0.719 & 0.719 & 0.711 & 0.711 & 0.709 & 0.621 & 0.718 \\ \hline
+\textbf{DT} & 0.614 & 0.596 & 0.614 & 0.621 & 0.652 & 0.563 & 0.594  \\ \hline
+\textbf{MLP} & 0.719 & 0.719 & 0.711 & 0.711 & 0.709 & 0.718 & 0.621  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{SVM} & 0.594 & \textcolor{red}{0.744} & 0.737 & 0.718 & 0.724 & 0.637 & 0.716 \\ \hline
-\textbf{LR} & 0.724 & 0.721 & 0.709 & 0.696 & 0.713 & 0.639 & 0.722 \\ \hline
+\textbf{SVM} & 0.594 & \textcolor{red}{0.744} & 0.737 & 0.718 & 0.724 & 0.716 & 0.637  \\ \hline
+\textbf{LR} & 0.724 & 0.721 & 0.709 & 0.696 & 0.713 & 0.722 & 0.639  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{KNN} & 0.608 & 0.655 & 0.657 & 0.652 & 0.649 & 0.609 & 0.681 \\ \hline
-\textbf{GP} & 0.726 & 0.726 & 0.724 & 0.706 & 0.708 & 0.644 & 0.729 \\ \hline
+\textbf{KNN} & 0.608 & 0.655 & 0.657 & 0.652 & 0.649 & 0.681 & 0.609  \\ \hline
+\textbf{GP} & 0.726 & 0.726 & 0.724 & 0.706 & 0.708 & 0.729 & 0.644  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{AB} & 0.654 & 0.644 & 0.650 & 0.650 & 0.655 & 0.609 & 0.637 \\ \hline
-\textbf{GNB} & 0.478 & 0.483 & 0.473 & 0.448 & 0.479 & 0.486 & 0.565 \\ \hline
+\textbf{AB} & 0.654 & 0.644 & 0.650 & 0.650 & 0.655 & 0.637 & 0.609  \\ \hline
+\textbf{GNB} & 0.478 & 0.483 & 0.473 & 0.448 & 0.479 & 0.565 & 0.486  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{MNB} & \multicolumn{1}{c}{\cellcolor[HTML]{EFEFEF}0.660} & 0.683 & 0.691 & 0.675 & 0.678 &  &  \\ \hline
+\textbf{MNB} & \multicolumn{1}{c}{\cellcolor[HTML]{EFEFEF}0.660} & 0.683 & 0.691 & 0.675 & 0.678 & 0.569 & 0.588  \\ \hline
 \rowcolor[HTML]{FFFFFF} 
-\textbf{BNB} & 0.713 & 0.713 & 0.662 & 0.621 & 0.709 & 0.537 & 0.565 \\ \hline
+\textbf{BNB} & 0.713 & 0.713 & 0.662 & 0.621 & 0.709 & 0.565 & 0.537  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-\textbf{QDA} & 0.263 & 0.235 & 0.238 & 0.558 & 0.261 & 0.678 & 0.612 \\ \hline
+\textbf{QDA} & 0.263 & 0.235 & 0.238 & 0.558 & 0.261 & 0.612 & 0.678  \\ \hline
 \rowcolor[HTML]{FFFFFF} 
-\textbf{LDA} & 0.609 & 0.614 & 0.609 & 0.588 & 0.591 & 0.665 & 0.693 \\ \hline
+\textbf{LDA} & 0.609 & 0.614 & 0.609 & 0.588 & 0.591 & 0.693 & 0.665  \\ \hline
 \end{tabular}}
 \end{table}
 
@@ -284,14 +284,14 @@ A possible reason that SVM achieves the top performance is that the SVM classifi
 Different types of feature representation were explored to try and improve the performance of the classifiers. This section will outline the changes in performance produced by these feature representation methods. 
 
 \subsubsection*{TF-IDF}
-TF-IDF did not have a massive impact on the performance of the majority of the classifiers in comparison to just BOW. It improved performance in some cases and worsened performance in others. TF-IDF and BOW achieved roughly the same scores. TF-IDF did however significantly improve the classification precision, recall, accuracy and f1-scores of the SVM classifier. These scores saw a increase from about 0.5 to about 0.7.
+TF-IDF did not have a massive impact on the performance of the majority of the classifiers in comparison to just BOW. It improved performance in some cases and worsened performance in others. TF-IDF and BOW achieved roughly the same scores. TF-IDF did however significantly improve the classification precision, recall, accuracy and f1-scores of the SVM classifier. These scores saw an increase from about 0.5 to about 0.7.
 
-TF-IDF feature representation has been proven to perform  well on text \cite{}. It does not conclusively improve tweet classification performance. This may be due to the short length of the tweets. Short text is likely to have noisy TF-IDF values where as the binary occurrence information obtained through plain BOW is more stable.
+TF-IDF does not conclusively improve tweet classification performance. This may be due to the short length of the tweets. Short text is likely to have noisy TF-IDF values where as the binary occurrence information obtained through plain BOW is more stable.
 
 \subsubsection*{N-Grams}
-Three different N-gram feature sets were evaluated: unigrams, unigrams and bigrams, unigrams and bigrams and trigrams. We found that increasing the number of N-grams did not improve the classification precision, accuracy, recall or f1-score. In most cases it actually worsened the performance of the classifiers or had little to no affect. This agrees with the findings of Bermingham and Smeaton \cite{Berm2010} who found that expanding N-grams did not help the classification performance of either the tweets or the short reviews they experimented with them on. 
+Three different N-gram feature sets were evaluated: unigrams, unigrams and bigrams, unigrams and bigrams and trigrams. We found that increasing the number of N-grams did not improve the classification precision, accuracy, recall or f1-score. In most cases it actually worsened the performance of the classifiers or had little or no affect. This agrees with the findings of Bermingham and Smeaton \cite{Berm2010} who found that expanding N-grams did not help the classification performance of either the tweets or the short reviews they experimented with them on. 
 
-\subsubsection*{Doc2Vec and Word2Vec}
+\subsubsection*{Word2Vec and Doc2Vec}
 
 Word2Vec achieved better results in classifying the tweets than Doc2Vec. This could be because Word2Vec used Google's pretrained model. This model is trained on about 100 billion words from a Google News dataset. In comparison the Doc2Vec model was trained on our significantly smaller dataset of 3116 tweets.
 
@@ -299,23 +299,23 @@ Neither Doc2Vec or Word2Vec achieved any better performance than BOW or TF-IDF. 
 
 \subsubsection*{Stop Words}
 
-The unigram TF-IDF feature representation was implemented with and without stop words. The implementation with stop words included performed better in nine out of the thirteen classifiers. This indicates that stop word removal did not improve classification performance. TF-IDF itself reflects how important a term is within a collection. It may be that TF-IDF is already accounting for the stop words high frequency so no stop word removal is required.\newline
+The unigram TF-IDF feature representation was implemented with and without stop words. The implementation with stop words included, performed better in nine out of the thirteen classifiers. This indicates that stop word removal did not improve classification performance. TF-IDF itself reflects how important a term is within a collection. It may be that TF-IDF is already accounting for the stop words high frequency, so no stop word removal is required.\newline
 
 The best performing approach was a combination of the SVM Classifier and unigram TF-IDF feature representation, closely followed by bigram TF-IDF. TF-IDF balances out how important a term is to a document compared with how important it is to the entire dataset. It reduces the weighting of less important terms that occur in many documents in the dataset. TF-IDF seems to perform particularly well in combination with the SVM Classifier. TF-IDF significantly improved the performance of the SVM Classifier.
 
 \section{Sentiment Scores}
 
-The Stanford NLP Sentiment Analyser was used to generate sentiment scores for the tweets that were classified as reviews. They were aggregated and normalised, as described above, to produce an overall sentiment score for each hotel. Each score lies between zero and one, with one being the most positive score and zero being the most negative score. The sentiment scores of the top ten highest scoring hotels (Figure ~\ref{fig:highest}) and the top ten lowest scoring hotels (Figure ~\ref{fig:lowest}) are presented below.
+The Stanford NLP Sentiment Analyser was used to generate sentiment scores for the tweets that were classified as reviews. They were aggregated and normalised, as described in chapter 3, to produce an overall sentiment score for each hotel. Each score lies between zero and one, with one being the most positive score and zero being the most negative score. The sentiment scores of the top ten highest scoring hotels (Figure ~\ref{fig:highest}) and the top ten lowest scoring hotels (Figure ~\ref{fig:lowest}) are presented below.
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.9\textwidth]{evaluation/highest.png}
+\includegraphics[width=0.95\textwidth]{evaluation/highest.png}
 \caption{\label{fig:highest} Hotels with Highest Sentiment Scores.}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.9\textwidth]{evaluation/lowest.png}
+\includegraphics[width=0.95\textwidth]{evaluation/lowest.png}
 \caption{\label{fig:lowest} Hotels with Lowest Sentiment Scores.}
 \end{figure}
 
@@ -340,20 +340,20 @@ $rank_{ui}$ is the percentile-ranking of hotel i within the ordered list of all 
 \section{Evaluation of Added Sentiment Scores}
 
 \subsection{User Data}
-The same Ryanair data that was used by CoRE was used for evaluating the recommenders. The Ryanair dataset consists of 29,704 hotel bookings, 11,638 unique hotels that have a least 1 booking and 20,223 users who have made a booking at at least one hotel.
+The same Ryanair data that was used in the CoRE paper was used for evaluating each of the recommender systems. The Ryanair dataset consists of 29,704 hotel bookings, 11,638 unique hotels that have a least 1 booking and 20,223 users who made a booking at one or more hotels.
 
 This project focused on hotels in Dublin so the dataset had to be filtered. The dataset was first filtered so that it only contained users with multiple hotel bookings. Multiple hotel bookings are required for the 'leave-one-out' approach so that a booking can be removed while still leaving at least one booking to use for generating the recommendations. Then the dataset was filtered so that it only contained users who had a booking in one of the Dublin hotels that we had produced a sentiment score for. The 'leave-one-out' approach had to be altered slightly so that the user's Dublin hotel booking was always the booking that was removed. The recommendations could be generated based on the other bookings but the removed booking had to be from Dublin so that we could evaluate where it ranked in the returned list.
 
-There were 27 users who had multiple hotel bookings with at least one hotel booking in a Dublin hotel that we had a sentiment score for. The Dublin hotel bookings were for 21 different hotels. The evaluation was performed on these 27 users. This is quite a small number of users which needs to be taken into consideration in the evaluation. Ideally we would like to evaluate the system on a much larger set of users and hotels. This is an area for future work.
+There were 27 users who had multiple hotel bookings with at least one hotel booking in a Dublin hotel that we had a sentiment score for. The Dublin hotel bookings were for 21 different hotels. The evaluation was performed on these 27 users and 21 hotels. This is quite a small number of users which needs to be taken into consideration in the evaluation. Ideally we would like to evaluate the system on a much larger set of users and hotels, to verify our results. This is an area for future work.
 
 \subsection{Baselines}
 
-In order to assess the performance of SentiCoRE (CoRE with added sentiment information) it was compared against multiple baselines. These included: 
+In order to assess the performance of SentiCoRE (CoRE with the added sentiment information) it was compared against multiple baselines. These included: 
 \begin{enumerate}
     \item \textbf{Random} \newline
     A randomly ranked list of hotels.
     \item \textbf{Expedia Baseline} \newline
-    The approach currently used by Ryanair in their rooms booking site. Hotels from the target city are sorted based on a sequence number given to them by Expedia. The sequence number is based on the transactional data from the last 30 days.
+    The approach currently used by Ryanair in their rooms booking site. Hotels from the target city are sorted based on a sequence number given to them by Expedia. The sequence number is based on their transactional data from the last 30 days.
     \item \textbf{CoRE} \newline
     The CoRE recommender system without the sentiment score added in.
     \item \textbf{SentiCoRE} \newline
@@ -362,13 +362,13 @@ In order to assess the performance of SentiCoRE (CoRE with added sentiment infor
 
 \section{Recommender Results and Analysis}
 
-The results show that the addition of the sentiment score increases the MPR of CoRE, with and without feature weighting (Table ~\ref{Table:senticore}). The best performing recommender system is CoRE. CoRE performs slightly better with feature weighting as was seen in the evaluation of CoRE by itself \cite{core2019}. 
+The results show that the addition of the sentiment score increases the MPR of CoRE, with and without feature weighting (Table ~\ref{Table:senticore}), which means the hotels are being ranked lower by SentiCoRE than CoRE. The best performing recommender system is CoRE. CoRE performs slightly better with feature weighting than without feature weighting as was seen in the evaluation of CoRE by itself \cite{core2019}. 
 
-The Random Recommender which produces a random list of hotels performed the worst, which was expected. Typically a MPR of 50\% would be expected for a random list of hotels. The Expedia Recommender only performed slightly better than the random recommender. Both CoRE and SentiCoRE performed significantly better than the Random and Expedia baselines.
+The Random Recommender which produces a random list of hotels performed the worst, which was expected. Typically a MPR of 50\% would be expected for a random list of hotels which is not far off the Random Recommender's MPR of 42.72\%. The Expedia Recommender only performed slightly better than the Random Recommender with a MPR of 40.87. Both CoRE and SentiCoRE performed significantly better than the Random and Expedia baselines.
 
 \begin{table}[h!]
 \setlength\extrarowheight{5pt}
-\caption{Recommender Systems performance.}
+\caption{Recommender Systems Performance.}
 \label{Table:senticore}
 \begin{tabular}{ll}
 \specialrule{1.5pt}{1pt}{1pt}
@@ -385,7 +385,7 @@ SentiCoRE (without feature weighting) & 9.92 \\ \hline
 \end{tabular}
 \end{table}
 
-From the results, we can see that incorporating the sentiment scores into the CoRE recommender definitely has an impact on the hotel rankings. A positive sentiment score will move a hotel up the list while a negative ranking will move a hotel down the list. Even though the sentiment scores are having the desired effect and adjusting the hotel rankings SentiCoRE has a worse MPR than the original CoRE recommender. It is hard to evaluate if SentiCoRE is performing well since it is adjusting the hotel rankings based on the sentiment scores but as a result is ranking hotels lower and getting a higher MPR. 
+From the results, we can see that incorporating the sentiment scores into the CoRE recommender definitely has an impact on the hotel rankings. A positive sentiment score will move a hotel up the list while a negative ranking will move a hotel down the list. Taking only the MPR into account you would say that SentiCoRE is not performing as well as CoRE. However, SentiCoRE is having the desired effect and is adjusting the hotel rankings based on the sentiment scores.
 
 \section{Summary}
 
