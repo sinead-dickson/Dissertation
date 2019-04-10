@@ -653,7 +653,7 @@ The context model uses contextual information to recommend hotels to the user. T
 
 The three models are combined by calculating the centroid vector (Figure ~\ref{fig:centroid}). A weighting is applied to determine the effect of each model in the final vector. The cosine similarity between the vector of each hotel and the centroid vector of the user is then calculated, and a list of hotels is produced. The hotels are ranked based on the similarity score. CoRE is easily extensible. A fourth model could easily be added and incorporated into the centroid calculation.
 
-CoRE was evaluated against the ranking approach currently used by Ryanair. Hotels from the target city are sorted based on their sequence number which is given to them by Expedia. The sequence number is based on the transactional data from the last 30 days. CoRE significantly outperforms this baseline, which is labelled 'Sequence' in Figure ~\ref{fig:coreperform}. CoRE achieves a mean percentile rank (MPR) of 22.04\% without feature weighting and 18.27\% with feature weighting.
+CoRE was evaluated against the ranking approach currently used by Ryanair. Hotels from the target city are sorted based on their sequence number which is given to them by Expedia. The sequence number is based on the hotel's transactional data from the last 30 days. CoRE significantly outperforms this baseline, which is labelled 'Sequence' in Figure ~\ref{fig:coreperform}. CoRE achieves a mean percentile rank (MPR) of 22.04\% without feature weighting and 18.27\% with feature weighting.
 
 \begin{figure}[h!]
 \centering
