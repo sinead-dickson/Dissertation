@@ -10,7 +10,7 @@ We evaluated the performance of these classifiers. The best performing classifie
 
 Sentiment analysis was performed on the tweets that were classified as reviews, using the Stanford NLP Sentiment Analyser. The sentiment scores produced were used to re-rank the results of the CoRE recommender system. The performance of the CoRE recommender system with the sentiment scores was evaluated against the original CoRE recommender and two further baseline systems.
 
-Incorporating the sentiment scores into the CoRE recommender had the desired affect and adjusted the rankings of the hotels. But in terms of MPR SentiCoRE performed worse than CoRE. The size of the dataset needs to be considered when analysing these results. These results need to be verified with a larger dataset.
+Incorporating the sentiment scores into the CoRE recommender had the desired effect and adjusted the rankings of the hotels. But in terms of MPR SentiCoRE performed worse than CoRE. The size of the dataset needs to be considered when analysing these results. These results need to be verified with a larger dataset.
 
 \section{Future Work}
 
@@ -25,9 +25,9 @@ One line of future work would be to improve the classification performance of th
 
 A second line of future work would be to expand the scope of the project. This research focused on hotels in Dublin. This scope could be expanded first geographically. It could then be expanded to different fields. Twitter could be used to gain sentiment information about restaurants, movies etc. and applied to recommender systems relating to these fields.
 
-A possible improvement to the methodology outlined in this project would be re-training the Stanford NLP Sentiment Analyser. The analyser was trained on a set of movie reviews from Rotten Tomatoes. Due to this it will perform best in classifying texts similar to these movie reviews, rather that tweets which have a very different format. It would be interesting to evaluate whether re-training the analyser using review-like tweets would improve how well it classifies the sentiment of the tweets. 
+A possible improvement to the methodology outlined in this project would be re-training the Stanford NLP Sentiment Analyser. The analyser was trained on a set of movie reviews from Rotten Tomatoes. Due to this, it will perform best in classifying texts similar to these movie reviews, rather than tweets which have a very different format. It would be interesting to evaluate whether re-training the analyser using review-like tweets would improve how well it classifies the sentiment of the tweets. 
 
-Another important line of future work would be to evaluate the performance of the recommender system on a larger dataset. In this project the system was evaluated for 27 users and 21 hotels. Our results could be confirmed and would hold more weight if the recommender was re evaluated with data for more users and hotels.
+Another important line of future work would be to evaluate the performance of the recommender system on a larger dataset. In this project, the system was evaluated for 27 users and 21 hotels. Our results could be confirmed and would hold more weight if the recommender was re-evaluated with data for more users and hotels.
 
 Finally, the proposed methodology could be improved by experimenting with prioritising the sentiment of more recent Twitter reviews or personalising the process by prioritising reviews from Twitter users similar to the user in question. The sentiment of hotels with a lot of reviews could also be prioritised. For example a hotel with lots of positive reviews being boosted higher than a hotel with just one positive review.
 

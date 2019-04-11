@@ -2,18 +2,18 @@
 
 \section{Introduction}
 
-In this chapter the design and methodology choices involved in this project will be presented. This project consists of five key stages (Figure ~\ref{fig:pipeline}). Each of these will be discussed in detail in this chapter. The five stages are:
+In this chapter, the design and methodology choices involved in this project will be presented. This project consists of five key stages (Figure ~\ref{fig:pipeline}). Each of these will be discussed in detail in this chapter. The five stages are:
 \begin{itemize}
     \item \textbf{Data Collection and Filtering}\newline
     This stage involved collecting the Twitter data. The data was then filtered so it only contained tweets about hotels posted from Dublin.
     \item \textbf{Dataset Annotation}\newline
     This stage involved annotating the filtered dataset of tweets about hotels in Dublin.
     \item \textbf{Classification}\newline 
-    In this stage of the project multiple supervised machine learning classifiers were trained with different feature representations.
+    In this stage of the project, multiple supervised machine learning classifiers were trained with different feature representations.
     \item \textbf{Sentiment Analysis}\newline 
     This part of the project involved analysing the sentiment of those tweets that were classified as reviews.
     \item \textbf{Application within a Recommender System}\newline
-    In this stage the sentiment scores produced were used to re-rank the results of the CoRE \cite{core2019} Recommender System.
+    In this stage, the sentiment scores produced were used to re-rank the results of the CoRE \cite{core2019} Recommender System.
 \end{itemize}
 
 \begin{figure}[h!]
@@ -96,7 +96,7 @@ captionpos=b,label=lst:pointjson,language=json,firstnumber=1]
 
 \subsection{Filtering Out Non-Dublin Tweets}
 
-The first attempt to filter out any non-Dublin tweets used the point coordinates of the tweets. The point coordinate of each tweet was compared to the bounding box of Dublin. If it lay inside the box it was kept, otherwise it was filtered out. However, only 7.23\% of the tweets in our collection actually had a specific point coordinate. Filtering based on this excluded the majority of the dataset. To address this we instead filtered tweets based on a combination of their point coordinates and their Twitter places.
+The first attempt to filter out any non-Dublin tweets used the point coordinates of the tweets. The point coordinate of each tweet was compared to the bounding box of Dublin. If it lay inside the box it was kept, otherwise, it was filtered out. However, only 7.23\% of the tweets in our collection actually had a specific point coordinate. Filtering based on this excluded the majority of the dataset. To address this we instead filtered tweets based on a combination of their point coordinates and their Twitter places.
 
 All of the tweets in the collection have a Twitter place defining the general area that the tweet was posted from. A combination of the Twitter place and the point coordinates was used to filter out any non-Dublin tweets that had ended up in the dataset. 
 
@@ -116,9 +116,9 @@ West Longitude & -6.447485 \\ \hline
 A bounding box for the Dublin area was defined (Table ~\ref{tab:dublinbb}). Tweets with a point coordinate and tweets with only a Twitter place were filtered differently:
 \begin{itemize}
     \item \textbf{Point Coordinate}\newline
-    Each tweet with a point coordinate was checked to see if the point coordinate fell within the defined bounding box for Dublin. If it lay inside the box it was kept, otherwise it was filtered out.
+    Each tweet with a point coordinate was checked to see if the point coordinate fell within the defined bounding box for Dublin. If it lay inside the box it was kept, otherwise, it was filtered out.
     \item \textbf{Twitter Place}\newline
-    Each tweet with a Twitter place has a bounding box specifying the location of the place. The centroid of this bounding box was calculated for each tweet. Then the centroid was checked to see if it fell within the defined bounding box for Dublin. If it lay inside the box it was kept, otherwise it was filtered out.
+    Each tweet with a Twitter place has a bounding box specifying the location of the place. The centroid of this bounding box was calculated for each tweet. Then the centroid was checked to see if it fell within the defined bounding box for Dublin. If it lay inside the box it was kept, otherwise, it was filtered out.
 \end{itemize}
 
 The filtered dataset consisted of 1.6 million tweets posted from Dublin between October 2017 and September 2018.
@@ -165,10 +165,10 @@ The following instructions, describing what a 'Review', 'Some Content' and 'Irre
     This tweet is completely irrelevant. While perhaps mentioning the name of a hotel, the tweet doesn't give any additional information about that hotel or offer any opinions related to the hotel.
 \end{itemize}
 
-In this research we decided to focus solely on the text of the tweets. For this reason all images, videos and URLs were stripped from the tweets before being displayed on the annotation webpage. Images, videos and URLs could all carry valuable information and could be considered in future research. Image and video processing techniques could be experimented with to gather additional information from the tweets.   
+In this research, we decided to focus solely on the text of the tweets. For this reason, all images, videos and URLs were stripped from the tweets before being displayed on the annotation webpage. Images, videos and URLs could all carry valuable information and could be considered in future research. Image and video processing techniques could be experimented with to gather additional information from the tweets.   
 
 \begin{table}[h!]
-\caption{A sample of the tweets from the SQL table.}
+\caption{A sample of the tweets from the SQL Table.}
 \label{Table:TweetAnnotation}
 \setlength\extrarowheight{5pt}
 \resizebox{\textwidth}{!}{
@@ -229,10 +229,10 @@ The annotated set of tweets was used to train a series of different classifiers 
 
 The set of annotated tweets was pre-processed before it was used to train the classifiers. The pre-processing stage tokenizes the tweets and deals with things like punctuation and case. The data pre-processing techniques used were inspired by the techniques found in previous literature \cite{Ankit2018,Rane2018,Go2009,Raithi2018}. 
 
-The following steps were taken to pre-process the tweets, before they were used to train the classifiers:\newline
+The following steps were taken to pre-process the tweets before they were used to train the classifiers:\newline
 \begin{itemize}
     \item \textbf{Emojis}\newline
-    Emojis were removed and replaced with text using Python's Emoji library \cite{emoji}. For example, a thumbs up emoji would be converted to the text \emph{':thumbs\_up:'} and then \emph{'thumbs up'} once punctuation is removed. In this way some meaning was extracted from each emoji. Emojis are another area of potential valuable sentiment information for future work. A. Go, R. Bhayani and L. Huang \cite{Go2009} used emojis to automatically label a dataset of tweets as positive or negative.
+    Emojis were removed and replaced with text using Python's Emoji library \cite{emoji}. For example, a thumbs up emoji would be converted to the text \emph{':thumbs\_up:'} and then \emph{'thumbs up'} once punctuation is removed. In this way, some meaning was extracted from each emoji. Emojis are another area of potential valuable sentiment information for future work. A. Go, R. Bhayani and L. Huang \cite{Go2009} used emojis to automatically label a dataset of tweets as positive or negative.
     \item \textbf{Punctuation}\newline
     The majority of special characters and punctuation was removed from the tweets. This included everything except the digits 0 - 9, the letters a - z (in upper and lower case), and the following set of symbols: . , ? ! ( ) \& ' - . Tweets are generally quite noisy and contain a lot of unnecessary punctuation. Symbols such as @ and \# were removed so that the words contained in hashtags and Twitter handles could be recognised as words. However, symbols like apostrophes were not removed so that a word like 'won't' wouldn't be split into 'won' and 't'.
     \item \textbf{Single Characters}\newline
@@ -244,7 +244,7 @@ The following steps were taken to pre-process the tweets, before they were used 
     \item \textbf{Lowercase}\newline
     All text was converted to lower case. This is so that a word with a capital letter and a word without a capital letter are recognised as the same word.
     \item \textbf{Stemming}\newline
-    Stemming was performed using the Word Net Lemmatizer from the Natural Language Toolkit \footnote{\url{https://www.nltk.org/}} (NLTK). Stemming is the process of reducing words down to their base or root. For example \emph{'organise'}, \emph{'organised'} and \emph{'organisation'} would all be reduced to \emph{'organis'}. Stemming conflates similar terms, reducing the number of words that are fed to the classifier.
+    Stemming was performed using the Word Net Lemmatizer from the Natural Language Toolkit \footnote{\url{https://www.nltk.org/}} (NLTK). Stemming is the process of reducing words down to their base or root. For example \emph{'organised'} and \emph{'organisation'} would both be reduced to \emph{'organise'}. Stemming conflates similar terms, reducing the number of words fed into the classifier.
     \item \textbf{Stopwords}\newline
     Stop words were removed. All text contains words that are irrelevant and do not add any additional meaning. These are called stop words. Some examples of stop words are \emph{'and'}, \emph{'I'}, \emph{'of'} and \emph{'the'}. Stop words were not removed in all cases. It will be clearly stated in all cases where stop words were removed.
 \end{itemize}
@@ -277,7 +277,7 @@ The seven feature extraction methods implemented were:
 
 \subsubsection{Bag-of-Words}
 
-In Bag-of-Words (BOW) documents are described by word occurrences. A vocabulary is created of all unique terms in the dataset. The vocabulary is ranked by frequency of occurrence. The maximum size of the vocabulary can be specified, so only the top \textit{n} terms are kept. Each tweet is then represented as a feature vector consisting of ones and zeroes. One representing a term's occurrence and zero representing a term's absence. A major drawback of BOW is that it does not take word order into account. This is why it is called 'bag' of words. You can imagine that all the words have been thrown into a bag together and have lost any ordering.
+In Bag-of-Words (BOW) documents are described by word occurrences. A vocabulary is created of all unique terms in the dataset. The vocabulary is ranked by frequency of occurrence. The maximum size of the vocabulary can be specified, so only the top \textit{n} terms are kept. Each tweet is then represented as a feature vector consisting of ones and zeroes. One representing a term's occurrence and zero representing a term's absence. A major drawback of BOW is that it does not take word order into account. This is why it is called 'bag' of words. You can imagine that all the words have been thrown into a bag together and have lost any order.
 
 The Count Vectorizer from Python's Scikit Learn was used to implement BOW. 
 
@@ -311,9 +311,9 @@ The TF-IDF transformer from Python's Scikit Learn was used to implement TF-IDF.
 
 \subsubsection*{N-grams}
 
-Another extension of BOW is the use of N-grams. N-grams help to address the problem BOW has with discarding word ordering.
+Another extension of BOW is the use of N-grams. N-grams help to address the problem BOW has with discarding word order.
 
-An N-gram is a sequence of N consecutive terms. For example the bigrams of \emph{'Twitter as an Alternative Review Site'} are:
+An N-gram is a sequence of N consecutive terms. For example, the bigrams of \emph{'Twitter as an Alternative Review Site'} are:
 \begin{itemize}
     \item \emph{'Twitter as'}
     \item \emph{'as an'}
@@ -391,7 +391,7 @@ The RF Classifier was implemented using Scikit Learn with the following paramete
 
 The Multi Layer Perceptron Classifier is a deep, feedforward, artificial neural network. It consists of a minimum of three layers (Figure ~\ref{fig:mlp}): an input layer, a hidden layer and an output layer. The input layer receives the data, the output layer makes a decision and the hidden layers approximate the function.
 
-The MLP classifier learns a function by based on the training set. Given a set of features $X = x_1,x_2,x_3,...,x_n$ and a target y, it learns a non-linear approximation function. Backpropagation is used to train the MLP Classifier.
+The MLP classifier learns a function based on the training set. Given a set of features $X = x_1,x_2,x_3,...,x_n$ and a target y, it learns a non-linear approximation function. Backpropagation is used to train the MLP Classifier.
 
 \begin{figure}[h!]
 \centering
@@ -465,7 +465,7 @@ The Gaussian Process Classifier implements Gaussian Processes for classification
 
 The definition of a Gaussian Process is: $P(f)$ is a Gaussian process if for any finite subset $\{x_1,x_2,...,x_n\} \subset X$, the marginal distribution over that finite subset $P(f)$ has a multivariate Gaussian distribution.
 
-The GP Classifier puts a Gaussian Process on a latent function, which is then squashed through a link function to get the probabilistic classification. For classification, the posterior of the latent function is not Gaussian, instead the logit function is used. A Gaussian likelihood function is inappropriate for discrete class labels \cite{gaussianProcesses2006}.
+The GP Classifier puts a Gaussian Process on a latent function, which is then squashed through a link function to get the probabilistic classification. For classification, the posterior of the latent function is not Gaussian, instead, the logit function is used. A Gaussian likelihood function is inappropriate for discrete class labels \cite{gaussianProcesses2006}.
 
 The GP Classifier was implemented using Scikit Learn with the following parameters:
 
@@ -475,7 +475,7 @@ The GP Classifier was implemented using Scikit Learn with the following paramete
 \end{center}
 \end{tcolorbox}
 
-\subsubsection*{Adaboost}
+\subsubsection*{AdaBoost}
 
 The AdaBoost Classifier is another ensemble classification algorithm, introduced by Freund and Schapire \cite{adaboost1997}.
 
@@ -548,7 +548,7 @@ The MNB Classifier was implemented using Scikit Learn with the following paramet
 
 The Quadratic Discriminant Analysis Classifier and the Linear Discriminant Analysis Classifier, have a quadratic and linear decision surface, respectively. QDA is more flexible as it can learn quadratic boundaries, LDA can only learn linear boundaries (Figure ~\ref{fig:qdalda}). 
 
-Both the QDA and the LDA Classifier were implemented using Scikit Learn with the folllowing parameters:
+Both the QDA and the LDA Classifier were implemented using Scikit Learn with the following parameters:
 
 \begin{tcolorbox}
 \begin{center}
@@ -573,7 +573,7 @@ The Stanford NLP Sentiment Analyser \cite{stanfordSentiment2013} was used to cla
 
 The Stanford Sentiment Analyser is based on a Recursive Neural Tensor Network. It was trained on a sentiment treebank of movie reviews from the movie review site RottenTomatoes. The treebank consists of sentences which are annotated on a phrase level. 
 
-The Stanford NLP Sentiment Analyser has it's limitations. Due to the fact that it was trained on movie reviews and is being applied to tweets, optimum performance is not achieved. The best performance would be achieved if the Sentiment Analyser was re-trained on a dataset as similar to ours as possible. Ideally the Sentiment Analyser would be re-trained with a set of hotel related tweets. This would involve manually annotating a collection of tweets at a phrase level to produce a treebank. This is an area for future research.
+The Stanford NLP Sentiment Analyser has its limitations. Due to the fact that it was trained on movie reviews and is being applied to tweets, optimum performance is not achieved. The best performance would be achieved if the Sentiment Analyser was re-trained on a dataset as similar to ours as possible. Ideally, the Sentiment Analyser would be re-trained with a set of hotel-related tweets. This would involve manually annotating a collection of tweets at a phrase level to produce a treebank. This is an area for future research.
 
 The Stanford NLP Sentiment Analyser classifies the text into one of the following five sentiment judgements: 
 \begin{enumerate}
@@ -600,15 +600,15 @@ captionpos=b,label=lst:stanfordoutput,language=json,firstnumber=1]
 ]
 \end{lstlisting}
 
-The sentiment value (3) and sentiment (Positive) define the class the tweet has been assigned (Listing ~\ref{lst:stanfordoutput}). In this case the tweet is positive. The sentiment distribution shows how strongly the tweet aligns with each class, from very negative to very positive. This tweet has a maximum value of 0.42548434014862 so it is assigned the positive label.
+The sentiment value (3) and sentiment (Positive) define the class the tweet has been assigned (Listing ~\ref{lst:stanfordoutput}). In this case, the tweet is positive. The sentiment distribution shows how strongly the tweet aligns with each class, from very negative to very positive. This tweet has a maximum value of 0.42548434014862 so it is assigned the positive label.
 
 \subsection{Normalisation}
 
 The sentiment scores produced by the Stanford NLP Sentiment Analyser were produced per tweet. They needed to be normalised so that they were per hotel and lay between zero and one.
 
-A majority voting technique was used to normalise the scores. For each hotel we had a selection of tweets. These tweets are divided into five clusters; very negative, negative, neutral (ignored), positive and very positive. A mean value was calculated for each cluster. This was calculated by summing the corresponding score in the sentiment distribution for each tweet and dividing by the number of tweets in the cluster. The class with the highest mean value was assigned to the hotel.
+A majority voting technique was used to normalise the scores. For each hotel, we had a selection of tweets. These tweets are divided into five clusters; very negative, negative, neutral (ignored), positive and very positive. A mean value was calculated for each cluster. This was calculated by summing the corresponding score in the sentiment distribution for each tweet and dividing by the number of tweets in the cluster. The class with the highest mean value was assigned to the hotel.
 
-There were some cases where tweets related to a hotel chain, for example Hilton Hotels, rather than an individual Hilton Hotel, for example Hilton Dublin Kilmainham. In these cases sentiment scores were generated for the chain as a whole. The score for the chain was assigned to each hotel in the chain. This only happened in the cases where we had no information about the individual hotel but had information about the chain as a whole, in an attempt to boost the numbers of hotels we had sentiment scores for. The problem is that one Hilton Hotel could be amazing and another could be terrible. Ideally more data would be collected so that every hotel had it's own individual sentiment score.
+There were some cases where tweets related to a hotel chain, for example, Hilton Hotels, rather than an individual Hilton Hotel, for example, Hilton Dublin Kilmainham. In these cases, sentiment scores were generated for the chain as a whole. The score for the chain was assigned to each hotel in the chain. This only happened in the cases where we had no information about the individual hotel but had information about the chain as a whole, in an attempt to boost the numbers of hotels we had sentiment scores for. The problem is that one Hilton Hotel could be amazing and another could be terrible. Ideally more data would be collected so that every hotel had its own individual sentiment score.
 
 This mean score was then normalised between zero and one, with the following weighting.
 \begin{itemize}
@@ -643,7 +643,7 @@ The user model takes hotel features from Expedia, such as Free Wi-Fi, Free Break
 
 The segment model introduces collaborative filtering to the recommender. Collaborative filtering methods recommend to users based on the preferences of similar users. The segment model is constructed as a weighted vector of features of hotels that have been booked by all users from a specific segment. A segment is a group of similar users. Users are assigned to a segment based on their flight booking history.
 
-The context model uses contextual information to recommend hotels to the user. The contextual information used is the trip type specified by the user on their flight booking. If trip type information is not available it can be inferred by the number of people travelling with the user, for example, two adults and two children indicates a family trip. The context model is constructed as a weighted vector of features of hotels that have been booked by all users who had the same trip type.
+The context model uses contextual information to recommend hotels to the user. The contextual information used is the trip type specified by the user on their flight booking. If trip type information is not available it can be inferred by the number of people travelling with the user, for example, two adults and two children indicate a family trip. The context model is constructed as a weighted vector of features of hotels that have been booked by all users who had the same trip type.
 
 \begin{figure}[h!]
 \centering
